@@ -1,0 +1,6 @@
+conf/production.json
+public/uploads/files/*
+public/uploads/profile/*
+.DS_STORE
+node_modules
+npm-debug.log
