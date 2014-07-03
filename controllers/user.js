@@ -10,10 +10,6 @@
  * action: create
  */
 
- var _ = require('underscore');
-
-
-
  //TODO: Recreate as promise based chain
 seneca.add({controller:'user',action:'create'},function(args,cb){
 	User.count(function(err,count){

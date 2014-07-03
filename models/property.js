@@ -1,8 +1,7 @@
 var validate = require('mongoose-validator').validate;
 		troop = require('mongoose-troop'),
 		fs = require('fs'),
-		path  = require('path'),
-		_ = require('underscore');
+		path  = require('path');
 
 //TODO: Ownership relationship - Owner Field
 //TODO: Habitant relationship - Habitants Field

@@ -3,9 +3,6 @@
  * @author: Rolilink
  */
 
-var _ = require('underscore');
-var express = require('express');
-
 seneca.add({controller:'property',action:'create'},function(args,cb){
 	var data = args.data;
 
