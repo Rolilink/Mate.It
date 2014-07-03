@@ -42,7 +42,6 @@ app.get('/api/properties',function(req,res,next){
 });
 
 app.post('/api/properties/list',function(req,res,next){
-	console.log(req.param('query'));
 	seneca.act({controller:'property',action:'list',query:req.param('query'),page:req.param('page'),limit:req.param('limit')},function(err,result){
 		if(err){
 			return res.status(500).json({err:err});
