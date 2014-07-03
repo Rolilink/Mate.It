@@ -54,8 +54,8 @@ var deleteProperty = function(property){
 // Seneca Micro Services
 seneca.add({controller:'property',action:'create'},function(args,cb){
 	var data = args.data,
-			handleSuccess = function(data){ cb(null,{property:data}); },
-			handleError = function(error){	cb(err,null); };
+	handleSuccess = function(data){ cb(null,{property:data}); },
+	handleError = function(error){	cb(err,null); };
 
 	var createdProperty = new Property(data);
 	saveProperty(createdProperty).then(handleSuccess,handleError);
@@ -63,36 +63,36 @@ seneca.add({controller:'property',action:'create'},function(args,cb){
 
 seneca.add({controller:'property',action:'get'},function(args,cb){
 	var id = args.id,
-			handleSuccess = function(data){ cb(null,{property:data}); },
-			handleError = function(error){	cb(err,null); };
+	handleSuccess = function(data){ cb(null,{property:data}); },
+	handleError = function(error){	cb(err,null); };
 
 	findProperty(id).then(handleSuccess,handleError);
 });
 
 seneca.add({controller:'property',action:'list'},function(args,cb){
 	var page = args.page || 1,
-			query = args.query || {},
-			limit = args.limit || 20,
-			handleSuccess = function(data){ cb(null,{properties:data}); },
-			handleError = function(error){	cb(err,null); };
+	query = args.query || {},
+	limit = args.limit || 20,
+	handleSuccess = function(data){ cb(null,{properties:data}); },
+	handleError = function(error){	cb(err,null); };
 
 	findProperties(query,'',page,limit).then(handleSuccess,handleError);
 });
 
 seneca.add({controller:'property',action:'delete'},function(args,cb){
 	var id = args.id,
-			handleSuccess = function(data){ cb(null,{property:data}); },
-			handleError = function(error){	cb(err,null); };
+	handleSuccess = function(data){ cb(null,{property:data}); },
+	handleError = function(error){	cb(err,null); };
 
 	findProperty(id).then(deleteProperty).then(handleSuccess,handleError);
 });
 
 seneca.add({controller:'property',action:'update'},function(args,cb){
 	var data = args.data,
-			id = args.id,
-			handleSuccess = function(data){ cb(null,{property:data}); },
-			handleError = function(error){	cb(err,null); },
-			updateProperty = function(property){ return _.extend(property,data); };
+	id = args.id,
+	handleSuccess = function(data){ cb(null,{property:data}); },
+	handleError = function(error){	cb(err,null); },
+	updateProperty = function(property){ return _.extend(property,data); };
 
 	findProperty(id).then(updateProperty).then(saveProperty).then(handleSuccess,handleError);
 });

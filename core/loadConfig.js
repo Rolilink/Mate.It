@@ -1,5 +1,5 @@
 var config = require('../conf'),
-		path = require("path");
+path = require("path");
 
 function getConnectionUrl(){
 	return "mongodb://" + config.get("db:host") + "/" + config.get("db:db");

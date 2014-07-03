@@ -1,7 +1,6 @@
 //Routes for Property
 //req.body holds parameters that are sent up from the client as part of a post request.
 app.post('/api/properties',function(req,res,next){
-	console.log("ruta correcta");
 	seneca.act({controller:'property',action:'create',data:req.body},function(err,result){
 		if(err){
 			return res.status(500).json({err:err});
@@ -32,7 +31,6 @@ app.get('/api/properties/:id',function(req,res,next){
 
 //returns list of properties 
 app.get('/api/properties',function(req,res,next){
-
 	seneca.act({controller:'property',action:'list',query:{},page:req.param('page'),limit:req.param('limit')},function(err,result){
 		if(err){
 			return res.status(500).json({err:err});

@@ -15,7 +15,6 @@ seneca.add({controller:'user',action:'create'},function(args,cb){
 	User.count(function(err,count){
 		var data = _.omit(args.data,['role','emailKey','active','aId','profilePicture']),
 				createdUser = new User(data);
-		console.log('seneca');
 		if(args.file){
 			createdUser.setProfilePicture(args.file,function(err,path){
 				createdUser.save(function(err){
@@ -31,7 +30,6 @@ seneca.add({controller:'user',action:'create'},function(args,cb){
 		console.log("por aqui paso");
 
 		createdUser.save(function(err){
-			console.log('saved');
 			if(err){
 				//pass error to be handled for error handler			
 				seneca.act({model:'user',action:'error',when:'created',data:data,error:err},cb);
@@ -59,7 +57,6 @@ seneca.add({controller:'user',action:'list'},function(args,cb){
 	User.findPaginated(query,'-password -emailKey -aId',page,limit).lean().exec(function(err,users){
 		if(err){
 			//pass error to be handled for error handler			
-			console.log("listed");
 			seneca.act({model:'user',action:'error',when:'listing',query:query,error:err},cb);
 			return;
 		}

@@ -1,9 +1,9 @@
 var bcrypt = require('bcrypt'),
-    SALT_WORK_FACTOR = 10,
-    crypto = require('crypto'),
-    validate = require('mongoose-validator').validate
-    troop = require('mongoose-troop'),
-    path = require('path');
+SALT_WORK_FACTOR = 10,
+crypto = require('crypto'),
+validate = require('mongoose-validator').validate
+troop = require('mongoose-troop'),
+path = require('path');
 
 var Schema = new mongoose.Schema({
 	name: {type:String,required:true,validate:[validate('len',1,50),validate('regex',/^[A-Za-z ]+$/)]},
@@ -34,7 +34,6 @@ Schema.pre('save',function(next,done){
     };
 
 	bcrypt.genSalt(SALT_WORK_FACTOR,function(err,salt){
-    console.log(salt);
     if(err)
       next(err);
     else{
@@ -54,7 +53,6 @@ Schema.pre('save',function(next,done){
 // Save emailKey for validation
 Schema.pre('save',function(next,done){
   var self = this;
-  console.log("generating emailKey");
   if (!self.isModified('email') || !self.isModified('username')){
       next();
       return done();

@@ -1,5 +1,5 @@
-var autoIncrement = require('mongoose-auto-increment');
-		global.mongoose = require('mongoose');
+var autoIncrement = require('mongoose-auto-increment'),
+global.mongoose = require('mongoose');
 
 
 module.exports = function loadModels(cb){
