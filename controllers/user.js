@@ -4,128 +4,104 @@
  */
 
 
-/*
- * Login Action: Creates User
- * controller: user
- * action: create
- */
-
- //TODO: Recreate as promise based chain
-seneca.add({controller:'user',action:'create'},function(args,cb){
-	User.count(function(err,count){
-		var data = _.omit(args.data,['role','emailKey','active','aId','profilePicture']),
-				createdUser = new User(data);
-		if(args.file){
-			createdUser.setProfilePicture(args.file,function(err,path){
-				createdUser.save(function(err){
-					if(err)
-						return cb(err);
-
-					cb(null,{user:createdUser});
-				});
-			});
-			return;
-		}
-
-		console.log("por aqui paso");
-
-		createdUser.save(function(err){
-			if(err){
-				//pass error to be handled for error handler			
-				seneca.act({model:'user',action:'error',when:'created',data:data,error:err},cb);
-				return;
-			}
-
-			cb(null,{user:createdUser});
-		});
+// Save User Function Wrapped in a Promise
+var saveUser = function(user){
+	var deferred = q.defer();
+	user.save(function(err){
+		if(err)
+			return deferred.reject(err);
+		return deferred.resolve(user);
 	});
+	return deferred.promise;
+}
+
+// List Paginated Users Function Wrapped in a Promise
+var findUsers = function(query,attr,page,limit){
+	var deferred = q.defer();
+	console.log(page);
+	console.log(limit);
+	User.findPaginated(query,attr,page,limit).lean().exec(function(err,users){
+		if(err)
+			return deferred.reject(err);
+		return deferred.resolve(users);
+	});
+	return deferred.promise;
+}
+
+// Find User Function Wrapped in a Promise
+var findUser = function(id,attr){
+	var deferred = q.defer();
+	User.findById(id,attr).exec(function(err,user){
+		if(err)
+			return deferred.reject(err);
+		return deferred.resolve(user);
+	});
+	return deferred.promise;
+}
+
+// Delete User Function Wrapped in a Promise
+var deleteUser = function(user){
+	var deferred = q.defer();
+	user.remove(function(err,user){
+		if(err)
+			return deferred.reject(err);
+		return deferred.resolve(user);
+	});
+	return deferred.promise
+}
+// Seneca MicroServices
+
+//works
+seneca.add({controller:'user',action:'create'},function(args,cb){
+	var data = _.omit(args.data,['role','emailKey','active','aId','profilePicture']),
+	user = new User(data),
+	profilePicture = args.file,
+	handleSuccess = function(data){ cb(null,{user:data}); },
+	handleError = function(err){ cb(err,null); };
+
+	saveUser(user).then(handleSuccess,handleError);
 });
 
-/* 
-	* List User Controller
-	* List Users in the system by providing some data that they contains
-	* Params:
-	*	query.data [JSON] Object containg the data to query.
-	* query.page [Integer] Number of page 
-*/
-
+// check limit
 seneca.add({controller:'user',action:'list'},function(args,cb){
 	var page = args.page || 0,
-			query = args.query || {},
-			limit = args.limit || 10;
+	query = args.query || {},
+	limit = args.limit || 10,
+	handleSuccess = function(data){ cb(null,{users:data}); },
+	handleError = function(err){ cb(err,null); };
 
-	User.findPaginated(query,'-password -emailKey -aId',page,limit).lean().exec(function(err,users){
-		if(err){
-			//pass error to be handled for error handler			
-			seneca.act({model:'user',action:'error',when:'listing',query:query,error:err},cb);
-			return;
-		}
-
-		cb(null,{users:users});
-	});
+	findUsers(query,'-password -emailKey -aId',page,limit).then(handleSuccess,handleError);
 });
 
+//works
 seneca.add({controller:'user',action:'get'},function(args,cb){
+	var id = args.id,
+	handleSuccess = function(data){ cb(null,{user:data}); },
+	handleError = function(err){ cb(err,null); };
 	
-	User.findById(args.id,'-password -emailKey -aId').lean().exec(function(err,user){
-		if(err){
-			seneca.act({model:'user',action:'error',when:'listing',query:query,error:err},cb);
-			return;
-		}
-
-		cb(null,{user:user});
-	});
+	findUser(id,'-password -emailKey -aId').then(handleSuccess,handleError);
 });
 
+//works
 seneca.add({controller:'user',action:'delete'},function(args,cb){
-	var id = args.id;
-	User.findById(id).exec(function(err,user){
-		if(err){
-			//pass error to be handled for error handler			
-			seneca.act({model:'user',action:'error',when:'deleting',id:id,error:err},cb);
-			return;
-		}
-		user.remove(function(err,product){
-			if(err){
-				//pass error to be handled for error handler			
-				seneca.act({model:'user',action:'error',when:'deleting',id:id,error:err},cb);
-				return;
-			}
-			cb(null,{user:user});
-		});
-	});
-});
+	var id = args.id,
+	handleSuccess = function(data){ cb(null,{user:data}); },
+	handleError = function(err){	cb(err,null); };
 
+	findUser(id).then(deleteUser).then(handleSuccess,handleError);
+});
+//works
 seneca.add({controller:'user',action:'update'},function(args,cb){
 	var data = _.omit(args.data,['role','emailKey','active','aId','profilePicture']),
-			id = args.id;
-	User.findById(id,'-password -emailKey',function(err,user){
-		if(err){
-			//pass error to be handled for error handler			
-			seneca.act({model:'user',action:'error',when:'updating',id:id,error:err},cb);
-			return;
-		}
-		var user = _.extend(user,data);
+	id = args.id,
+	profilePicture = args.file,
+	handleSuccess = function(data){ cb(null,{user:data}); },
+	handleError = function(err){	cb(err,null); },
+	updateUser = function(user){ return _.extend(user,data); };
 
-		if(args.file){
-			user.setProfilePicture(args.file,function(err,path){
-				user.save(function(err){
-					if(err)
-						return cb(err);
-
-					cb(null,{user:user});
-				});
-			});
-			return;
-		};
-			
-		user.save(function(err){
-			if(err){
-				//pass error to be handled for error handler			
-				seneca.act({model:'user',action:'error',when:'updating',id:id,error:err},cb);
-				return;
-			}
-			cb(null,{user:user});
-		});
-	});
+	return findUser(id,'-password -emailKey -aId')
+	.then(updateUser)
+	.then(saveUser)
+	.then(handleSuccess,handleError);
 });
+

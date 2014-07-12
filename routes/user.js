@@ -28,7 +28,7 @@ app.get('/api/users',function(req,res,next){
 
 app.post('/api/users/list',function(req,res,next){
 	var page = req.param('page') || 1;
-	seneca.act({controller:'user',action:'list',query:req.param('query'),page:page},function(err,result){
+	seneca.act({controller:'user',action:'list',query:req.param('query'),page:page,limit:req.param('limit')},function(err,result){
 		if(err){
 			return res.status(500).json({err:err});
 		}
@@ -54,7 +54,7 @@ app.get('/api/users/:id',function(req,res,next){
 		
 	});
 });
-
+//works
 app.del('/api/users/:id',function(req,res,next){
 	seneca.act({controller:'user',action:'delete',id:req.param('id')},function(err,result){
 		if(err){
@@ -70,7 +70,7 @@ app.post('/api/users/:id',function(req,res,next){
 	if(req.files)
 		file = req.files.profilepic;
 	
-	seneca.act({controller:'user',action:'update',data:req.body,id:req.param('id'),file:file},function(err,result){
+	seneca.act({controller:'user',action:'update',data:req.param('user'),id:req.param('id'),file:file},function(err,result){
 		if(err){
 			return res.status(500).json({err:err});
 		}

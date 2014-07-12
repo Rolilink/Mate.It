@@ -6,6 +6,7 @@ troop = require('mongoose-troop'),
 path = require('path');
 
 var Schema = new mongoose.Schema({
+  /*
 	name: {type:String,required:true,validate:[validate('len',1,50),validate('regex',/^[A-Za-z ]+$/)]},
 	password: {type:String,required:true,validate:[validate('len',6,20)]},
 	username: {type:String,required:true,unique:true,index:true,validate:[validate('len',6,20),validate('regex',/^[a-z A-Z][a-zA-Z0-9_\-]+[a-zA-Z0-9]+$/)]},
@@ -17,7 +18,8 @@ var Schema = new mongoose.Schema({
   createdAt:{type:Date,default:Date.now()},
   role: {type:String,default:"user"},
   profilePicture: {type:String},
-  aId: {type: Number, unique:true}
+  aId: {type: Number, unique:true} */
+  name:{type:String}
 });
 
 //Encrypt password in the database
@@ -69,17 +71,20 @@ Schema.methods.compareHash = function(rpassword){
 	return bcrypt.compareSync(rpassword,this.password);
 };
 
-Schema.methods.setProfilePicture = function(file,cb){
-  var self = this;
+Schema.methods.setProfilePicture = function(file){
+  var self = this,
+  deferred = q.defer();
 
   if( ! /image/.test(file.headers['content-type']) ){
-    return cb("File is not a Image");
+    return deferred.reject("file is not an image.");
   }
 
   seneca.act({controller:'files',action:'upload',file:file,fileName: self.username + path.extname(file.name), destFolder:"profile" },function(err,result){ 
     self.profilePicture = path.relative(app.get("publicdir"),result.path);
-    cb(null,self.profilePicture);
+    deferred.resolve(self);
   });
+
+  return deferred.promise;
 };
 
 

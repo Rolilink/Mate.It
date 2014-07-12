@@ -22,6 +22,7 @@ var Schema = new mongoose.Schema({/*
 	headLine:{type:String,required:true,validate:[validate('len',10,60)]},
 	description:{type:String,required:true,validate:[validate('len',10,500)]}, //ok
 	title:{type :String,required:true} // ok */
+	name:{type:String}
 });
 
 

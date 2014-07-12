@@ -1,4 +1,4 @@
-var autoIncrement = require('mongoose-auto-increment'),
+var autoIncrement = require('mongoose-auto-increment');
 global.mongoose = require('mongoose');
 
 
