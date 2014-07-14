@@ -17,8 +17,8 @@ var Schema = new mongoose.Schema({
 	active: {type:Boolean,default:false},
   createdAt:{type:Date,default:Date.now()},
   role: {type:String,default:"user"},
-  profilePicture: {type:String},
   aId: {type: Number, unique:true} */
+  profilePicture: {type:String},
   name:{type:String}
 });
 
@@ -26,7 +26,6 @@ var Schema = new mongoose.Schema({
 Schema.plugin(troop.timestamp);
 var paginate = require('./plugins/paginate');
 Schema.plugin(paginate);
-
 
 Schema.pre('save',function(next,done){
 	var self = this;
@@ -73,14 +72,18 @@ Schema.methods.compareHash = function(rpassword){
 
 Schema.methods.setProfilePicture = function(file){
   var self = this,
-  deferred = q.defer();
-
+  deferred = q.defer(),
+  fileName = self.username + path.extname(file.originalFilename),
+  uploadPath = appRoot + "/public/uploads/profile/" + fileName,
+  readPath = file.path;
   if( ! /image/.test(file.headers['content-type']) ){
-    return deferred.reject("file is not an image.");
+    deferred.reject("file is not an image.");
+    return deferred.promise;
   }
 
-  seneca.act({controller:'files',action:'upload',file:file,fileName: self.username + path.extname(file.name), destFolder:"profile" },function(err,result){ 
-    self.profilePicture = path.relative(app.get("publicdir"),result.path);
+  seneca.act({controller:'files',action:'upload', readPath: readPath, writePath: uploadPath },function(err,result){ 
+    var filePath = path.relative(app.get("publicdir"),result.filePath);
+    self.profilePicture = filePath;
     deferred.resolve(self);
   });
 

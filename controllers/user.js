@@ -49,6 +49,7 @@ var deleteUser = function(user){
 	});
 	return deferred.promise
 }
+
 // Seneca MicroServices
 
 //works
@@ -90,6 +91,7 @@ seneca.add({controller:'user',action:'delete'},function(args,cb){
 
 	findUser(id).then(deleteUser).then(handleSuccess,handleError);
 });
+
 //works
 seneca.add({controller:'user',action:'update'},function(args,cb){
 	var data = _.omit(args.data,['role','emailKey','active','aId','profilePicture']),
@@ -103,5 +105,14 @@ seneca.add({controller:'user',action:'update'},function(args,cb){
 	.then(updateUser)
 	.then(saveUser)
 	.then(handleSuccess,handleError);
+});
+
+seneca.add({controller:'user',action:'editProfilePicture'},function(args,cb){
+	var id = args.id,
+	picture = args.picture,
+	setPicture = function(user){ return user.setProfilePicture(picture); },
+	handleSuccess = function(data){ cb(null,{picture:data}); },
+	handleError = function(err){	cb(err,null); };
+	findUser(id,'-password -emailKey -aId').then(setPicture).then(saveUser).then(handleSuccess,handleError);
 });
 
