@@ -1,4 +1,5 @@
 conf/production.json
+public/uploads/properties/*
 public/uploads/files/*
 public/uploads/profile/*
 .DS_STORE

@@ -6,20 +6,17 @@ troop = require('mongoose-troop'),
 path = require('path');
 
 var Schema = new mongoose.Schema({
-  /*
-	name: {type:String,required:true,validate:[validate('len',1,50),validate('regex',/^[A-Za-z ]+$/)]},
-	password: {type:String,required:true,validate:[validate('len',6,20)]},
-	username: {type:String,required:true,unique:true,index:true,validate:[validate('len',6,20),validate('regex',/^[a-z A-Z][a-zA-Z0-9_\-]+[a-zA-Z0-9]+$/)]},
-	email: {type:String,required:true,unique:true,index:true,validate:[validate('isEmail')]},
+	name: {type:String,validate:[validate('len',1,50),validate('regex',/^[A-Za-z ]+$/)]},
+	password: {type:String,validate:[validate('len',6,20)]},
+	username: {type:String,validate:[validate('len',6,20),validate('regex',/^[a-z A-Z][a-zA-Z0-9_\-]+[a-zA-Z0-9]+$/)]},
+	email: {type:String,validate:[validate('isEmail')]},
 	country: String,
 	birthdate: Date,
 	emailKey: String,
 	active: {type:Boolean,default:false},
   createdAt:{type:Date,default:Date.now()},
   role: {type:String,default:"user"},
-  aId: {type: Number, unique:true} */
-  profilePicture: {type:String},
-  name:{type:String}
+  profilePicture: {type:String}
 });
 
 //Encrypt password in the database
@@ -82,6 +79,9 @@ Schema.methods.setProfilePicture = function(file){
   }
 
   seneca.act({controller:'files',action:'upload', readPath: readPath, writePath: uploadPath },function(err,result){ 
+    if(err)
+      deferred.reject(err);
+
     var filePath = path.relative(app.get("publicdir"),result.filePath);
     self.profilePicture = filePath;
     deferred.resolve(self);

@@ -33,6 +33,16 @@ var writeFile = function(pathName,data){
 	return deferred.promise;
 };
 
+var removeFile = function(filePath){
+	var deferred = q.defer();
+	fs.unlink(filePath,function(err){
+		if(err)
+			return deferred.reject(err);
+		console.log('file removed:' + filePath);
+		return deferred.resolve(filePath);
+	});
+	return deferred.promise;
+}
 
 seneca.add({controller:'files',action:'upload'},function(args,cb){
 	var readPath = args.readPath,
@@ -40,4 +50,12 @@ seneca.add({controller:'files',action:'upload'},function(args,cb){
 	handleSuccess = function(data){ cb(null,{filePath:data}); },
 	handleError = function(err){ cb(null,err); };
 	readFile(readPath).then(function(data){ return writeFile(writePath,data); }).then(handleSuccess,handleError);	
+});
+
+seneca.add({controller:'files',action:'delete'},function(args,cb){
+	var filePath = args.filePath,
+	handleSuccess = function(data){ cb(null,{filePath:data}); },
+	handleError = function(err){ cb(null,err); };
+
+	removeFile(filePath).then(handleSuccess,handleError);
 });

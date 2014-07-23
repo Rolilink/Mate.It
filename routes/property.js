@@ -67,3 +67,32 @@ app.post('/api/properties/:id',function(req,res,next){
 		res.status(200).json({message:'updated'});
 	});
 });
+
+app.post('/api/properties/:id/photos',function(req,res,next){
+	var picture = req.files.picture,
+	id = req.param('id');
+
+	seneca.act({controller:"property", action:"addPicture",id:id, picture:picture},function(err,result){
+		if(err){
+			return res.status(500).json({err:err});
+		}
+		res.status(200).json({picture:result.picture});
+	});
+});
+
+app.get('/api/properties/:id/photos',function(req,res,next){
+	var id = req.param('id');
+
+	seneca.act({controller:'property',action:'listPictures',id:id},function(err,result){
+		if(err){
+			return res.status(500).json({err:err});
+		}
+		res.status(200).json({pictures:result.pictures});
+	});
+});
+
+app.get('/test',function(req,res,next){
+	res.sendfile('post.html',function(){
+
+	});
+});

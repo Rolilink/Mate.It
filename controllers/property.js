@@ -96,3 +96,24 @@ seneca.add({controller:'property',action:'update'},function(args,cb){
 
 	findProperty(id).then(updateProperty).then(saveProperty).then(handleSuccess,handleError);
 });
+
+seneca.add({controller:'property',action:'addPicture'},function(args,cb){
+	var id = args.id,
+	picture = args.picture,
+	handleSuccess = function(data){ cb(null,{picture: data.photos.$pop()}); },
+	handleError = function(err){	cb(err,null); },
+	addPicture = function(property){ return property.addPicture(picture); };
+
+	findProperty(id).then(addPicture).then(saveProperty).then(handleSuccess,handleError);
+});
+
+seneca.add({controller:'property',action:'listPictures'},function(args,cb){
+	var id = args.id,
+	handleSuccess = function(data){ cb(null,{pictures: data}); },
+	handleError = function(err){	cb(err,null); },
+	listPictures = function(property){ return property.listPictures(); };
+
+	findProperty(id).then(listPictures).then(handleSuccess,handleError);
+});
+
+
