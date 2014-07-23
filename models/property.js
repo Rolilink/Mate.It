@@ -50,12 +50,19 @@ Schema.methods.addPicture = function(file){
 	return deferred.promise;
 };
 
-Schema.methods.getPicture = function(){
+Schema.methods.removePicture = function(id){
+	var deferred = q.defer(),
+	photo = this.photos.id(id),
+	filePath = appRoot + "/public/" + photo.url,
+	self = this;
 
-}
-
-Schema.methods.removePicture = function(){
-
+	seneca.act({controller:'files',action:'delete',filePath:filePath},function(err,result){
+		if(err)	
+			deferred.reject(err);
+		self.photos.remove(id);
+		deferred.resolve(self);
+	});
+	return deferred.promise;
 }
 
 Schema.methods.listPictures = function(){

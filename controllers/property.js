@@ -116,4 +116,13 @@ seneca.add({controller:'property',action:'listPictures'},function(args,cb){
 	findProperty(id).then(listPictures).then(handleSuccess,handleError);
 });
 
+seneca.add({controller:'property',action:'deletePicture'},function(args,cb){
+	var id = args.id,
+	pictureId = args.pictureId,
+	handleSuccess = function(data){ cb(null,{pictures: data.photos}); },
+	handleError = function(err){	cb(err,null); },
+	deletePicture = function(property){ return property.removePicture(pictureId); };
+
+	findProperty(id).then(deletePicture).then(saveProperty).then(handleSuccess,handleError);
+});
 

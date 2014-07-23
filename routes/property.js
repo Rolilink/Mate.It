@@ -91,6 +91,18 @@ app.get('/api/properties/:id/photos',function(req,res,next){
 	});
 });
 
+app.del('/api/properties/:id/photos/:photoid',function(req,res,next){
+	var id = req.param('id'),
+	pictureId = req.param('photoid');
+
+	seneca.act({controller:'property',action:'deletePicture',id:id, pictureId:pictureId},function(err,result){
+		if(err){
+			return res.status(500).json({err:err});
+		}
+		res.status(200).json({deleted:result.deleted});
+	});
+});
+
 app.get('/test',function(req,res,next){
 	res.sendfile('post.html',function(){
 
