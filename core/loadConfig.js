@@ -1,4 +1,6 @@
 var config = require('../conf'),
+RedisStore = require('connect-redis')(express),
+redis = require('redis').createClient(),
 path = require("path");
 
 function getConnectionUrl(){
@@ -16,7 +18,10 @@ function setConfig(){
 	app.use(express.methodOverride());
 	app.use(express.cookieParser());
 	app.use(express.bodyParser());
-	app.use(express.session({ secret: 'cats wants to see the world burn' }));
+	app.use(express.session({
+		secret: 'cats wants to see the world burn',
+		store: new RedisStore({host:'localhost',port: 6497, client:redis})
+	}));
 	app.use(passport.initialize());
   app.use(passport.session());
 	app.use(app.router);
