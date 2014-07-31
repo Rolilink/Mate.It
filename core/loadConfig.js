@@ -16,6 +16,9 @@ function setConfig(){
 	app.use(express.methodOverride());
 	app.use(express.cookieParser());
 	app.use(express.bodyParser());
+	app.use(express.session({ secret: 'cats wants to see the world burn' }));
+	app.use(passport.initialize());
+  app.use(passport.session());
 	app.use(app.router);
 	app.use(express.static(path.join(appRoot, 'public')),{maxAge:1});
 

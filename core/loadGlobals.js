@@ -4,3 +4,6 @@ global.app = express();
 global._ = require('underscore');
 global.async = require('async');
 global.q = require('q');
+global.passport = require('passport');
+global.LocalStrategy = require('passport-local').Strategy;
+

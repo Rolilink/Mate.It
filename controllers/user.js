@@ -18,9 +18,7 @@ var saveUser = function(user){
 // List Paginated Users Function Wrapped in a Promise
 var findUsers = function(query,attr,page,limit){
 	var deferred = q.defer();
-	console.log(page);
-	console.log(limit);
-	User.findPaginated(query,attr,page,limit).lean().exec(function(err,users){
+	User.findPaginated(query,attr,page,limit).exec(function(err,users){
 		if(err)
 			return deferred.reject(err);
 		return deferred.resolve(users);
@@ -71,7 +69,7 @@ seneca.add({controller:'user',action:'list'},function(args,cb){
 	handleSuccess = function(data){ cb(null,{users:data}); },
 	handleError = function(err){ cb(err,null); };
 
-	findUsers(query,'-password -emailKey -aId',page,limit).then(handleSuccess,handleError);
+	findUsers(query,args.blacklist,page,limit).then(handleSuccess,handleError);
 });
 
 //works
@@ -80,7 +78,7 @@ seneca.add({controller:'user',action:'get'},function(args,cb){
 	handleSuccess = function(data){ cb(null,{user:data}); },
 	handleError = function(err){ cb(err,null); };
 	
-	findUser(id,'-password -emailKey -aId').then(handleSuccess,handleError);
+	findUser(id,args.blacklist).then(handleSuccess,handleError);
 });
 
 //works
@@ -101,7 +99,7 @@ seneca.add({controller:'user',action:'update'},function(args,cb){
 	handleError = function(err){	cb(err,null); },
 	updateUser = function(user){ return _.extend(user,data); };
 
-	return findUser(id,'-password -emailKey -aId')
+	return findUser(id,args.blacklist)
 	.then(updateUser)
 	.then(saveUser)
 	.then(handleSuccess,handleError);
@@ -113,7 +111,7 @@ seneca.add({controller:'user',action:'editProfilePicture'},function(args,cb){
 	setPicture = function(user){ return user.setProfilePicture(picture); },
 	handleSuccess = function(data){ cb(null,{picture:data}); },
 	handleError = function(err){	cb(err,null); };
-	findUser(id,'-password -emailKey -aId').then(setPicture).then(saveUser).then(handleSuccess,handleError);
+	findUser(id,args.blacklist).then(setPicture).then(saveUser).then(handleSuccess,handleError);
 });
 
 seneca.add({controller:'user', action:'addProperty'}, function(args,cb){
@@ -124,7 +122,7 @@ seneca.add({controller:'user', action:'addProperty'}, function(args,cb){
 	handleSuccess = function(data){ cb(null,{property:data}); },
 	handleError = function(err){	cb(err,null); };
 
-	findUser(id,'-password -emailKey -aId').then(addProperty).then(saveUser).then(getProperty).then(handleSuccess,handleError);
+	findUser(id,args.blacklist).then(addProperty).then(saveUser).then(getProperty).then(handleSuccess,handleError);
 });
 
 seneca.add({controller:'user', action:'removeProperty'}, function(args,cb){
@@ -134,6 +132,13 @@ seneca.add({controller:'user', action:'removeProperty'}, function(args,cb){
 	handleSuccess = function(data){ cb(null,{property:data}); },
 	handleError = function(err){	cb(err,null); };
 
-	findUser(id,'-password -emailKey -aId').then(removeProperty).then(saveUser).then(getProperty).then(handleSuccess,handleError);
+	findUser(id,args.blacklist).then(removeProperty).then(saveUser).then(getProperty).then(handleSuccess,handleError);
 });
 
+seneca.add({controller:'user',action:'deserializeUser'},function(args,cb){
+	var id= args.id,
+	handleSuccess = function(data){ cb(null,{user:data}); },
+	handleError = function(err){	cb(err,null); };
+
+	findUser(id,'-emailKey -aId').then(handleSuccess,handleError);
+});

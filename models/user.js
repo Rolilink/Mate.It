@@ -8,9 +8,9 @@ path = require('path');
 
 var Schema = new mongoose.Schema({
 	name: {type:String,validate:[validate('len',1,50),validate('regex',/^[A-Za-z ]+$/)]},
-	password: {type:String,validate:[validate('len',6,20)]},
-	username: {type:String,validate:[validate('len',6,20),validate('regex',/^[a-z A-Z][a-zA-Z0-9_\-]+[a-zA-Z0-9]+$/)]},
-	email: {type:String,validate:[validate('isEmail')]},
+	password: {type:String,required:true,validate:[validate('len',6,20)]},
+	username: {type:String,unique:true,required:true,validate:[validate('len',6,20),validate('regex',/^[a-z A-Z][a-zA-Z0-9_\-]+[a-zA-Z0-9]+$/)]},
+	email: {type:String,unique:true,required:true,validate:[validate('isEmail')]},
 	country: String,
 	birthdate: Date,
 	emailKey: String,
