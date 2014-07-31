@@ -5,6 +5,7 @@ validate = require('mongoose-validator').validate
 troop = require('mongoose-troop'),
 path = require('path');
 
+
 var Schema = new mongoose.Schema({
 	name: {type:String,validate:[validate('len',1,50),validate('regex',/^[A-Za-z ]+$/)]},
 	password: {type:String,validate:[validate('len',6,20)]},
@@ -16,7 +17,11 @@ var Schema = new mongoose.Schema({
 	active: {type:Boolean,default:false},
   createdAt:{type:Date,default:Date.now()},
   role: {type:String,default:"user"},
-  profilePicture: {type:String}
+  profilePicture: {type:String},
+  property: {
+    isOwner: {type:Boolean},
+    data: {type: mongoose.Schema.Types.ObjectId,ref:'Property'}
+  }
 });
 
 //Encrypt password in the database
@@ -90,8 +95,38 @@ Schema.methods.setProfilePicture = function(file){
   return deferred.promise;
 };
 
+Schema.methods.addProperty = function(propertyId){
+  this.property = {
+    isOwner: true,
+    data: propertyId
+  };
+};
 
+Schema.methods.removeProperty = function(){
+  this.property = null;
+};
 
+Schema.methods.getProperty = function(){
+  var deferred = q.defer(),
+  self = this;
+  Property.populate(this.property,{path:'data'},function(err,property){
+    if(err)
+      return deferred.reject(err);
+    return deferred.resolve(self.property);
+  });
 
+  return deferred.promise;
+}
+
+Schema.methods.joinProperty = function(propertyId){
+  this.property = {
+    isOwner:false,
+    data: propertyId
+  };
+};
+
+Schema.methods.leaveProperty = function(){
+  this.property = null;
+};
 
 module.exports = Schema;

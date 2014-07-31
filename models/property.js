@@ -4,9 +4,7 @@ fs = require('fs'),
 path  = require('path'),
 uuid = require('node-uuid');
 
-//TODO: Ownership relationship - Owner Field
 //TODO: Habitant relationship - Habitants Field
-//TODO: PropertyPhoto relationship - Photos Field
 
 
 var Schema = new mongoose.Schema({
@@ -23,7 +21,10 @@ var Schema = new mongoose.Schema({
 	headLine:{type:String,validate:[validate('len',10,60)]},
 	description:{type:String,validate:[validate('len',10,500)]}, //ok 
 	title:{type:String}, // ok
-	photos:[{url:String}]
+	photos:[{url:String}],
+	owner:{type:mongoose.Schema.Types.ObjectId, ref:'User'},
+	habitants:[{type:mongoose.Schema.Types.ObjectId, ref:'User'}],
+	comments:[{type:mongoose.Schema.Types.ObjectId, ref:'Comment'}]
 });	
 
 Schema.methods.addPicture = function(file){

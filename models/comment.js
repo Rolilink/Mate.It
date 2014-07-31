@@ -1,7 +1,7 @@
 var Schema = new mongoose.Schema({
 	content:String,
-  creator:String,
-  property:String
+  creator:{type:mongoose.Schema.Types.ObjectId, ref:'User'},
+  property:{type:mongoose.Schema.Types.ObjectId, ref:'Property'}
 });
 
 var paginate = require('./plugins/paginate');

@@ -54,7 +54,7 @@ var deleteUser = function(user){
 
 //works
 seneca.add({controller:'user',action:'create'},function(args,cb){
-	var data = _.omit(args.data,['role','emailKey','active','aId','profilePicture']),
+	var data = _.omit(args.data,['role','emailKey','active','aId','profilePicture','property']),
 	user = new User(data),
 	profilePicture = args.file,
 	handleSuccess = function(data){ cb(null,{user:data}); },
@@ -94,7 +94,7 @@ seneca.add({controller:'user',action:'delete'},function(args,cb){
 
 //works
 seneca.add({controller:'user',action:'update'},function(args,cb){
-	var data = _.omit(args.data,['role','emailKey','active','aId','profilePicture']),
+	var data = _.omit(args.data,['role','emailKey','active','aId','profilePicture','property']),
 	id = args.id,
 	profilePicture = args.file,
 	handleSuccess = function(data){ cb(null,{user:data}); },
@@ -114,5 +114,26 @@ seneca.add({controller:'user',action:'editProfilePicture'},function(args,cb){
 	handleSuccess = function(data){ cb(null,{picture:data}); },
 	handleError = function(err){	cb(err,null); };
 	findUser(id,'-password -emailKey -aId').then(setPicture).then(saveUser).then(handleSuccess,handleError);
+});
+
+seneca.add({controller:'user', action:'addProperty'}, function(args,cb){
+	var id = args.id,
+	propid = args.propid,
+	addProperty = function(user){ user.addProperty(propid); return user; },
+	getProperty = function(user){ return user.getProperty(); },
+	handleSuccess = function(data){ cb(null,{property:data}); },
+	handleError = function(err){	cb(err,null); };
+
+	findUser(id,'-password -emailKey -aId').then(addProperty).then(saveUser).then(getProperty).then(handleSuccess,handleError);
+});
+
+seneca.add({controller:'user', action:'removeProperty'}, function(args,cb){
+	var id = args.id,
+	removeProperty = function(user){ user.removeProperty(); return user; },
+	getProperty = function(user){ return user.getProperty(); },
+	handleSuccess = function(data){ cb(null,{property:data}); },
+	handleError = function(err){	cb(err,null); };
+
+	findUser(id,'-password -emailKey -aId').then(removeProperty).then(saveUser).then(getProperty).then(handleSuccess,handleError);
 });
 

@@ -87,3 +87,22 @@ app.post('/api/users/:id/profilepic',function(req,res){
 		res.status(200).json({picture:result});
 	});
 });
+
+app.post('/api/users/:id/property/:propid',function(req,res){
+	var id = req.param('id'),
+			propid = req.param('propid');
+			seneca.act({controller:"user",action:"addProperty", id:id, propid:propid },function(err,result){
+				if(err)
+					return res.status(500).json({err:err});
+				res.status(200).json({user:result});
+			});
+});
+
+app.del('/api/users/:id/property',function(req,res){
+	var id = req.param('id');
+			seneca.act({controller:"user",action:"removeProperty", id:id},function(err,result){
+				if(err)
+					return res.status(500).json({err:err});
+				res.status(200).json({user:result});
+			});
+});
