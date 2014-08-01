@@ -5,3 +5,4 @@ public/uploads/profile/*
 .DS_STORE
 node_modules
 npm-debug.log
+dump.rdb
