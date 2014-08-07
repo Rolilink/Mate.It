@@ -1,0 +1,20 @@
+doctype html
+html
+	head
+		// Includes Head Base Scripts
+		include ../partials/_head.jade
+		// Block Head for appending styles and another things (seo)
+		block head
+			title MateIt - Plataforma de Alquiler Colaborativo Online
+	body
+		// Header - NavBar
+		include ../partials/_header.jade
+		// Block Content for appending main page content
+		block content
+			div 
+	include ../partials/_scripts.jade
+	// Block Post Libraries for adding page exclusive scripts and libraries
+	block postlibraries
+		script
+	// Footer
+	include ../partials/_footer.jade

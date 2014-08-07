@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "express": "3.4.8",
-    "jade": "*",
+    "jade": "^1.5.0",
     "seneca": "~0.5.15",
     "passport": "^0.2.0",
     "passport-local": "^0.1.6",

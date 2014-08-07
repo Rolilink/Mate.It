@@ -105,6 +105,8 @@ function setConfig(){
 	app.set("publicdir", path.join(appRoot, 'public'));
 	app.set("mongoUrl", getConnectionUrl());
 	app.set('port', process.env.PORT || config.get("server:port"));
+	app.set('views',path.join(appRoot, 'views'));
+	app.set('view engine', 'jade');
 	app.use(express.favicon());
 	app.use(express.logger('dev'));
 	app.use(express.json());
