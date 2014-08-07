@@ -1,6 +1,6 @@
 //Routes for Comments
 
-app.post('/api/comments',function(req,res,next){
+app.post('/api/comments',authorization.is('User'),function(req,res,next){
 	seneca.act({controller:'comment',action:'create',data:req.body},function(err,result){
 		if(err){
 			return res.status(500).json({err:err});
@@ -49,7 +49,7 @@ app.post('/api/comments/list',function(req,res,next){
 });
 
 //deletes comment of id: id brining back the parameter id
-app.del('/api/comments/:id',function(req,res,next){
+app.del('/api/comments/:id',authorization.is('Admin'),function(req,res,next){
 	seneca.act({controller:'comment',action:'delete',id:req.param('id')},function(err,result){
 		if(err){
 			return res.status(500).json({err:err});

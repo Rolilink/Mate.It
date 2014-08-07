@@ -129,4 +129,9 @@ Schema.methods.leaveProperty = function(){
   this.property = null;
 };
 
+Schema.methods.isOwner = function(propertyId){
+  if(this.property)
+    return propertyId == this.property.data && this.property.isOwner; 
+}
+
 module.exports = Schema;

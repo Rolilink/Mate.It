@@ -1,6 +1,6 @@
 //Routes for Property
 //req.body holds parameters that are sent up from the client as part of a post request.
-app.post('/api/properties',function(req,res,next){
+app.post('/api/properties',authorization.is('User'),function(req,res,next){
 	seneca.act({controller:'property',action:'create',data:req.body},function(err,result){
 		if(err){
 			return res.status(500).json({err:err});
@@ -39,6 +39,7 @@ app.get('/api/properties',function(req,res,next){
 	});
 });
 
+// returns list of properties based in a query
 app.post('/api/properties/list',function(req,res,next){
 	seneca.act({controller:'property',action:'list',query:req.param('query'),page:req.param('page'),limit:req.param('limit')},function(err,result){
 		if(err){
@@ -49,7 +50,7 @@ app.post('/api/properties/list',function(req,res,next){
 });
 
 //deletes property of id: id brining back the parameter id
-app.del('/api/properties/:id',function(req,res,next){
+app.del('/api/properties/:id',authorization.is('Owner'),function(req,res,next){
 	seneca.act({controller:'property',action:'delete',id:req.param('id')},function(err,result){
 		if(err){
 			return res.status(500).json({err:err});
@@ -59,7 +60,7 @@ app.del('/api/properties/:id',function(req,res,next){
 });
 
 //updates property of id:id bringing back the parameter of id, then sends back the object.
-app.post('/api/properties/:id',function(req,res,next){
+app.post('/api/properties/:id',authorization.is('Owner'),function(req,res,next){
 	seneca.act({controller:'property',action:'update',data:req.param('property'),id:req.param('id')},function(err,result){
 		if(err){
 			return res.status(500).json({err:err});
@@ -68,7 +69,7 @@ app.post('/api/properties/:id',function(req,res,next){
 	});
 });
 
-app.post('/api/properties/:id/photos',function(req,res,next){
+app.post('/api/properties/:id/photos',authorization.is('Owner'),function(req,res,next){
 	var picture = req.files.picture,
 	id = req.param('id');
 
@@ -91,7 +92,7 @@ app.get('/api/properties/:id/photos',function(req,res,next){
 	});
 });
 
-app.del('/api/properties/:id/photos/:photoid',function(req,res,next){
+app.del('/api/properties/:id/photos/:photoid',authorization.is('Owner'),function(req,res,next){
 	var id = req.param('id'),
 	pictureId = req.param('photoid');
 
@@ -103,8 +104,3 @@ app.del('/api/properties/:id/photos/:photoid',function(req,res,next){
 	});
 });
 
-app.get('/test',function(req,res,next){
-	res.sendfile('post.html',function(){
-
-	});
-});

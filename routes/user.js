@@ -27,7 +27,7 @@ app.get('/api/users',function(req,res,next){
 	});
 });
 
-app.post('/api/users/list',function(req,res,next){
+app.post('/api/users/list',authorization.is('Admin'),function(req,res,next){
 	var page = req.param('page') || 1;
 	seneca.act({controller:'user',action:'list',query:req.param('query'),page:page,limit:req.param('limit'),blacklist:'-password -emailKey -aId'},function(err,result){
 		if(err){
@@ -56,7 +56,7 @@ app.get('/api/users/:id',function(req,res,next){
 	});
 });
 //works
-app.del('/api/users/:id',function(req,res,next){
+app.del('/api/users/:id',authorization.is('Self'),function(req,res,next){
 	seneca.act({controller:'user',action:'delete',id:req.param('id'),blacklist:'-password -emailKey -aId'},function(err,result){
 		if(err){
 			return res.status(500).json({err:err});
@@ -65,7 +65,7 @@ app.del('/api/users/:id',function(req,res,next){
 	});
 });
 
-app.post('/api/users/:id',function(req,res,next){
+app.post('/api/users/:id',authorization.is('Self'),function(req,res,next){
 	var file;
 
 	if(req.files)
@@ -79,7 +79,7 @@ app.post('/api/users/:id',function(req,res,next){
 	});
 });
 
-app.post('/api/users/:id/profilepic',function(req,res){
+app.post('/api/users/:id/profilepic',authorization.is('Self'),function(req,res){
 	var id = req.param('id'),
 	picture = req.files.picture;	
 	seneca.act({controller:"user",action:"editProfilePicture",id:id,picture:picture,blacklist:'-password -emailKey -aId'},function(err,result){
@@ -89,7 +89,7 @@ app.post('/api/users/:id/profilepic',function(req,res){
 	});
 });
 
-app.post('/api/users/:id/property/:propid',function(req,res){
+app.post('/api/users/:id/property/:propid',authorization.is('Self'),function(req,res){
 	var id = req.param('id'),
 			propid = req.param('propid');
 			seneca.act({controller:"user",action:"addProperty", id:id, propid:propid,blacklist:'-password -emailKey -aId'},function(err,result){
@@ -99,7 +99,7 @@ app.post('/api/users/:id/property/:propid',function(req,res){
 			});
 });
 
-app.del('/api/users/:id/property',function(req,res){
+app.del('/api/users/:id/property',authorization.is('Self'),function(req,res){
 	var id = req.param('id');
 			seneca.act({controller:"user",action:"removeProperty", id:id,blacklist:'-password -emailKey -aId'},function(err,result){
 				if(err)

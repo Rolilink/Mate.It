@@ -6,4 +6,6 @@ global.async = require('async');
 global.q = require('q');
 global.passport = require('passport');
 global.LocalStrategy = require('passport-local').Strategy;
+global.ConnectRoles = require('connect-roles');
+global.authorization = new ConnectRoles();
 
