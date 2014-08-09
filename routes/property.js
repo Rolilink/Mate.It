@@ -1,13 +1,19 @@
 //Routes for Property
 //req.body holds parameters that are sent up from the client as part of a post request.
 app.post('/api/properties',authorization.is('User'),function(req,res,next){
-	seneca.act({controller:'property',action:'create',data:req.body},function(err,result){
-		if(err){
-			return res.status(500).json({err:err});
-		}
-		res.status(200).json({id:result.property._id});
+	var handleError = function(err){ res.status(500).json({err:err});},
+	handleSuccess = function(result){ res.status(200).json({id:result.property._id}); };
 
-	})
+	if(!req.userCan('Create Property'))
+		return handleError('You already have a property created.');
+
+	// User can create a property
+	seneca.act({controller:'property',action:'create',data:req.body,owner:req.user.id},function(err,result){
+		if(err)
+			return handleError(err);
+		return handleSuccess(result);
+	});
+
 });
  
  //returns the value of parameter 'id' brings back a specific property of id: id
@@ -102,5 +108,9 @@ app.del('/api/properties/:id/photos/:photoid',authorization.is('Owner'),function
 		}
 		res.status(200).json({deleted:result.deleted});
 	});
+});
+
+app.get('/properties/create',authorization.is('User'),function(req,res){
+	res.render('property/new',{user:req.user});
 });
 

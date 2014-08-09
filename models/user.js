@@ -8,7 +8,7 @@ path = require('path');
 
 var Schema = new mongoose.Schema({
 	name: {type:String,validate:[validate('len',1,50),validate('regex',/^[A-Za-z ]+$/)]},
-	password: {type:String,required:true,validate:[validate('len',6,20)]},
+	password: {type:String,required:true,validate:[validate('len',6)]},
 	username: {type:String,unique:true,required:true,validate:[validate('len',6,20),validate('regex',/^[a-z A-Z][a-zA-Z0-9_\-]+[a-zA-Z0-9]+$/)]},
 	email: {type:String,unique:true,required:true,validate:[validate('isEmail')]},
 	country: String,
@@ -132,6 +132,22 @@ Schema.methods.leaveProperty = function(){
 Schema.methods.isOwner = function(propertyId){
   if(this.property)
     return propertyId == this.property.data && this.property.isOwner; 
+}
+
+Schema.methods.haveProperty = function(){
+  if(this.property.data)
+    return true;
+  else 
+    return false;
+};
+
+Schema.methods.ownProperty = function(propertyId){
+  this.property = {
+    isOwner:true,
+    data: propertyId
+  }
+  console.log(this);
+  return this;
 }
 
 module.exports = Schema;

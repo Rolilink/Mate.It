@@ -70,6 +70,11 @@ Schema.methods.listPictures = function(){
 	return this.photos;
 }
 
+Schema.methods.setOwner = function(ownerId){
+	if(!this.owner)
+		this.owner = ownerId
+};
+
 Schema.plugin(troop.timestamp);
 var paginate = require('./plugins/paginate');
 Schema.plugin(paginate);

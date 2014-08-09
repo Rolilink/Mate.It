@@ -30,5 +30,14 @@
     "redis": "^0.11.0",
     "connect-redis": "1.4.7",
     "connect-roles": "^3.0.3"
+  },
+  "devDependencies": {
+    "grunt": "0.x.x",
+    "grunt-autoprefixer": "^1.0.0",
+    "grunt-contrib-clean": "0.5.x",
+    "grunt-contrib-copy": "0.4.x",
+    "grunt-contrib-stylus": "0.8.x",
+    "grunt-contrib-watch": "0.5.x",
+    "ms": "^0.6.2"
   }
 }

@@ -142,3 +142,13 @@ seneca.add({controller:'user',action:'deserializeUser'},function(args,cb){
 
 	findUser(id,'-emailKey -aId').then(handleSuccess,handleError);
 });
+
+seneca.add({entity:'property',status:'created'},function(args,cb){
+	var id = args.by,
+	property = args.property,
+	updateProperty = function(user){ return user.ownProperty(property); },
+	handleSuccess = function(data){ cb(null,{user:data}); },
+	handleError = function(err){	cb(err,null); };
+
+	findUser(id,'-emailKey -aId').then(updateProperty).then(saveUser).then(handleSuccess,handleError);
+});

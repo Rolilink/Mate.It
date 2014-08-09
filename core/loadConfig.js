@@ -62,12 +62,11 @@ function setAuthorization(){
 
 	// is Autenticated
 	authorization.use(function (req){
-		if(req.isAuthenticated()){
-			return true;
-		}else{
+		if(!req.isAuthenticated()){
 			return false;
 		}
 	});
+
 	// is Admin
 	authorization.use(function (req){
 		if(req.user.role === 'admin')
@@ -76,6 +75,7 @@ function setAuthorization(){
 
 	// is User
 	authorization.use('User',function (req){
+		console.log('auth user');
 		if(req.user.role === 'user');
 			return true;
 	});
@@ -92,6 +92,10 @@ function setAuthorization(){
 			return true;
 	});
 
+	// Can Create Property
+	authorization.use('Create Property', function (req){
+		return !req.user.haveProperty();
+	});
 
 };
 
@@ -104,7 +108,7 @@ function setConfig(){
 
 	app.set("publicdir", path.join(appRoot, 'public'));
 	app.set("mongoUrl", getConnectionUrl());
-	app.set('port', process.env.PORT || config.get("server:port"));
+	app.set('port', config.get("server:port"));
 	app.set('views',path.join(appRoot, 'views'));
 	app.set('view engine', 'jade');
 	app.use(express.favicon());

@@ -51,14 +51,28 @@ var deleteProperty = function(property){
 	return deferred.promise
 }
 
+//Update User Property
+var updateUserProperty = function(property){
+	var deferred = q.defer();
+	seneca.act({entity:'property',status:'created',by:property.owner,property:property.id},function(err,result){
+		if(err)
+			return deferred.reject(err);
+		return deferred.resolve(property);
+	});
+	return deferred.promise;
+}
+
 // Seneca Micro Services
 seneca.add({controller:'property',action:'create'},function(args,cb){
 	var data = args.data,
+	ownerId = args.owner,
 	handleSuccess = function(data){ cb(null,{property:data}); },
 	handleError = function(err){	cb(err,null); };
 
 	var createdProperty = new Property(data);
-	saveProperty(createdProperty).then(handleSuccess,handleError);
+	createdProperty.setOwner(ownerId);
+	console.log(createdProperty);
+	saveProperty(createdProperty).then(updateUserProperty).then(handleSuccess,handleError);
 });
 
 seneca.add({controller:'property',action:'get'},function(args,cb){
