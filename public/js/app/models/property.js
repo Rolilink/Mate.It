@@ -28,6 +28,26 @@ define(['backbone','underscore','backbone.validation'],function(Backbone,_){
 				required: true,
 				rangeLength: [10,70]
 			}
+		},
+		urlRoot: '/api/properties',
+		url: function(){
+			console.log(this.urlRoot);
+			if(!this.attributes.sid)
+				return this.urlRoot + '/';
+			else
+				return this.urlRoot + '/' + this.attributes.sid;
+		},
+		amenitiesToArray: function(){
+		  var amenities = [],
+		  self = this;
+		  _.each(this.attributes,function(value,key){
+		  	if( /amenities/.test(key) && value === "on" ){
+		  		amenities.push(/amenities\[(.+)\]/.exec(key)[1]);
+		  		delete self.attributes[key];
+		  	}
+			});
+
+			this.attributes.amenities = amenities;
 		}
 	});
 });

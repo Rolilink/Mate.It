@@ -10,6 +10,7 @@ define(['jquery','backbone','underscore','backbone.validation','jquery.serialize
 		validate: function(e){
 			var data = this.$el.serializeObject();
 			this.model.set(data);
+			this.model.amenitiesToArray();
 			if(this.model.isValid(true)){
 				this.submit();
 			}
@@ -30,7 +31,10 @@ define(['jquery','backbone','underscore','backbone.validation','jquery.serialize
 			$(input).parent().removeClass('has-success').addClass('has-error').append('<div class="alert alert-danger>' + error + '</div>');
 		},
 		submit:function(){
-			this.$el.submit();
+			this.model.save(null,{success:this.onApiResponse});
+		},
+		onApiResponse: function(model,response){
+			alert(response);
 		}
 	});
 });

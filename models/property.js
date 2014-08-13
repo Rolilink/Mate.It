@@ -25,7 +25,8 @@ var Schema = new mongoose.Schema({
 	genderAllowerd:{type:String,enum:['male,female,both']},
 	owner:{type:mongoose.Schema.Types.ObjectId, ref:'User'},
 	habitants:[{type:mongoose.Schema.Types.ObjectId, ref:'User'}],
-	comments:[{type:mongoose.Schema.Types.ObjectId, ref:'Comment'}]
+	comments:[{type:mongoose.Schema.Types.ObjectId, ref:'Comment'}],
+	amenities:[{type:String,enum:['kitchen','internet','tv','wifi','air_conditioning','washer','dryer','cable_tv','pets_allowed','gym','pool','smoking_allowed']}]
 });	
 
 Schema.methods.addPicture = function(file){

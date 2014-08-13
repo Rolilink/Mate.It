@@ -81,3 +81,8 @@
   margin-bottom: 15px;
   width: 100%;
 }
+
+/* line 49 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+#add-property-page form label > span {
+  margin-left: 10px;
+}
