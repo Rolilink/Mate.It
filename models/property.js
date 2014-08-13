@@ -14,7 +14,7 @@ var Schema = new mongoose.Schema({
 	address:{type:String,unique:true,validate:[validate('len',10,70)]}, //ok
 	longitude:{type:Number,min:-180,max:180}, //ok
 	lattitude:{type:Number,min:-90,max:90}, //ok
-	price:{type:Number,min:100},
+	price:{type:Number,min:1},
 	createdAt:{type:Date,default:Date.now()},//ok
 	roomType:{type:String,enum:['private','shared']}, //ok
 	propertyType:{type:String,enum:['apartment','house','other']}, //ok
@@ -22,6 +22,7 @@ var Schema = new mongoose.Schema({
 	description:{type:String,validate:[validate('len',10,500)]}, //ok 
 	title:{type:String}, // ok
 	photos:[{url:String}],
+	genderAllowerd:{type:String,enum:['male,female,both']},
 	owner:{type:mongoose.Schema.Types.ObjectId, ref:'User'},
 	habitants:[{type:mongoose.Schema.Types.ObjectId, ref:'User'}],
 	comments:[{type:mongoose.Schema.Types.ObjectId, ref:'Comment'}]

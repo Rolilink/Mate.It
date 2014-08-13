@@ -11,8 +11,11 @@ block content
 						a(href="/user/dashboard") Panel
 					li.active Propiedades
 					li.active Agregar
-		form(action="/api/properties",method="post")
+		form#property-form(action="/api/properties",method="post")
 			div.row
+				div.col-md-12
+					h4 Datos del anuncio
+					hr.section-divider
 				div.col-md-6
 					div.form-group
 						label(for="ap-title") Titulo del clasificado
@@ -22,6 +25,9 @@ block content
 						label(for="ap-desc") Descripcion
 						textarea.form-control#ap-desc(type="text",name="description")
 			div.row
+				div.col-md-12
+					h4 Datos de la propiedad
+					hr.section-divider
 				div.col-md-4
 					div.form-group
 						label(for="ap-prop") Tipo de Propiedad
@@ -36,9 +42,26 @@ block content
 							option(value="shared") Compartido
 							option(value="private") Privado
 				div.col-md-4#price-row
-					label(for="ap-price") Precio
-					input.form-control#ap-price(type="text",name="price")
-					i.fa.fa-dollar
+					div.form-group
+						label(for="ap-price") Precio
+						input.form-control#ap-price(type="text",name="price")
+						i.fa.fa-dollar
+			div.row
+				div.col-md-4
+					div.form-group
+						label(for="ap-capacity") Capacidad
+						input.form-control#ap-capacity(type="text",name="capacity")
+				div.col-md-4
+					div.form-group
+						label(for="ap-address") Direccion
+						input.form-control#ap-address(type="text",name="address")
+				div.col-md-4
+					div.form-group
+						label(for="ap-gender") Se Permiten
+						select.form-control#ap-gender(name="genderAllowed")
+							option(value="both") Hombres y Mujeres
+							option(value="male") Solo Hombres
+							option(value="female") Solo Mujeres
 			div.row
 				div.col-md-6
 					a.btn.btn-primary#photo-btn
@@ -49,6 +72,9 @@ block content
 						
 				div.col-md-6
 			div.row
+				div.col-md-12
+					h4 Habitantes de la Propiedad(Opcional)
+					hr.section-divider
 				div.col-md-6
 					label(for="ap-roomate") Ingresa el correo de roomates para invitarlos
 					input.form-control#ap-desc(type="text")

@@ -23,6 +23,10 @@ define(['backbone','underscore','backbone.validation'],function(Backbone,_){
 			description:{
 				required:true,
 				rangeLength: [40,500]
+			},
+			address:{
+				required: true,
+				rangeLength: [10,70]
 			}
 		}
 	});
