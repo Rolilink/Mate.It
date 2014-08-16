@@ -51,6 +51,21 @@ define(['backbone','underscore','backbone.validation'],function(Backbone,_){
 		},
 		isSaved: function(){
 			return this.attributes.id != undefined;
+		},
+		addPhotos: function(photos){
+			if(!this.attributes.photos)
+				this.attributes.photos = [];
+			
+			if(photos.length){
+				this.attributes.photos = _.union(this.attributes.photos,photos);
+				return this;
+			}
+			this.attributes.photos.push(photos);	
+			return this;
+
+		},
+		havePhotos: function(){
+			return this.attributes.photos.length && this.attributes.photos.length > 0;
 		}
 	});
 });
