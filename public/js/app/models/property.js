@@ -48,6 +48,9 @@ define(['backbone','underscore','backbone.validation'],function(Backbone,_){
 			});
 
 			this.attributes.amenities = amenities;
+		},
+		isSaved: function(){
+			return this.attributes.id != undefined;
 		}
 	});
 });
