@@ -32,7 +32,7 @@ define(['backbone','underscore','backbone.validation'],function(Backbone,_){
 		urlRoot: '/api/properties',
 		url: function(){
 			console.log(this.urlRoot);
-			if(!this.attributes.sid)
+			if(!this.attributes.id)
 				return this.urlRoot + '/';
 			else
 				return this.urlRoot + '/' + this.attributes.sid;
@@ -53,6 +53,7 @@ define(['backbone','underscore','backbone.validation'],function(Backbone,_){
 			return this.attributes.id != undefined;
 		},
 		addPhotos: function(photos){
+			var self = this;
 			if(!this.attributes.photos)
 				this.attributes.photos = [];
 			
@@ -60,12 +61,18 @@ define(['backbone','underscore','backbone.validation'],function(Backbone,_){
 				this.attributes.photos = _.union(this.attributes.photos,photos);
 				return this;
 			}
-			this.attributes.photos.push(photos);	
+			_.each(photos,function(photo){
+				self.attributes.photos[photo.id] = photo;
+			});	
+
 			return this;
 
 		},
 		havePhotos: function(){
 			return this.attributes.photos.length && this.attributes.photos.length > 0;
+		},
+		deletePhoto: function(id){
+		 delete self.attributes.photos[id];
 		}
 	});
 });
