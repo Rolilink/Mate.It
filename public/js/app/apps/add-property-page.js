@@ -1,4 +1,4 @@
-define(['jquery','app/views/property-form','app/models/property'],function($,PropertyForm,Property){
+define(['jquery','app/views/property-form','app/views/file-uploader','app/models/property'],function($,PropertyForm,FileUploader,Property){
 	var start = function(){
 		$(function(){
 			setupView();
@@ -8,7 +8,8 @@ define(['jquery','app/views/property-form','app/models/property'],function($,Pro
 	var setupView = function(){
 		var property = new Property();
 		var propertyForm = new PropertyForm({model:property,el:'form#property-form'});
-		console.log(propertyForm);
+		var fileUploader = new FileUploader({model:property,el:'div#upload-photos'});
+		fileUploader.bindToPropertyForm(propertyForm);
 	}
 
 

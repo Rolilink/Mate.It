@@ -107,3 +107,7 @@ app.del('/api/users/:id/property',authorization.is('Self'),function(req,res){
 				res.status(200).json({user:result});
 			});
 });
+
+app.post('/log/files',function(req,res){
+	console.log(req.files);
+});

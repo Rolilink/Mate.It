@@ -32,10 +32,10 @@ define(['backbone','underscore','backbone.validation'],function(Backbone,_){
 		urlRoot: '/api/properties',
 		url: function(){
 			console.log(this.urlRoot);
-			if(!this.attributes.id)
+			if(!this.attributes._id)
 				return this.urlRoot + '/';
 			else
-				return this.urlRoot + '/' + this.attributes.sid;
+				return this.urlRoot + '/' + this.attributes._id;
 		},
 		amenitiesToArray: function(){
 		  var amenities = [],

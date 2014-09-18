@@ -31,10 +31,13 @@ define(['jquery','backbone','underscore','backbone.validation','jquery.serialize
 			$(input).parent().removeClass('has-success').addClass('has-error').append('<div class="alert alert-danger>' + error + '</div>');
 		},
 		submit:function(){
-			this.model.save(null,{success:this.onApiResponse,error:this.onErrorResponse});
+			this.model.once('sync',this.onApiResponse,this);
+			this.model.once('error',this.onErrorResponse,this);
+			this.model.save();
 		},
 		onApiResponse: function(model,response){
-			
+			console.log(this);
+			this.trigger('propertyCreated',{property:model})
 		},
 		onErrorResponse: function(){
 			console.log('error');
