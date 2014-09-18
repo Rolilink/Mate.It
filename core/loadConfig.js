@@ -3,6 +3,13 @@ RedisStore = require('connect-redis')(express),
 redis = require('redis').createClient(),
 path = require("path");
 
+function setUpEmail(){
+	var mandrilKey = config.get("email:key"),
+	mandrill = require('mandrill-api/mandrill');
+
+	global.emailClient = new mandrill.Mandrill(mandrilKey);
+};
+
 function getConnectionUrl(){
 	return "mongodb://" + config.get("db:host") + "/" + config.get("db:db");
 };
@@ -106,6 +113,9 @@ function setConfig(){
 	//Set Authorization
 	setAuthorization();
 
+	//Setup Transactional Email
+	setUpEmail();
+	
 	app.set("publicdir", path.join(appRoot, 'public'));
 	app.set("mongoUrl", getConnectionUrl());
 	app.set('port', config.get("server:port"));
