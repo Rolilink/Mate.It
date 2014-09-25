@@ -14,37 +14,63 @@ Schema.methods.generateKey = function(){
 
 Schema.methods.sendEmail = function(){
 	var deferred = q.defer();
-	message = this.getMessage();
-	emailClient.messages.send(
-		message,
-		function(result){
+	message = {},
+	self = this;
+	console.log(this);
+	User.count({email:this.email},function(err,count){
+		message = self.getMessage(count > 0);
+		emailClient.messages.send(
+			{message:message, async:true},
+			function(result){
 			// success function
 			deferred.resolve(result);
-		},
-		function(e){
+			},
+			function(e){
 			// error function
 			deferred.reject(e);
 		}
 	);
+	});
+	
 	
 	return deferred.promise
 }
 
-Schema.methods.getMessage = function(){
-	var key = this.key || this.generateKey(),
-	message = {
-		text: "http:localhost:3000/invitation/"+ key,
-		subject:"Invitacion de Roommate",
-		from_email:"invitations@mate.it",
-		from_name:"Invitaciones Mate It",
-		to:[
-			{
-				email: this.email,
-				name: this.email,
-				type: "to"
-			}
-		]
-	};
+Schema.methods.getMessage = function(exist){
+	var key = this.key || this.generateKey();
+	var message = {};
+
+	if(exist){
+		message = {
+			text: "http:localhost:3000/invitation/"+ key,
+			subject:"Invitacion de Roommate",
+			from_email:"invitations@mate.it",
+			from_name:"Invitaciones Mate It",
+			to:[
+				{
+					email: this.email,
+					name: this.email,
+					type: "to"
+				}
+			]
+		};
+	}else{
+		message = {
+			text: "http:localhost:3000/signup?invkey=" + key,
+			subject:"Invitacion de Roommate",
+			from_email:"invitations@mate.it",
+			from_name:"Invitaciones Mate It",
+			to:[
+				{
+					email: this.email,
+					name: this.email,
+					type: "to"
+				}
+			]
+		}
+	}
+	
+	return message;
 }
 
 var paginate = require('./plugins/paginate');
