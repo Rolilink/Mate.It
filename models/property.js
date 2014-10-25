@@ -77,6 +77,14 @@ Schema.methods.setOwner = function(ownerId){
 		this.owner = ownerId
 };
 
+Schema.methods.addHabitant = function(userid){
+	this.habitants.push(userid);
+};
+
+Schema.methods.isFull = function(){
+	return this.habitants.length >= this.capacity;
+};
+
 Schema.plugin(troop.timestamp);
 var paginate = require('./plugins/paginate');
 Schema.plugin(paginate);
