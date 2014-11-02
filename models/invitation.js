@@ -1,7 +1,7 @@
 var crypto = require('crypto');
 
 var Schema = new mongoose.Schema({
-  host:{type:mongoose.Schema.Types.ObjectId, ref:'User'},
+  host:{type:mongoose.Schema.Types.ObjectId, ref:'User',},
   property:{type:mongoose.Schema.Types.ObjectId, ref:'Property'},
   key: String,
   email:String,
@@ -37,9 +37,11 @@ Schema.methods.sendEmail = function(){
 	.then(self.getEmailOpts)
 	.then(self._sendEmail)
 	.then(function(result){
-		deferred.resolve("sended");
+		deferred.resolve({status:201,response:"sended"});
 	})
 	.catch(function(err){
+		if(err.status)
+			return deferred.resolve(err);
 		deferred.reject(err);
 	})
 	.done();
@@ -53,17 +55,21 @@ Schema.methods.canSendEmail = function(exist){
 	if(!exist)
 		return	deferred.resolve(exist)
 
-	User.findQ({email:self.email})
-	.then(function(err,user){
+	User.find({email:self.email}).execQ()
+	.then(function(users){
+		var user = users[0];
 		
-		if(err)
-			deferred.reject(err);
+		if(user.haveProperty())
+			deferred.reject({status:422,err:"user is already a roommate of a property"});
 
-		if(user.haveProperty)
-			deferred.reject("have property");
+		if(self.property.isFull())
+			deferred.reject({status:422,err:"Property is full can't send more invitations"});
 
 		deferred.resolve(exist);
 
+	})
+	.catch(function(err){
+		deferred.reject(err);
 	});
 
 	return deferred.promise;
@@ -87,10 +93,11 @@ Schema.methods._sendEmail = function(opts){
 Schema.methods.userExist = function(id){
 	var deferred = q.defer();
 
-	User.countQ({email:self.email}).then(function(err,count){
-		if(err)
-			return deferred.reject(err);
+	User.countQ({email:self.email}).then(function(count){
 		deferred.resolve(count > 0);
+	})
+	.catch(function(err){
+		deferred.reject(err);
 	});
 
 	return deferred.promise;
@@ -129,14 +136,13 @@ Schema.methods.getMergeVars = function(exist){
 	
 	if(exist){
 		User.findQ({email:self.email})
-		.then(function(err,user){
-			
-			if(err)
-				deferred.reject(err)
-
+		.then(function(user){
 			content.push({name:"invited",content: user.username});
 			content.push({name:"link",content:"http:localhost:3000/signup?invkey=" + key});
 			deferred.resolve(content);
+		})
+		.catch(function(err){
+			deferred.resolve(err);
 		});
 	}else{	
 		content.push({name:"INVITE_LINK",content:"http:localhost:3000/invitation/"+ key});
@@ -149,7 +155,10 @@ Schema.methods.getMergeVars = function(exist){
 Schema.methods.consume = function(currentUser){
 	var deferred = q.defer(),
 	self = this,
-	handleError = function(err){ return deferred.reject(err); },
+	handleError = function(err){ 
+		if(err.status)
+		return deferred.reject(err); 
+	},
 	handleSuccess = function(data){ return deferred.resolve(self); };
 
 	// populates the invitation model and return a combined promise

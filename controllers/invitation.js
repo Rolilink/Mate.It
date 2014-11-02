@@ -1,5 +1,6 @@
 var saveInvitation = function(invitation){
 	var deferred = q.defer();
+
 	invitation.save(function(err){
 		if(err)
 			return deferred.reject(err);
@@ -10,23 +11,27 @@ var saveInvitation = function(invitation){
 
 seneca.add({controller:'invitation',action:'create'},function(args,cb){
 	var currentUser = args.currentUser,
-	propertyid = args.propertyid,
+	propertyid = args.propertyId,
 	email = args.email,
-	handleSuccess = function(data){ cb(null,{property:data}); },
-	handleError = function(err){	cb(err,null); };
+	handleResponse = function(response){ cb(null,response); },
+	handleError = function(err){	console.log(err); cb(err,null); };
 
 	var createdInvitation = new Invitation({
 		host: currentUser._id,
-		propertyid: propertyid,
+		property: propertyid,
 		email:email
 	});
 
-	createdInvitation.generateKey();
+	if(!email || /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/.test(email))
+		handleResponse({err:"invalid email format",status:422});
 
-	if(currentUser.email != email)
-		saveInvitation(createdInvitation).then(function(){ return createdInvitation.sendEmail(); }).then(handleSuccess,handleError);
-	else
-		handleError({err:'Cannot Invite owner',status:400});
+	if(currentUser.email != email){
+		createdInvitation.generateKey();
+		saveInvitation(createdInvitation).then(function(){ return createdInvitation.sendEmail(); }).then(handleResponse,handleError);
+	}
+	else{
+		handleResponse({err:"user can't invite himself",status:422});
+	}
 });
 
 seneca.add({controller:'invitation',action:'consume'},function(args,cb){

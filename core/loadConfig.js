@@ -1,5 +1,5 @@
-var config = require('../conf'),
-RedisStore = require('connect-redis')(express),
+global.config = require('../conf');
+var RedisStore = require('connect-redis')(express),
 redis = require('redis').createClient(),
 path = require("path");
 
@@ -18,7 +18,6 @@ function setAuthentication(){
 	// Passport User based Session Configuration
 
 	var serializeUser = function(user,done){
-		console.log('serializing');
 		done(null,user.id);
 	};
 
@@ -35,7 +34,6 @@ function setAuthentication(){
 	var checkUserCredentials = function(username,password,done){
 		seneca.act({controller:'user',action:'list',query:{username:username},limit:1,page:1,blacklist:'-emailKey -aId'},function(err,result){
 			if(err){
-				console.log(err);
 				return done(err);
 			}
 
@@ -44,14 +42,12 @@ function setAuthentication(){
 
 			// if there is no user returned
 			if(!user){
-				console.log('this is really bad');
 				return done(null,false,{message:"Incorrect Username"});
 			}
 
 			// if there is no password returned
 
 			if(!user.compareHash(password)){
-				console.log('its not ok');
 				return done(null,false,{message:"Incorrect Password"});
 			}
 
@@ -82,7 +78,6 @@ function setAuthorization(){
 
 	// is User
 	authorization.use('User',function (req){
-		console.log('auth user');
 		if(req.user.role === 'user');
 			return true;
 	});
@@ -122,7 +117,9 @@ function setConfig(){
 	app.set('views',path.join(appRoot, 'views'));
 	app.set('view engine', 'jade');
 	app.use(express.favicon());
-	app.use(express.logger('dev'));
+	if('testing' != app.get('env')){
+		app.use(express.logger('dev'));
+	};
 	app.use(express.json());
 	app.use(express.urlencoded());
 	app.use(express.methodOverride());

@@ -5,10 +5,11 @@ app.post('/api/properties/:id/invite',authorization.is('Owner'),function(req,res
 
 	seneca.act({controller:'invitation',action:'create',currentUser:currentUser, email: email, propertyId:id},function(err,result){
 		if(err){
-			var status = err.status || 500;
-			return res.status(status).json({err:err.err});
+			return res.status(500).json({err:err});
 		}
-		res.status(200).json({result:'sended'});
+		if(result.err)
+			return res.status(result.status).json({err:result.err});
+		res.status(result.status).json({response:result.response});
 	});
 });
 
@@ -18,9 +19,8 @@ app.get('/api/invitations/:key',authorization.is('User'),function(req,res,next){
 
 	seneca.act({controller:'invitation',action:'consume',currentUser:currentUser,key:key},function(err,result){
 		if(err){
-			var status = err.status || 500;
-			return res.status(status).json({err:err.err});
+			return res.status(500).json({err:err.err});
 		}
-		res.status(200).json({result:'consumed'});
+		res.status(result.status).json({response:result.response});
 	});
 });

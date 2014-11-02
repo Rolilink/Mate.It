@@ -7,7 +7,6 @@ function find (collec, query, callback) {
 seneca.add({controller:'entities',entity:'country', action:'list'},function(args,cb){
 	find('countries',{},function(err,countries){
 		if(err){
-			console.log(err);
 			seneca.act({model:'country',action:'error',when:'listed',data:data,error:err},cb);
 			return;
 		}

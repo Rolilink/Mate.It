@@ -83,11 +83,11 @@ Body:
 GET  /api/invitations/:key
 
 Return:
-Status Code: 404
+Status Code: 422
 Body:
 ```javascript
 {
-	response:"Invitation not found"
+	response:"Invitation code not found, invalid or used."
 } 
 ```
 

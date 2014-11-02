@@ -68,10 +68,23 @@ Body:
 POST /api/properties/:propertyid/invite
 
 Return:
-Status Code: 400
+Status Code: 422
 Body:
 ```javascript
 {
 	err:"Invalid email format"	
+} 
+```
+
+## Flow 7 - Error: Property is Full
+
+POST /api/properties/:propertyid/invite
+
+Return:
+Status Code: 422
+Body:
+```javascript
+{
+	err:"Property is full can't send more invitations"	
 } 
 ```

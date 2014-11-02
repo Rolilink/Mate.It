@@ -11,7 +11,7 @@ var Schema = new mongoose.Schema({
 	capacity:{type:Number,min:1}, //ok
 	available:{type:Boolean,default:true}, //ok
 	country:{type:String}, //ok
-	address:{type:String,unique:true,validate:[validate('len',10,70)]}, //ok
+	address:{type:String,validate:[validate('len',10,70)]}, //ok
 	longitude:{type:Number,min:-180,max:180}, //ok
 	lattitude:{type:Number,min:-90,max:90}, //ok
 	price:{type:Number,min:1},
