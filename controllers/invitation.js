@@ -14,7 +14,7 @@ seneca.add({controller:'invitation',action:'create'},function(args,cb){
 	propertyid = args.propertyId,
 	email = args.email,
 	handleResponse = function(response){ cb(null,response); },
-	handleError = function(err){	console.log(err); cb(err,null); };
+	handleError = function(err){	cb(err,null); };
 
 	var createdInvitation = new Invitation({
 		host: currentUser._id,
@@ -37,16 +37,19 @@ seneca.add({controller:'invitation',action:'create'},function(args,cb){
 seneca.add({controller:'invitation',action:'consume'},function(args,cb){
 	var currentUser = args.currentUser,
 	key = args.key,
-	handleSuccess = function(data){ cb(null,{response:data}); },
+	handleSuccess = function(data){ cb(null,data); },
 	handleError = function(err){	cb(err,null); };
 
-	Invitation.find({key:key}).exec().	
+	Invitation.find({key:key,used:false}).exec().	
 	then(function(invitations,err){
 		if(err)
-			return handleError();
+			return handleError(err);
+
+		if(invitations.length === 0)
+			handleSuccess({status:422,err:"invitation code not found, invalid or used"})
 
 		var invitation = invitations[0];
-
+	
 		invitation.consume(currentUser)
 		.then(handleSuccess,handleError);
 	});

@@ -209,7 +209,7 @@ describe("Invitations:",function(){
 
 	// Consuming an existing Invitation
 	describe("Consuming a existing invitation:",function(){
-		var tHostUser,tInviteUser,tProperty,tInvitation,consumeUrl = "/invitation/";
+		var tHostUser,tInviteUser,tProperty,tInvitation,consumeUrl = "/api/invitations/";
 		before(function(done){
 			this.timeout(3000);
 
@@ -220,7 +220,8 @@ describe("Invitations:",function(){
 			tRoomateUser = new User({username:"troomuser",email:"troom@user.com",password:"12345678"})
 			tInviteUser = new User({username:"tinviteduser",email:"tinvited@user.com",password:"12345678"});
 			tInviteUser2 = new User({username:"tinviteduser2",email:"tinvited2@user.com",password:"12345678"});
-			
+			tInviteUser3 = new User({username:"tinviteduser3",email:"tinvited3@user.com",password:"12345678"});
+			tInviteUser4 = new User({username:"tinviteduser4",email:"tinvited4@user.com",password:"12345678"});
 			// setup properties
 			tProperty = new Property({owner:tHostUser._id,capacity:1});
 			tPropertyFull = new Property({owner:tHostUser2._id,capacity:1,habitants:[tRoomateUser._id]});
@@ -228,8 +229,9 @@ describe("Invitations:",function(){
 
 			//setup invitations
 			tInvitation  = new Invitation({host:tHostUser._id,property:tProperty._id,email:tInviteUser.email});
-			tInvitationFull = new Invitation({host:tHostUser2._id,property:tPropertyFull._id,email:tInviteUser2.email});
-			tInvitationNoExist = new Invitation({host:tHostUser3._id,property:tPropertyToRemove._id,email:tInviteUser2.email});
+			tInvitation2  = new Invitation({host:tHostUser._id,property:tProperty._id,email:tInviteUser2.email});
+			tInvitationFull = new Invitation({host:tHostUser2._id,property:tPropertyFull._id,email:tInviteUser3.email});
+			tInvitationNoExist = new Invitation({host:tHostUser3._id,property:tPropertyToRemove._id,email:tInviteUser4.email});
 
 			//setup extra fields
 			tHostUser.property = {isOwner:true,data:tProperty._id};
@@ -237,6 +239,7 @@ describe("Invitations:",function(){
 			tHostUser3.property = {isOwner:true,data:tPropertyToRemove._id};
 
 			tInvitation.generateKey();
+			tInvitation2.generateKey();
 			tInvitationFull.generateKey();
 			tInvitationNoExist.generateKey();
 
@@ -246,11 +249,14 @@ describe("Invitations:",function(){
 				tHostUser3.saveQ(),
 				tInviteUser.saveQ(),
 				tInviteUser2.saveQ(),
+				tInviteUser3.saveQ(),
+				tInviteUser4.saveQ(),
 				tRoomateUser.saveQ(),
 				tProperty.saveQ(),
 				tPropertyFull.saveQ(),
 				tPropertyToRemove.saveQ(),
 				tInvitation.saveQ(),
+				tInvitation2.saveQ(),
 				tInvitationFull.saveQ(),
 				tInvitationNoExist.saveQ()
 			]);
@@ -329,7 +335,7 @@ describe("Invitations:",function(){
 				.send({username:tHostUser.username,password:"12345678"})
 				.then(function(res){
 					return client
-						.get(consumeUrl + tInvitation.key)
+						.get(consumeUrl + tInvitation2.key)
 						.expect(401);
 				})
 				.then(function(res){
@@ -343,7 +349,7 @@ describe("Invitations:",function(){
 			var client = request.agent(app);
 			client
 				.post("/login")
-				.send({username:tHostInviteUser2.username,password:"12345678"})
+				.send({username:tInviteUser3.username,password:"12345678"})
 				.then(function(res){
 					return client
 						.get(consumeUrl + tInvitationFull.key)
@@ -361,7 +367,7 @@ describe("Invitations:",function(){
 			var client = request.agent(app);
 			client
 				.post("/login")
-				.send({username:tInviteUser3.username,password:"12345678"})
+				.send({username:tInviteUser4.username,password:"12345678"})
 				.then(function(res){
 					return client
 						.get(consumeUrl + tInvitationNoExist.key)
@@ -384,14 +390,8 @@ describe("Invitations:",function(){
 				.then(function(res){
 					return client
 						.get(consumeUrl + "badkeylol")
-						.expect(200)
-						.expect({
-							response:{
-								status:"consumed",
-								key:tInvitation.key,
-								consumedBy:tInvitation.email
-							}
-						});
+						.expect(422)
+						.expect({ err: 'invitation code not found, invalid or used' });
 				})
 				.then(function(res){
 					done();

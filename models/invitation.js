@@ -58,7 +58,7 @@ Schema.methods.canSendEmail = function(exist){
 	User.find({email:self.email}).execQ()
 	.then(function(users){
 		var user = users[0];
-		
+
 		if(user.haveProperty())
 			deferred.reject({status:422,err:"user is already a roommate of a property"});
 
@@ -156,10 +156,9 @@ Schema.methods.consume = function(currentUser){
 	var deferred = q.defer(),
 	self = this,
 	handleError = function(err){ 
-		if(err.status)
 		return deferred.reject(err); 
 	},
-	handleSuccess = function(data){ return deferred.resolve(self); };
+	handleResponse = function(data){ return deferred.resolve(data); };
 
 	// populates the invitation model and return a combined promise
 	var populations = q.all([
@@ -171,7 +170,7 @@ Schema.methods.consume = function(currentUser){
 		// validate Invitation
 		var result = self.canConsume(currentUser,self.property);
 		
-		if(!result.isValid) return handleError(result.reason);
+		if(!result.isValid) return handleResponse({status:result.status,err:result.reason});
 		
 		currentUser.joinProperty(self.property)
 		.then(function(){ return currentUser.saveQ(); })
@@ -179,7 +178,16 @@ Schema.methods.consume = function(currentUser){
 			self.used = true;
 			return self.saveQ();
 		})
-		.then(handleSuccess)
+		.then(function(){
+			handleResponse({
+				status:200,
+				response:{
+					status:"consumed",
+					key:self.key,
+					consumedBy:self.email
+				}
+			})
+		})
 		.catch(handleError)
 		.done();
 
@@ -190,17 +198,20 @@ Schema.methods.consume = function(currentUser){
 }
 
 Schema.methods.canConsume = function(user,property){
-	if(property.isFull())
-		return {isValid:false, reason: "The property is full"}
-
 	if(user.email != this.email)
-		return {isValid: false, reason: "This User is not owner of the invitation"}
+		return {isValid: false,status:401,reason: "This User is not owner of the invitation"}
+
+	if(!property)
+		return {isValid: false,status:422,reason: "property associated to this invitation no longer exist"}
+
+	if(property.isFull())
+		return {isValid:false, status:422, reason: "property associated to this invitation is full"}
 
 	if(user.ownsAProperty())
-		return {isValid: false, reason: "User is property owner"}
+		return {isValid: false,status:422, reason: "User is property owner"}
 
 	if(user.haveProperty())
-		return {isValid: false, reason: "User is already in a property"}
+		return {isValid: false,status:422, reason: "User is already in a property"}
 
 	return {isValid: true};
 };
