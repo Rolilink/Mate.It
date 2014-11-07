@@ -22,7 +22,7 @@ var Schema = new mongoose.Schema({
 	description:{type:String,validate:[validate('len',10,500)]}, //ok 
 	title:{type:String}, // ok
 	photos:[{url:String,description:String}],
-	genderAllowerd:{type:String,enum:['male,female,both']},
+	genderAllowed:{type:String,enum:['male,female,both']},
 	owner:{type:mongoose.Schema.Types.ObjectId, ref:'User'},
 	habitants:[{type:mongoose.Schema.Types.ObjectId, ref:'User'}],
 	comments:[{type:mongoose.Schema.Types.ObjectId, ref:'Comment'}],
