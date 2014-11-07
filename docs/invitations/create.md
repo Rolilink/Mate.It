@@ -7,7 +7,7 @@ This Flow is the happy day flow
 POST /api/properties/:propertyid/invite?email=email
 
 Return:
-Status Code: 200
+Status Code: 201
 Body:
 ```javascript
 {

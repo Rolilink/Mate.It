@@ -328,7 +328,7 @@ describe("Invitations:",function(){
 					done(err);
 				});
 		});
-		it("should respond with a 401 code when user email is not for invited user",function(done){
+		it("should respond with a 401 code when user email is not for invited user",function(done){	
 			var client = request.agent(app);
 			client
 				.post("/login")
