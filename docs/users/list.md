@@ -11,7 +11,8 @@ POST /api/users/list
 		country: "Panama",
 		active: true
 	},
-
+	limit: 2,
+	page: 1
 } 
 ```
 
@@ -21,34 +22,34 @@ Body:
 ```javascript
 {
 	response:{
-		user:{
-			id: "29a1bd805c8c11e48ed60800200c9a66"
-		}
+		users:[
+			{
+				username:"rolilink",
+				email:"me@rolilink.com",
+				country: "Panama"
+			},
+			{
+				username:"rolilink2",
+				email:"me2@rolilink.com",
+				country: "Panama"
+			}
+		]
 	}	
 } 
 ```
 
 ## Flow 2 - Error Flow: User not auntheticated
 
-DELETE /api/users/:id
-
-
-Return:
-Status Code: 401
-
-
-## Flow 3 - Error Flow: User don't exist
-
-DELETE /api/users/:id
-
-
-Return:
-Status Code: 404
-
-
-## Flow 4 - Error Flow: User is not authorized (same user or admin)
-
-DELETE /api/users/:id
+POST /api/users/list
+```javascript
+{
+	query:{
+		country: "Panama",
+		active: true
+	},
+	limit: 2,
+	page: 1
+} 
 
 
 Return:
