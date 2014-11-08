@@ -2,7 +2,7 @@
 
 ## 2xx Success
 
-200  | Success
+200  | Success 
 201  | Success - Resource Created
 204  | Sucees - No Response
 
