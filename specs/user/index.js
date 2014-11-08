@@ -6,7 +6,7 @@ UsersData = require('../utils').users;
 
 describe("Users",function(){
 	var baseUrl = "/api/users";
-	describe.only("Create",function(){
+	describe("Create",function(){
 		var data;
 		before(function(done){
 			this.timeout(3000);
@@ -58,7 +58,6 @@ describe("Users",function(){
 				.expect(422)
 				.then(function(res){
 					var errors = res.body.errors;
-					console.log(res.body);
 					expect(errors).not.to.be.undefined;
 					expect(errors).to.have.property("password");
 					expect(errors).to.have.property("email");
@@ -78,7 +77,6 @@ describe("Users",function(){
 				.then(function(res){
 					
 					var errors = res.body.errors;
-					console.log(res.body);
 					expect(errors).not.to.be.undefined;
 					expect(errors).to.have.property("username");
 					done();
