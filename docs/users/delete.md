@@ -11,11 +11,9 @@ Status Code: 200
 Body:
 ```javascript
 {
-	response:{
-		user:{
-			id: "29a1bd805c8c11e48ed60800200c9a66"
-		}
-	}	
+	user:{
+		id: "29a1bd805c8c11e48ed60800200c9a66"
+	}
 } 
 ```
 

@@ -15,7 +15,7 @@ app.post('/api/users',function(req,res,next){
 });
 
 //returns a list of users via a query
-app.get('/api/users',function(req,res,next){
+app.get('/api/users',authorization.is('User'),function(req,res,next){
 	var page = req.param('page') || 1;
 	seneca.act({controller:'user',action:'list',query:{},page:page,blacklist:'-password -emailKey -aId'},function(err,result){
 		if(err){
@@ -36,7 +36,7 @@ app.post('/api/users/list',authorization.is('User'),function(req,res,next){
 });
 
 //returns the value of parameter 'id' brings back a specific user id: id
-app.get('/api/users/:id',function(req,res,next){
+app.get('/api/users/:id',authorization.is('User'),function(req,res,next){
 	seneca.act({controller:'user',action:'get',id:req.param('id'),blacklist:'-password -emailKey -aId'},function(err,result){
 		if(err){
 			return res.status(500).json({err:err});
@@ -44,7 +44,6 @@ app.get('/api/users/:id',function(req,res,next){
 
 		if(result.user===null)
 		{
-			console.log("result of user ",result.user);
 			res.status(404).json({message:'User does not exist'});	
 		}
 		else{
@@ -63,7 +62,7 @@ app.del('/api/users/:id',authorization.is('Self'),function(req,res,next){
 	});
 });
 
-app.post('/api/users/:id',authorization.is('Self'),function(req,res,next){
+app.post('/api/users/:id',authorization.is('User'),function(req,res,next){
 	var file;
 
 	if(req.files)

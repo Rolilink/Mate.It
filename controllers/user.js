@@ -8,9 +8,9 @@
 var saveUser = function(user){
 	var deferred = q.defer();
 	user.save(function(err){
-		if(err){
+		if(err)
 			return deferred.reject(err);
-		}
+
 		return deferred.resolve(user);
 	});
 	return deferred.promise;
@@ -31,8 +31,15 @@ var findUsers = function(query,attr,page,limit){
 var findUser = function(id,attr){
 	var deferred = q.defer();
 	User.findById(id,attr).exec(function(err,user){
-		if(err)
+		if(err){
+
+			//bad objet key then 404 not found
+			if(err.name == "CastError"){
+				return deferred.resolve(null);
+			}
+
 			return deferred.reject(err);
+		}
 		return deferred.resolve(user);
 	});
 	return deferred.promise;

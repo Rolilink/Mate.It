@@ -169,6 +169,145 @@ describe("Users",function(){
 					done(err);
 				})
 		});
+	});
 
+	describe("Get",function(){
+		var data, getUrl = baseUrl + "/";
+
+		before(function(done){
+			this.timeout(3000);
+
+			UsersData.list().then(function(rdata){
+				data = rdata;
+				done();
+			})
+			.catch(function(err){
+				done(err);
+			});
+		});
+
+		after(function(done){
+			eraseDb()
+			.then(function(){
+				done();
+			});
+		});
+
+		it("should have an User model available",function(){
+			expect(User).not.to.be.undefined;
+		});
+
+		it("should get an user when doing a valid get request",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:'12345678'})
+				.then(function(res){
+					return client
+						.get(getUrl + data.users.user1.id)
+						.expect(200)
+				})
+				.then(function(res){
+					var user = res.body.user;
+					expect(user).to.have.property("_id",data.users.user1.id);
+					expect(user).to.have.property("username");
+					expect(user).to.have.property("email");
+					expect(user).to.have.property("role");
+					expect(user).to.have.property("active",true);
+					client.get('/logout')
+					done();
+				})
+				.catch(function(err){
+					done(err);
+				});
+		});
+
+		it("should respond with 401 when user is not authenticated",function(done){
+			var client = request.agent(app);
+
+			client
+				.get(getUrl + data.users.user1.id)
+				.expect(401)
+				.then(function(res){
+					done();
+				})
+				.catch(function(err){
+					done(err);
+				})
+		});
+
+		it("should respond with 404 when user with that id is not found",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:'12345678'})
+				.then(function(res){
+					return client
+						.get(getUrl + "sadasbadkeylol")
+						.expect(404)
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(function(err){
+					done(err);
+				});
+		});
+
+
+	});
+
+	describe("Update",function(){
+		var data, listUrl = baseUrl + "/list";
+
+		before(function(done){
+			this.timeout(3000);
+
+			UsersData.list().then(function(rdata){
+				data = rdata;
+				done();
+			})
+			.catch(function(err){
+				done(err);
+			});
+		});
+
+		after(function(done){
+			eraseDb()
+			.then(function(){
+				done();
+			});
+		});
+
+		it("should have an User model available",function(){
+			expect(User).not.to.be.undefined;
+		});
+	});
+
+	describe("Delete",function(){
+		var data, listUrl = baseUrl + "/list";
+
+		before(function(done){
+			this.timeout(3000);
+
+			UsersData.list().then(function(rdata){
+				data = rdata;
+				done();
+			})
+			.catch(function(err){
+				done(err);
+			});
+		});
+
+		after(function(done){
+			eraseDb()
+			.then(function(){
+				done();
+			});
+		});
+
+		it("should have an User model available",function(){
+			expect(User).not.to.be.undefined;
+		});
 	});
 });
