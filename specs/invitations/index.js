@@ -1,6 +1,7 @@
 var utils = require('../utils'),
 chai = require('chai'),
-request = require('supertest-as-promised');
+request = require('supertest-as-promised'),
+eraseDb = require ('../utils').eraseDatabase;
 
 
 describe("Invitations:",function(){
@@ -51,11 +52,7 @@ describe("Invitations:",function(){
 		});
 
 		after(function(done){
-			q.all([
-				User.removeQ({}),
-				Property.removeQ({}),
-				Invitation.removeQ({})
-			])
+			eraseDb()
 			.then(function(){
 				done();
 			});
@@ -279,11 +276,7 @@ describe("Invitations:",function(){
 
 
 		after(function(done){
-			q.all([
-				User.removeQ({}),
-				Property.removeQ({}),
-				Invitation.removeQ({})
-			])
+			eraseDb()
 			.then(function(){
 				done();
 			});
