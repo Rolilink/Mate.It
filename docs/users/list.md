@@ -38,7 +38,7 @@ Body:
 } 
 ```
 
-## Flow 2 - Error Flow: User not auntheticated
+## Flow 2 - Error Flow: User is not auntheticated
 
 POST /api/users/list
 ```javascript

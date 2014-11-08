@@ -1,8 +1,9 @@
 var mateIt = require('../app'),
-expect = require('chai').expect,
+chai = require('chai'),
 globalVars = {};
 
-GLOBAL.expect = expect;
+chai.use(require('chai-things'));
+GLOBAL.expect = chai.expect;
 
 before(function(done){
 	this.timeout(10000);

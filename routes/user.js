@@ -25,7 +25,7 @@ app.get('/api/users',function(req,res,next){
 	});
 });
 
-app.post('/api/users/list',authorization.is('Admin'),function(req,res,next){
+app.post('/api/users/list',authorization.is('User'),function(req,res,next){
 	var page = req.param('page') || 1;
 	seneca.act({controller:'user',action:'list',query:req.param('query'),page:page,limit:req.param('limit'),blacklist:'-password -emailKey -aId'},function(err,result){
 		if(err){
