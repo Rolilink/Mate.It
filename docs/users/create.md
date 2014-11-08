@@ -45,16 +45,22 @@ Status Code: 422
 Body:
 ```javascript
 {
-	errors:[
-		{
-			type:"field_missing"
-			field:"email"
-		},
-		{
-			type:"field_missing"
-			field:"username"
-		}
-	]
+  errors:{ 
+   	email:{
+   		message: 'Path `email` is required.',
+      name: 'ValidatorError',
+      path: 'email',
+      type: 'required',
+      value: undefined 
+    },
+   	password:{ 
+    	message: 'Path `password` is required.',
+      name: 'ValidatorError',
+      path: 'password',
+      type: 'required',
+      value: undefined 
+    } 
+   }
 } 
 ```
 
@@ -75,34 +81,16 @@ Return:
 Status Code: 422
 Body:
 ```javascript
-{
-	errors:[
-		{
-			type:"validation_err"
-			field:"email",
-			message:"not a valid email format"
-		},
-		{
-			type:"validation_err"
-			field:"username",
-			message:"username min length is 6 characters"
-		}
-	]
-} 
+{ 
+	errors:{ 
+		username:{ 
+      message: 'Invalid characters',
+      name: 'ValidatorError',
+      path: 'username',
+      type: 'user defined',
+      value: 'n'
+    } 
+  } 
+}
+
 ```
-
-## Flow 4 - Error Flow: User Trying to create another User
-
-POST /api/users
-```javascript
-{
-	user:{
-		username:"rolilink",
-		email:"me@rolilink.com",
-		password:"12345678"
-	}
-} 
-```
-
-Return:
-Status Code: 401

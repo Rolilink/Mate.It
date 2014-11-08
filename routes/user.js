@@ -6,18 +6,16 @@ app.post('/api/users',function(req,res,next){
 	if(req.files)
 		file = req.files.profilepic;
 
-	seneca.act({controller:'user',action:'create',data:req.body,file:file},function(err,result){
+	seneca.act({controller:'user',action:'create',data:req.body.user,file:file},function(err,result){
 		if(err){
-			return res.status(500).json({err:err});
+			return res.status(422).json({errors:err.errors});
 		}
-		res.status(200).json({id:result.user._id});
-		
+		res.status(result.status).json(result.response);
 	});
 });
 
 //returns a list of users via a query
 app.get('/api/users',function(req,res,next){
-	console.log(req.user);
 	var page = req.param('page') || 1;
 	seneca.act({controller:'user',action:'list',query:{},page:page,blacklist:'-password -emailKey -aId'},function(err,result){
 		if(err){

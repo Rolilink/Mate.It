@@ -97,6 +97,29 @@ var setupInvitationsConsume = function(){
 	return deferred.promise;
 }
 
+var setupUserCreate = function(){
+	var deferred = q.defer();
+	// setup users and properties
+	var users = {
+		tHostUser: new User({username:"thostuser",email:"thost@user.com",password:"12345678"})
+	};
+
+	// save transactions
+	var transactions = _.invoke(users,'saveQ');
+
+	q.all(transactions)
+		.then(function(){
+			deferred.resolve({
+				users: users
+			});
+		})
+		.catch(function(err){
+			deferred.reject(err);
+		});
+
+	return deferred.promise;
+}
+
 exports.eraseDatabase = function(){
 	return q.all([
 		User.removeQ({}),
@@ -108,4 +131,8 @@ exports.eraseDatabase = function(){
 exports.invitations = {
 	create: setupInvitationsCreate,
 	consume: setupInvitationsConsume
+};
+
+exports.users = {
+	create: setupUserCreate
 };
