@@ -1,54 +1,26 @@
 var utils = require('../utils'),
 chai = require('chai'),
 request = require('supertest-as-promised'),
-eraseDb = require ('../utils').eraseDatabase;
+eraseDb = require ('../utils').eraseDatabase,
+invitationsData = require('../utils').invitations;
 
 
 describe("Invitations:",function(){
-	
+
 	// Creating a new Invitation
 	describe("Creating a new Invitation:",function(){
-		var tHostUser,tInviteUser,tProperty,tAnotherUser,tHostAgent,tHostUser2,tProperty2;
+		var data;
+
 		before(function(done){
-			// setup users
-			tHostUser = new User({username:"thostuser",email:"thost@user.com",password:"12345678"});
-			tHostUser2 = new User({username:"thostuser2",email:"thost2@user.com",password:"12345678"});
-			tAnotherUser = new User({username:"tanotheruser",email:"tanother@user.com",password:"12345678"});
-			tInviteUser = new User({username:"tinviteuser",email:"tinvite@user.com",password:"12345678"});
-			tInviteUser2 = new User({username:"tinviteuser2",email:"tinvite2@user.com",password:"12345678"});
-			tProperty = new Property({capacity:1,owner:tHostUser._id});
-			tProperty2 = new Property({capacity:1,owner:tHostUser2._id,habitants:[tAnotherUser._id]});
-
-			tHostUser.property = {isOwner:true,data:tProperty._id};
-			tHostUser2.property = {isOwner:true,data:tProperty2._id};
-			tAnotherUser.property = {isOwner:false,data:tProperty2._id};
-
-			var saveTransactions = q.all([
-				tHostUser.saveQ(),
-				tHostUser2.saveQ(),
-				tInviteUser.saveQ(),
-				tInviteUser2.saveQ(),
-				tAnotherUser.saveQ(),
-				tProperty.saveQ(),
-				tProperty2.saveQ()
-			]);
-
-			saveTransactions.then(function(){
-				//Log in Agents
-				tHostAgent = request.agent(app);
-				tHostAgent.post('/login')
-				.send({username:tHostUser.username,password:'12345678'})
-				.then(function(){
+			this.timeout(6000);
+			invitationsData.create()
+				.then(function(rdata){
+					data = rdata;
 					done();
 				})
 				.catch(function(err){
 					done(err);
 				})
-			})
-			.catch(function(err){
-				done(err);
-			});
-
 		});
 
 		after(function(done){
@@ -64,25 +36,30 @@ describe("Invitations:",function(){
 
 		it("should return a valid response when doing a valid post",function(done){
 			this.timeout(6000);
-			var inviteUrl = "/api/properties/" + tProperty.id + "/invite?email=" + tInviteUser.email;
+			var inviteUrl = "/api/properties/" + data.properties.tProperty.id + "/invite?email=" + data.users.tInviteUser.email;
+			var client = request.agent(app);
 			
-			tHostAgent
-				.post(inviteUrl)
-				.send({})
-				.expect(201)
-				.expect({response:"sended"})
-				.then(function(){
-					done();
-				})
-				.catch(function(err){
-					done(err);
-				});
+			client.post('/login')
+			.send({username:data.users.tHostUser.username,password:'12345678'})
+			.then(function(){
+				return client
+					.post(inviteUrl)
+					.send({})
+					.expect(201)
+					.expect({response:"sended"}) //change to sent
+					.then(function(){
+						done();
+					})
+			})
+			.catch(function(err){
+				done(err);
+			});
 
 		});
 
 		it("should respond with a 401 code when user is not loged in",function(done){
 			var client = request.agent(app),
-			inviteUrl = "/api/properties/" + tProperty.id + "/invite?email=" + tInviteUser.email;
+			inviteUrl = "/api/properties/" + data.properties.tProperty.id + "/invite?email=" + data.users.tInviteUser.email;
 			client
 				.post(inviteUrl)
 				.send({})
@@ -97,10 +74,10 @@ describe("Invitations:",function(){
 
 		it("should respond with a 401 code when user is not property owner",function(done){
 			var userNotOwner = request.agent(app),
-			inviteUrl = "/api/properties/" + tProperty.id + "/invite?email=" + tInviteUser.email;;
+			inviteUrl = "/api/properties/" + data.properties.tProperty.id + "/invite?email=" + data.users.tInviteUser.email;;
 				userNotOwner
 					.post('/login')
-					.send({username:tHostUser2.username,password:'12345678'})
+					.send({username:data.users.tHostUser2.username,password:'12345678'})
 					.then(function(res){
 						return userNotOwner
 							.post(inviteUrl)
@@ -118,10 +95,10 @@ describe("Invitations:",function(){
 
 		it("should respond with a 422 code {err:user can't invite himself} when email is same as authenticated user",function(done){
 			var userOwner = request.agent(app),
-			inviteUrl = "/api/properties/" + tProperty.id + "/invite?email=" + tHostUser.email;
+			inviteUrl = "/api/properties/" + data.properties.tProperty.id + "/invite?email=" + data.users.tHostUser.email;
 				userOwner
 					.post('/login')
-					.send({username:tHostUser.username,password:'12345678'})
+					.send({username:data.users.tHostUser.username,password:'12345678'})
 					.then(function(res){
 						return userOwner
 							.post(inviteUrl)
@@ -140,10 +117,10 @@ describe("Invitations:",function(){
 
 		it("should respond with a 422 code {err:user is already a roommate of a property} when the invited user exist and is listed as roommate of another property",function(done){
 			var userOwner = request.agent(app),
-			inviteUrl = "/api/properties/" + tProperty.id + "/invite?email=" + tAnotherUser.email;
+			inviteUrl = "/api/properties/" + data.properties.tProperty.id + "/invite?email=" + data.users.tAnotherUser.email;
 				userOwner
 					.post('/login')
-					.send({username:tHostUser.username,password:'12345678'})
+					.send({username:data.users.tHostUser.username,password:'12345678'})
 					.then(function(res){
 						return userOwner
 							.post(inviteUrl)
@@ -162,10 +139,10 @@ describe("Invitations:",function(){
 
 		it("should respond with a 422 code {err:invalid email format} when email is missing or invalid",function(done){
 			var userOwner = request.agent(app),
-			inviteUrl = "/api/properties/" + tProperty.id + "/invite?email=";
+			inviteUrl = "/api/properties/" + data.properties.tProperty.id + "/invite?email=";
 				userOwner
 					.post('/login')
-					.send({username:tHostUser.username,password:'12345678'})
+					.send({username:data.users.tHostUser.username,password:'12345678'})
 					.then(function(res){
 						return userOwner
 							.post(inviteUrl)
@@ -183,10 +160,10 @@ describe("Invitations:",function(){
 		});
 		it("should respond with a 422 code {err:Property is full can't send more invitations} when property is full",function(done){
 			var userOwner = request.agent(app),
-			inviteUrl = "/api/properties/" + tProperty2.id + "/invite?email=" + tInviteUser2.email;
+			inviteUrl = "/api/properties/" + data.properties.tProperty2.id + "/invite?email=" + data.users.tInviteUser2.email;
 				userOwner
 					.post('/login')
-					.send({username:tHostUser2.username,password:'12345678'})
+					.send({username:data.users.tHostUser2.username,password:'12345678'})
 					.then(function(res){
 						return userOwner
 							.post(inviteUrl)
