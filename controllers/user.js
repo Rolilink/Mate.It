@@ -34,7 +34,7 @@ var findUser = function(id,attr){
 		if(err)
 			return deferred.reject(err);
 		if(!user)
-			return deferred.reject({message:"UserNotFound"});
+			return deferred.reject({name:"UserNotFound"});
 		return deferred.resolve(user);
 	});
 	return deferred.promise;
