@@ -26,16 +26,7 @@ Return:
 Status Code: 401
 
 
-## Flow 3 - Error Flow: User don't exist
-
-DELETE /api/users/:id
-
-
-Return:
-Status Code: 404
-
-
-## Flow 4 - Error Flow: User is not authorized (same user or admin)
+## Flow 3 - Error Flow: User is not authorized (same user or admin)
 
 DELETE /api/users/:id
 

@@ -125,7 +125,33 @@ var setupUserList = function(){
 	// setup users and properties
 	var users = {
 		user1: new User({username:"usern1",email:"user1@user.com",password:"12345678",country:"panama",active:true}),
-		user2: new User({username:"usern2",email:"user1@user.com",password:"12345678",country:"panama",active:true}),
+		user2: new User({username:"usern2",email:"user2@user.com",password:"12345678",country:"panama",active:true}),
+		user3: new User({username:"usern3",email:"user3@user.com",password:"12345678",country:"panama",active:true}),
+		user4: new User({username:"usern4",email:"user4@user.com",password:"12345678",country:"panama",active:true})
+	};
+
+	// save transactions
+	var transactions = _.invoke(users,'saveQ');
+
+	q.all(transactions)
+		.then(function(){
+			deferred.resolve({
+				users: users
+			});
+		})
+		.catch(function(err){
+			deferred.reject(err);
+		});
+
+	return deferred.promise;
+}
+
+var setupUserDelete = function(){
+	var deferred = q.defer();
+	// setup users and properties
+	var users = {
+		user1: new User({username:"usern1",email:"user1@user.com",password:"12345678",country:"panama",active:true}),
+		user2: new User({username:"usern2",email:"user2@user.com",password:"12345678",country:"panama",active:true}),
 		user3: new User({username:"usern3",email:"user3@user.com",password:"12345678",country:"panama",active:true}),
 		user4: new User({username:"usern4",email:"user4@user.com",password:"12345678",country:"panama",active:true})
 	};
@@ -161,5 +187,6 @@ exports.invitations = {
 
 exports.users = {
 	create: setupUserCreate,
-	list: setupUserList
+	list: setupUserList,
+	del: setupUserDelete
 };

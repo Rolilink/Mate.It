@@ -58,7 +58,7 @@ app.del('/api/users/:id',authorization.is('Self'),function(req,res,next){
 		if(err){
 			return res.status(500).json({err:err});
 		}
-		res.status(200).json({message:'deleted'});
+		res.status(200).json({user:{id:req.param('id')}});
 	});
 });
 

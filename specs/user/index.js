@@ -141,7 +141,6 @@ describe("Users",function(){
 						expect(users).to.have.all.with.property("role");
 						expect(users).to.have.all.with.property("active",true);
 						expect(page).to.be.equals(1);
-						client.get('/logout')
 						done();
 					})
 					.catch(function(err){
@@ -214,7 +213,6 @@ describe("Users",function(){
 					expect(user).to.have.property("email");
 					expect(user).to.have.property("role");
 					expect(user).to.have.property("active",true);
-					client.get('/logout')
 					done();
 				})
 				.catch(function(err){
@@ -247,7 +245,7 @@ describe("Users",function(){
 						.expect(404)
 				})
 				.then(function(res){
-					done();
+					done()
 				})
 				.catch(function(err){
 					done(err);
@@ -285,12 +283,12 @@ describe("Users",function(){
 	});
 
 	describe("Delete",function(){
-		var data, listUrl = baseUrl + "/list";
+		var data, delUrl = baseUrl + "/";
 
 		before(function(done){
 			this.timeout(3000);
 
-			UsersData.list().then(function(rdata){
+			UsersData.del().then(function(rdata){
 				data = rdata;
 				done();
 			})
@@ -309,5 +307,40 @@ describe("Users",function(){
 		it("should have an User model available",function(){
 			expect(User).not.to.be.undefined;
 		});
+
+		it("should delete user",function(done){
+			var client = request.agent(app);
+			var id = data.users.user4._id;
+			client
+				.post('/login')
+				.send({username:data.users.user4.username,password:'12345678'})
+				.then(function(res){
+					return client
+						.del(delUrl + data.users.user4.id)
+						.expect(200)
+				})
+				.then(function(res){
+					var user = res.body.user;
+					expect(user).to.have.property("id",data.users.user4._id.toString());
+					done();
+				})
+				.catch(function(err){
+					done(err);
+				});
+		});
+
+		it("should respond with 401 when user is not authenticated",function(done){
+			var client = request.agent(app);
+			client
+				.del(delUrl + data.users.user4.id)
+				.expect(401)
+				.then(function(res){
+					done();
+				})
+				.catch(function(err){
+					done(err);
+				})
+		});
+
 	});
 });
