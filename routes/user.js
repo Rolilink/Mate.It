@@ -45,7 +45,7 @@ app.get('/api/users/:id',authorization.is('User'),function(req,res,next){
 			if(err.name == "CastError")
 				return res.status(422).json({err:err});
 
-			if(err.name == "UserDontExist")
+			if(err.name == "UserNotFound")
 				return res.status(404).json({err:err});
 
 			return res.status(500).json({err:err});
@@ -65,7 +65,7 @@ app.get('/api/users/:id',authorization.is('User'),function(req,res,next){
 app.del('/api/users/:id',authorization.is('Self'),function(req,res,next){
 	seneca.act({controller:'user',action:'delete',id:req.param('id'),blacklist:'-password -emailKey -aId'},function(err,result){
 		if(err){
-			console.log(err);
+
 			if(err.name == "CastError")
 				return res.status(422).json({err:err});
 
@@ -95,7 +95,7 @@ app.post('/api/users/:id',authorization.is('Self'),function(req,res,next){
 			if(err.name == "CastError")
 				return res.status(422).json({err:err});
 
-			if(err.name == "UserDontExist")
+			if(err.name == "UserNotFound")
 				return res.status(404).json({err:err});
 
 			return res.status(422).json({errors:err.errors});

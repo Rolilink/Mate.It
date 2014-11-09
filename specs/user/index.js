@@ -234,6 +234,24 @@ describe("Users",function(){
 				})
 		});
 
+		it("should respond with 422 when providing a bad id",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:'12345678'})
+				.then(function(res){
+					return client
+						.get(getUrl + "assdsadasdlolbadkey")
+						.expect(422)
+				})
+				.then(function(res){
+					done()
+				})
+				.catch(function(err){
+					done(err);
+				});
+		});
+
 		it("should respond with 404 when user with that id is not found",function(done){
 			var client = request.agent(app);
 			client
@@ -241,7 +259,7 @@ describe("Users",function(){
 				.send({username:data.users.user1.username,password:'12345678'})
 				.then(function(res){
 					return client
-						.get(getUrl + "sadasbadkeylol")
+						.get(getUrl + "545327a2fe016f0000461675")
 						.expect(404)
 				})
 				.then(function(res){
@@ -333,7 +351,7 @@ describe("Users",function(){
 				})
 		});
 
-		it("should respond with 401 whe trying to update another user",function(done){
+		it("should respond with 401 when trying to update another user",function(done){
 			var client = request.agent(app);
 			client
 				.post('/login')
@@ -347,6 +365,70 @@ describe("Users",function(){
 							}
 						})
 						.expect(401)
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(function(err){
+					done(err);
+				})
+		});
+
+		it("should respond with 401 when user is not authenticated",function(done){
+			var client = request.agent(app);
+			client
+				.post(updateUrl + data.users.user2.id)
+				.send({
+					user:{
+						username:"no idea"
+					}
+				})
+				.expect(401)
+				.then(function(res){
+					done();
+				})
+				.catch(function(err){
+					done(err);
+				})
+		});
+
+		it("should respond with 422 when providing a bad id with admin only",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.adminuser.username,password:'12345678'})
+				.then(function(){
+					return client
+						.post(updateUrl + "assdsadasdlolbadkey")
+						.send({
+							user:{
+								username:"no idea"
+							}
+						})
+						.expect(422)
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(function(err){
+					done(err);
+				})
+		});
+
+		it("should respond with 404 when providing id dont exist with admin only",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.adminuser.username,password:'12345678'})
+				.then(function(){
+					return client
+						.post(updateUrl + "545327a2fe016f0000461675")
+						.send({
+							user:{
+								username:"no idea"
+							}
+						})
+						.expect(404)
 				})
 				.then(function(res){
 					done();
@@ -426,7 +508,7 @@ describe("Users",function(){
 				.then(function(res){
 					return client
 						.del(delUrl + 'sadasdasbadkeylol')
-						.expect(442)
+						.expect(422)
 				})
 				.then(function(){
 					done();

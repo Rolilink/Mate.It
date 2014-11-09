@@ -33,8 +33,11 @@ var findUser = function(id,attr){
 	User.findById(id,attr).exec(function(err,user){
 		if(err)
 			return deferred.reject(err);
-		if(!user)
-			return deferred.reject({name:"UserNotFound"});
+		if(!user){
+			var error = new Error("user not found");
+			error.name = "UserNotFound";
+			return deferred.reject(error);
+		}
 		return deferred.resolve(user);
 	});
 	return deferred.promise;
