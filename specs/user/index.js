@@ -256,7 +256,7 @@ describe("Users",function(){
 	});
 
 	describe("Update",function(){
-		var data, listUrl = baseUrl + "/list";
+		var data, updateUrl = baseUrl + "/";
 
 		before(function(done){
 			this.timeout(3000);
@@ -280,6 +280,82 @@ describe("Users",function(){
 		it("should have an User model available",function(){
 			expect(User).not.to.be.undefined;
 		});
+
+		it("should update user when doing a valid post",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:'12345678'})
+				.then(function(){
+					return client
+						.post(updateUrl + data.users.user1.id)
+						.send({
+							user:{
+								name:"ni idea"
+							}
+						})
+						.expect(200)
+				})
+				.then(function(res){
+					var user = res.body.user;
+					expect(user).not.to.be.undefined;
+					expect(user).to.have.property("name","ni idea");
+					done();
+				})
+				.catch(function(err){
+					done(err);
+				})
+		});
+
+		it("should respond with 422 and errors when validation fails",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:'12345678'})
+				.then(function(){
+					return client
+						.post(updateUrl + data.users.user1.id)
+						.send({
+							user:{
+								username:"n"
+							}
+						})
+						.expect(422)
+				})
+				.then(function(res){
+					var errors = res.body.errors;
+					expect(errors).not.to.be.undefined;
+					expect(errors).to.have.property("username");
+					done();
+				})
+				.catch(function(err){
+					done(err);
+				})
+		});
+
+		it("should respond with 401 whe trying to update another user",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:'12345678'})
+				.then(function(){
+					return client
+						.post(updateUrl + data.users.user2.id)
+						.send({
+							user:{
+								username:"no idea"
+							}
+						})
+						.expect(401)
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(function(err){
+					done(err);
+				})
+		});
+
 	});
 
 	describe("Delete",function(){
@@ -340,6 +416,42 @@ describe("Users",function(){
 				.catch(function(err){
 					done(err);
 				})
+		});
+
+		it("should respond with 442 when providing a bad id",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.adminuser.username,password:'12345678'})
+				.then(function(res){
+					return client
+						.del(delUrl + 'sadasdasbadkeylol')
+						.expect(442)
+				})
+				.then(function(){
+					done();
+				})
+				.catch(function(err){
+					done(err);
+				});
+		});
+
+		it("should respond with 404 when id dont exist",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.adminuser.username,password:'12345678'})
+				.then(function(res){
+					return client
+						.del(delUrl + '545327a2fe016f0000461675')
+						.expect(404)
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(function(err){
+					done(err);
+				});
 		});
 
 	});

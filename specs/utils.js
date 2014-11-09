@@ -2,6 +2,7 @@ var setupInvitationsCreate = function(){
 	var deferred = q.defer();
 	// setup users and properties
 	var users = {
+		adminuser: new User({username:"adminuser",email:"adminuser@mateit.com",password:"12345678",active:true,role:"admin"}),
 		tHostUser: new User({username:"thostuser",email:"thost@user.com",password:"12345678",active:true}),
 		tHostUser2: new User({username:"thostuser2",email:"thost2@user.com",password:"12345678",active:true}),
 		tAnotherUser: new User({username:"tanotheruser",email:"tanother@user.com",password:"12345678,active:true"}),
@@ -42,6 +43,7 @@ var setupInvitationsConsume = function(){
 	var deferred = q.defer();
 	// setup users and properties
 	var users = {
+		adminuser: new User({username:"adminuser",email:"adminuser@mateit.com",password:"12345678",active:true,role:"admin"}),
 		tHostUser: new User({username:"thostuser",email:"thost@user.com",password:"12345678",active:true}),
 		tHostUser2: new User({username:"thostuser2",email:"thost2@user.com",password:"12345678",active:true}),
 		tHostUser3: new User({username:"thostuser3",email:"thost3@user.com",password:"12345678",active:true}),
@@ -124,6 +126,7 @@ var setupUserList = function(){
 	var deferred = q.defer();
 	// setup users and properties
 	var users = {
+		adminuser: new User({username:"adminuser",email:"adminuser@mateit.com",password:"12345678",active:true,role:"admin"}),
 		user1: new User({username:"usern1",email:"user1@user.com",password:"12345678",country:"panama",active:true}),
 		user2: new User({username:"usern2",email:"user2@user.com",password:"12345678",country:"panama",active:true}),
 		user3: new User({username:"usern3",email:"user3@user.com",password:"12345678",country:"panama",active:true}),
@@ -150,6 +153,7 @@ var setupUserDelete = function(){
 	var deferred = q.defer();
 	// setup users and properties
 	var users = {
+		adminuser: new User({username:"adminuser",email:"adminuser@mateit.com",password:"12345678",active:true,role:"admin"}),
 		user1: new User({username:"usern1",email:"user1@user.com",password:"12345678",country:"panama",active:true}),
 		user2: new User({username:"usern2",email:"user2@user.com",password:"12345678",country:"panama",active:true}),
 		user3: new User({username:"usern3",email:"user3@user.com",password:"12345678",country:"panama",active:true}),

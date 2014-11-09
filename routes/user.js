@@ -8,6 +8,9 @@ app.post('/api/users',function(req,res,next){
 
 	seneca.act({controller:'user',action:'create',data:req.body.user,file:file},function(err,result){
 		if(err){
+			if(err.name == "CastError")
+				return res.status(422).json({err:err});
+
 			return res.status(422).json({errors:err.errors});
 		}
 		res.status(result.status).json(result.response);
@@ -39,6 +42,12 @@ app.post('/api/users/list',authorization.is('User'),function(req,res,next){
 app.get('/api/users/:id',authorization.is('User'),function(req,res,next){
 	seneca.act({controller:'user',action:'get',id:req.param('id'),blacklist:'-password -emailKey -aId'},function(err,result){
 		if(err){
+			if(err.name == "CastError")
+				return res.status(422).json({err:err});
+
+			if(err.name == "UserDontExist")
+				return res.status(404).json({err:err});
+
 			return res.status(500).json({err:err});
 		}
 
@@ -56,13 +65,26 @@ app.get('/api/users/:id',authorization.is('User'),function(req,res,next){
 app.del('/api/users/:id',authorization.is('Self'),function(req,res,next){
 	seneca.act({controller:'user',action:'delete',id:req.param('id'),blacklist:'-password -emailKey -aId'},function(err,result){
 		if(err){
+
+			if(err.name == "CastError")
+				return res.status(422).json({err:err});
+
+			if(err.name == "UserDontExist")
+				console.log(err.Error);
+				return res.status(404).json({err:err});
 			return res.status(500).json({err:err});
 		}
+
+		if(result.user===null)
+		{
+			res.status(404).json({message:'User does not exist'});	
+		}
+
 		res.status(200).json({user:{id:req.param('id')}});
 	});
 });
 
-app.post('/api/users/:id',authorization.is('User'),function(req,res,next){
+app.post('/api/users/:id',authorization.is('Self'),function(req,res,next){
 	var file;
 
 	if(req.files)
@@ -70,9 +92,15 @@ app.post('/api/users/:id',authorization.is('User'),function(req,res,next){
 	
 	seneca.act({controller:'user',action:'update',data:req.param('user'),id:req.param('id'),file:file,blacklist:'-password -emailKey -aId'},function(err,result){
 		if(err){
-			return res.status(500).json({err:err});
+			if(err.name == "CastError")
+				return res.status(422).json({err:err});
+
+			if(err.name == "UserDontExist")
+				return res.status(404).json({err:err});
+
+			return res.status(422).json({errors:err.errors});
 		}
-		res.status(200).json({message:'updated'});
+		res.status(200).json(result);
 	});
 });
 
