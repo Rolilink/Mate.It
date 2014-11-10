@@ -4,7 +4,7 @@ Properties are places where users stays
 ## Flow 1 - Success Flow
 This Flow is the happy day flow
 
-POST /api/properties/:id
+GET /api/properties/:id
 
 
 Return:
@@ -34,7 +34,7 @@ Body:
 
 ## Flow 2 - Error Flow: User is not authenticated
 
-POST /api/properties/:id
+GET /api/properties/:id
 ``javascript
 {
 	query:{
@@ -57,7 +57,7 @@ Status Code: 401
 
 ## Flow 3 - Error Flow: Property does not exist
 
-POST /api/properties/:id
+GET /api/properties/:id
 ``javascript
 {
 	query:{

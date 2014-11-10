@@ -194,3 +194,7 @@ exports.users = {
 	list: setupUserList,
 	del: setupUserDelete
 };
+
+exports.properties = {
+
+}

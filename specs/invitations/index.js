@@ -1,5 +1,4 @@
 var utils = require('../utils'),
-chai = require('chai'),
 request = require('supertest-as-promised'),
 eraseDb = require ('../utils').eraseDatabase,
 invitationsData = require('../utils').invitations;
@@ -8,7 +7,7 @@ invitationsData = require('../utils').invitations;
 describe("Invitations:",function(){
 
 	// Creating a new Invitation
-	describe("Creating a new Invitation:",function(){
+	describe("Create",function(){
 		var data;
 
 		before(function(done){
@@ -182,7 +181,7 @@ describe("Invitations:",function(){
 	});
 
 	// Consuming an existing Invitation
-	describe("Consuming a existing invitation:",function(){
+	describe("Consume",function(){
 		var data,consumeUrl = "/api/invitations/";
 		
 		before(function(done){
