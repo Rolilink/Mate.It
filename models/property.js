@@ -77,6 +77,9 @@ Schema.methods.setOwner = function(ownerId){
 
 Schema.methods.addHabitant = function(userid){
 	this.habitants.push(userid);
+
+	if(this.habitants === this.capacity)
+		this.available = false;
 };
 
 Schema.methods.isFull = function(){

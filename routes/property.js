@@ -22,7 +22,7 @@ app.post('/api/properties',authorization.is('User'),function(req,res,next){
 });
  
  //returns the value of parameter 'id' brings back a specific property of id: id
-app.get('/api/properties/:id',function(req,res,next){
+app.get('/api/properties/:id',authorization.is('User'),function(req,res,next){
 	seneca.act({controller:'property',action:'get',id:req.param('id')},function(err,result){
 		
 		if(err){
@@ -40,7 +40,7 @@ app.get('/api/properties/:id',function(req,res,next){
 });
 
 //returns list of properties 
-app.get('/api/properties',function(req,res,next){
+app.get('/api/properties',authorization.is('User'),function(req,res,next){
 	seneca.act({controller:'property',action:'list',query:{},page:req.param('page'),limit:req.param('limit')},function(err,result){
 		if(err){
 			return res.status(500).json({err:err});
@@ -50,7 +50,7 @@ app.get('/api/properties',function(req,res,next){
 });
 
 // returns list of properties based in a query
-app.post('/api/properties/list',function(req,res,next){
+app.post('/api/properties/list',authorization.is('User'),function(req,res,next){
 	seneca.act({controller:'property',action:'list',query:req.param('query'),page:req.param('page'),limit:req.param('limit')},function(err,result){
 		if(err){
 			return res.status(500).json({err:err});

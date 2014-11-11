@@ -3,7 +3,7 @@ request = require('supertest-as-promised'),
 eraseDb = require ('../utils').eraseDatabase,
 PropertiesData = require('../utils').properties;
 
-describe.only("Properties",function(){
+describe("Properties",function(){
 	baseUrl = "/api/properties"
 	describe("Create",function(){
 		var data;
@@ -220,15 +220,171 @@ describe.only("Properties",function(){
 	});
 
 	describe("List",function(){
-		var data;
+		var data,listUrl = baseUrl + "/list"
+
+		before(function(done){
+			this.timeout(3000);
+
+			PropertiesData.list().then(function(rdata){
+				data = rdata;
+				done();
+			})
+			.catch(function(err){
+				done(err);
+			});
+		});
+
+		after(function(done){
+			eraseDb()
+			.then(function(){
+				done();
+			});
+		});
+
 
 		it("should have a property model available",function(){
 			expect(Invitation).not.to.be.undefined;
 		});
 
-		it("should respond with a list of properties when doing a valid query");
-		it("should respond with a 401 when user is not authenticated");
+		it("should respond with a list of properties when doing a valid query via a path",function(done){
+			var client = request.agent(app);
 
+			client
+				.post("/login")
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(listUrl)
+						.send({
+							query:{
+								price:{
+									"$gte":100,
+									"$lte":200
+								},
+								available:true
+							},
+							page:1,
+							limit:5
+						});
+				})
+				.then(function(res){
+					var properties = res.body.properties;
+					
+					expect(properties).not.to.be.undefined;
+					expect(properties).to.be.an.array;
+					expect(properties.length).to.be.at.most(5);
+
+					_.forEach(properties,function(property){
+						expect(property.price).to.be.within(100,200);
+					});
+
+					done();
+				})
+				.catch(done);
+		});
+
+		it("should respond with a list of properties when doing a geolocated $box search",function(done){
+			var client = request.agent(app);
+
+			client
+				.post("/login")
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(listUrl)
+						.send({
+							query:{
+								loc:{
+									"$geoWithin":{
+										'$box':data.areas.costa_del_este
+									}
+								},
+								available:true
+							},
+							page:1,
+							limit:5
+						});
+				})
+				.then(function(res){
+					var properties = res.body.properties;
+					expect(properties).not.to.be.undefined;
+					expect(properties).to.be.an.array;
+					expect(properties.length).to.be.equals(2);
+					done();
+				})
+				.catch(done);
+		});
+
+		it("should respond with a list of properties when doing a regex search on title",function(done){
+			var client = request.agent(app);
+
+			client
+				.post("/login")
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(listUrl)
+						.send({
+							query:{
+								"$or":[{
+									title:{
+										"$regex":'dorado',
+										"$options":'i'
+									}
+								},
+								{
+									description:{
+										"$regex":'dorado',
+										"$options":'i'
+									}	
+								}],
+								available:true
+							},
+							page:1,
+							limit:5
+						});
+				})
+				.then(function(res){
+					var properties = res.body.properties;
+					expect(properties).not.to.be.undefined;
+					expect(properties).to.be.an.array;
+					expect(properties.length).to.be.equals(2);
+					done();
+				})
+				.catch(done);
+		});
+
+		it("should respond with a 401 when user is not authenticated",function(done){
+			var client = request.agent(app);
+
+			client
+				.post(listUrl)
+				.send({
+					query:{
+						"$or":[{
+							title:{
+								"$regex":'dorado',
+								"$options":'i'
+							}
+						},
+						{
+							description:{
+								"$regex":'dorado',
+								"$options":'i'
+							}	
+						}],
+						available:true
+					},
+					page:1,
+					limit:5
+				})
+				.expect(401)
+				.then(function(res){
+					done();
+				})
+				.catch(done);
+		});
+			
 		// finish list#describe()
 	});
 
