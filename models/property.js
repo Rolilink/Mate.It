@@ -8,21 +8,19 @@ uuid = require('node-uuid');
 
 
 var Schema = new mongoose.Schema({
-	capacity:{type:Number,min:1}, //ok
+	capacity:{required:true,type:Number,min:1}, //ok
 	available:{type:Boolean,default:true}, //ok
-	country:{type:String}, //ok
-	address:{type:String,validate:[validate('len',10,70)]}, //ok
-	longitude:{type:Number,min:-180,max:180}, //ok
-	lattitude:{type:Number,min:-90,max:90}, //ok
-	price:{type:Number,min:1},
+	country:{required:true,type:String}, //ok
+	address:{required:true,type:String,validate:[validate('len',10,70)]}, //ok
+	loc:{required:true,type:[Number],index:'2dsphere'},
+	price:{required:true,type:Number,min:1},
 	createdAt:{type:Date,default:Date.now()},//ok
-	roomType:{type:String,enum:['private','shared']}, //ok
-	propertyType:{type:String,enum:['apartment','house','other']}, //ok
-	headLine:{type:String,validate:[validate('len',10,60)]},
-	description:{type:String,validate:[validate('len',10,500)]}, //ok 
-	title:{type:String}, // ok
+	roomType:{type:String,enum:['private','shared'],default:"private"}, //ok
+	propertyType:{type:String,enum:['apartment','house','other'],default:"apartment"}, //ok
+	description:{required:true,type:String,validate:[validate('len',10,500)]}, //ok 
+	title:{required:true,type:String}, // ok
 	photos:[{url:String,description:String}],
-	genderAllowed:{type:String,enum:['male,female,both']},
+	genderAllowed:{type:String,enum:['male','female','both'],default:"both"},
 	owner:{type:mongoose.Schema.Types.ObjectId, ref:'User'},
 	habitants:[{type:mongoose.Schema.Types.ObjectId, ref:'User'}],
 	comments:[{type:mongoose.Schema.Types.ObjectId, ref:'Comment'}],

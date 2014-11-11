@@ -149,7 +149,6 @@ Schema.methods.ownProperty = function(propertyId){
     isOwner:true,
     data: propertyId
   }
-  console.log(this);
   return this;
 }
 

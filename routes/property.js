@@ -1,14 +1,19 @@
 //Routes for Property
 //req.body holds parameters that are sent up from the client as part of a post request.
 app.post('/api/properties',authorization.is('User'),function(req,res,next){
-	var handleError = function(err){ res.status(500).json({err:err});},
-	handleSuccess = function(result){ res.status(200).json({id:result.property._id}); };
+	var handleError = function(err){ 
+		if(err === "You already have a property created.")
+			return res.status(422).json({error:"You already have a property created."});
 
-	/*if(!req.userCan('Create Property'))
+		res.status(422).json({errors:err.errors});
+	},
+	handleSuccess = function(result){ res.status(201).json({property:result.property}); };
+
+	if(!req.userCan('Create Property'))
 		return handleError('You already have a property created.');
-	*/
+	
 	// User can create a property
-	seneca.act({controller:'property',action:'create',data:req.body,owner:req.user.id},function(err,result){
+	seneca.act({controller:'property',action:'create',data:req.body.property,owner:req.user.id},function(err,result){
 		if(err)
 			return handleError(err);
 		return handleSuccess(result);
@@ -26,7 +31,6 @@ app.get('/api/properties/:id',function(req,res,next){
 		
 
 		if(result.property===null){
-		console.log("result of property ",result.property);
 		return res.status(404).json({message:'Property does not exist'});
 		}
 		else{

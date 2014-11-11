@@ -1,5 +1,5 @@
 # Creating an Properties Flows and Responses
-Properties are places where users stays
+Properties are places where propertys stays
 
 ## Flow 1 - Success Flow
 This Flow is the happy day flow
@@ -53,8 +53,16 @@ Body:
 POST /api/properties
 ```javascript
 {
-	user:{
-		capacity: 4
+	property:{
+		capacity: 4,
+		address: "Cerro Viento, Calle 62",
+		country: "Panama",
+		roomType: "private",
+		propertyType: "house",
+		genderAllowed: 'both',
+		amenities: ['kitchen','internet','wifi'],
+		price: 300,
+		loc: [9.066006, -79.448069]
 	}
 } 
 ```
@@ -68,8 +76,15 @@ Status Code: 401
 POST /api/properties
 ```javascript
 {
-	user:{
-		capacity: 4
+	property:{
+		capacity: 4,
+		address: "Cerro Viento, Calle 62",
+		country: "Panama",
+		roomType: "private",
+		propertyType: "house",
+		genderAllowed: 'both',
+		amenities: ['kitchen','internet','wifi'],
+		price: 300
 	}
 } 
 ```
@@ -79,19 +94,17 @@ Status Code: 422
 Body:
 ```javascript
 {
-	errors:[
-		{
-			type:"field_missing"
-			field:"title"
-		},
-		{
-			type:"field_missing"
-			field:"description"
-		}
-		.
-		.
-		.
-	]
+	{ errors: 
+   { title: 
+      { message: 'Path `title` is required.',
+        name: 'ValidatorError',
+        path: 'title',
+        type: 'required' },
+     description: 
+      { message: 'Path `description` is required.',
+        name: 'ValidatorError',
+        path: 'description',
+        type: 'required' } } }
 } 
 ```
 
@@ -108,7 +121,7 @@ POST /api/properties
 		propertyType: "house",
 		title: "This is a Title",
 		description: "asdasdasdasdas sadasdasdasdas asdasdasdasdasdasd asdasdas",
-		genderAllowed: 'both',
+		genderAllowed: 'none',
 		amenities: ['kitchen','internet','wifi'],
 		price: 300,
 		loc: [9.066006, -79.448069]
@@ -121,12 +134,19 @@ Status Code: 422
 Body:
 ```javascript
 {
-	errors:[
-		{
-			type:"validation_err"
-			field:"capacity"
-		}
-	]
+	{ errors: 
+   { genderAllowed: 
+      { message: '`none` is not a valid enum value for path `genderAllowed`.',
+        name: 'ValidatorError',
+        path: 'genderAllowed',
+        type: 'enum',
+        value: 'none' },
+     capacity: 
+      { message: 'Path `capacity` () is less than minimum allowed value (1).',
+        name: 'ValidatorError',
+        path: 'capacity',
+        type: 'min',
+        value: 0 } } }
 } 
 ```
 

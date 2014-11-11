@@ -68,7 +68,7 @@ seneca.add({controller:'property',action:'create'},function(args,cb){
 	ownerId = args.owner,
 	handleSuccess = function(data){ cb(null,{property:data}); },
 	handleError = function(err){	cb(err,null); };
-
+	
 	var createdProperty = new Property(data);
 	createdProperty.setOwner(ownerId);
 

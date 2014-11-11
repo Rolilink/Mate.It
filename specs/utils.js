@@ -176,6 +176,31 @@ var setupUserDelete = function(){
 	return deferred.promise;
 }
 
+var setupPropertiesCreate = function(){
+	var deferred = q.defer();
+	// setup users and properties
+	var users = {
+		adminuser: new User({username:"adminuser",email:"adminuser@mateit.com",password:"12345678",active:true,role:"admin"}),
+		user1: new User({username:"usern1",email:"user1@user.com",password:"12345678",country:"panama",active:true}),
+		user2: new User({username:"usern2",email:"user2@user.com",password:"12345678",country:"panama",active:true})
+	};
+
+	// save transactions
+	var transactions = _.invoke(users,'saveQ');
+
+	q.all(transactions)
+		.then(function(){
+			deferred.resolve({
+				users: users
+			});
+		})
+		.catch(function(err){
+			deferred.reject(err);
+		});
+
+	return deferred.promise;
+};
+
 exports.eraseDatabase = function(){
 	return q.all([
 		User.removeQ({}),
@@ -196,5 +221,5 @@ exports.users = {
 };
 
 exports.properties = {
-
+	create: setupPropertiesCreate
 }
