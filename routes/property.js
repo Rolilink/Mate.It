@@ -26,19 +26,16 @@ app.get('/api/properties/:id',authorization.is('User'),function(req,res,next){
 	seneca.act({controller:'property',action:'get',id:req.param('id')},function(err,result){
 
 		if(err){
+			if(err.name == "PropertyNotFound")
+				return res.status(404).json({err:err});
+
 			if(err.name == "CastError"){
 				return res.status(422).json({err:err});
 			}
 			return res.status(500).json({err:err});
 		}
-		
 
-		if(result.property===null){
-		return res.status(404).json({message:'Property does not exist'});
-		}
-		else{
-			res.status(200).json({property:result.property});
-		}
+		res.status(200).json({property:result.property});
 	});
 });
 
@@ -66,19 +63,24 @@ app.post('/api/properties/list',authorization.is('User'),function(req,res,next){
 app.del('/api/properties/:id',authorization.is('Owner'),function(req,res,next){
 	seneca.act({controller:'property',action:'delete',id:req.param('id')},function(err,result){
 		if(err){
-			return res.status(500).json({err:err});
+			if(err.name == "PropertyNotFound")
+				return res.status(404).json({err:err});
+			return res.status(422).json({errors:err.errors});
 		}
-		res.status(200).json({message:'deleted'});
+		res.status(200).json({property:result.property});
 	});
 });
 
 //updates property of id:id bringing back the parameter of id, then sends back the object.
 app.post('/api/properties/:id',authorization.is('Owner'),function(req,res,next){
 	seneca.act({controller:'property',action:'update',data:req.param('property'),id:req.param('id')},function(err,result){
+		
 		if(err){
-			return res.status(500).json({err:err});
+			if(err.name == "PropertyNotFound")
+				return res.status(404).json({err:err});
+			return res.status(422).json({errors:err.errors});
 		}
-		res.status(200).json({message:'updated'});
+		res.status(200).json({property:result.property});
 	});
 });
 

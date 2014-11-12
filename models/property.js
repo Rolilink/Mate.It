@@ -18,7 +18,7 @@ var Schema = new mongoose.Schema({
 	roomType:{type:String,enum:['private','shared'],default:"private"}, //ok
 	propertyType:{type:String,enum:['apartment','house','other'],default:"apartment"}, //ok
 	description:{required:true,type:String,validate:[validate('len',10,500)]}, //ok 
-	title:{required:true,type:String}, // ok
+	title:{required:true,type:String,validate:[validate('len',5,140)]}, // ok
 	photos:[{url:String,description:String}],
 	genderAllowed:{type:String,enum:['male','female','both'],default:"both"},
 	owner:{type:mongoose.Schema.Types.ObjectId, ref:'User'},
@@ -85,6 +85,33 @@ Schema.methods.addHabitant = function(userid){
 Schema.methods.isFull = function(){
 	return this.habitants.length >= this.capacity;
 };
+
+// Validate capacity > habitants.length
+Schema.pre('save',function(next){
+  var self = this;
+  
+  if (!self.isModified('capacity')){
+    return next();
+  };
+
+  if(self.capacity === self.habitants.length){
+  	this.available = false;
+  	next();
+  }
+
+  next();
+});
+
+Schema.path('capacity').validate(function(value,done){
+ 	var self = this;
+
+  if(self.habitants.length > 0 && self.capacity < self.habitants.length){
+  	return done(false);
+  }
+
+  done(true);
+
+},'cannot update capacity below current quantity of habitants');
 
 Schema.plugin(troop.timestamp);
 var paginate = require('./plugins/paginate');

@@ -12,6 +12,12 @@ var findProperty = function(id){
  	Property.findById(id,function(err,property){
  		if(err)
  			return deferred.reject(err);
+ 		
+ 		if(!property){
+			var error = new Error("property not found");
+			error.name = "PropertyNotFound";
+			return deferred.reject(error);
+		}
  		return deferred.resolve(property);
  	});
 

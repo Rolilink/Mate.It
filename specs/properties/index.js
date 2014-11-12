@@ -488,37 +488,338 @@ describe("Properties",function(){
 	describe("Update",function(){
 		var data;
 
+		before(function(done){
+			this.timeout(3000);
+
+			PropertiesData.get().then(function(rdata){
+				data = rdata;
+				done();
+			})
+			.catch(function(err){
+				done(err);
+			});
+		});
+
+		after(function(done){
+			eraseDb()
+			.then(function(){
+				done();
+			});
+		});
+
 		it("should have a property model available",function(){
 			expect(Invitation).not.to.be.undefined;
 		});
 
-		it("should update the property when doing a valid post");
-		it("should respond with 404 when property does not exist");
-		it("should respond with 422 when giving a bad id");
-		it("should respond with a 422 and an errors object containing a validation error per field when failing validation");
-		it("should respond with 401 when user is not property owner or is not admin");
-		it("should respond with 401 when user is not authenticated");
-		it("should respond with 404 when property does not exist");
-		it("should respond with 422 when giving a bad id");
+		it("should update the property when doing a valid post",function(done){
+			var client = request.agent(app),
+			url = baseUrl + '/' + data.users.user1.property.data;
+					
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(url)
+						.send({
+							property:{
+								title:"Apartamento en Torre Nueva, Costa del Este"
+							}
+						})
+						.expect(200);
+				})
+				.then(function(res){
+					var property = res.body.property;
+					expect(property).not.to.be.undefined;
+					expect(property).to.have.property('title',"Apartamento en Torre Nueva, Costa del Este");
+					done();
+				})	
+				.catch(done)
+		});
+
+		it("should respond with a 422 and cannot update capacity below current quantity of habitants",function(done){
+			var client = request.agent(app),
+			url = baseUrl + '/' + data.properties.property3._id;
+					
+			client
+				.post('/login')
+				.send({username:data.users.user3.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(url)
+						.send({
+							property:{
+								capacity:2
+							}
+						})
+						.expect(422);
+				})
+				.then(function(res){
+					var errors = res.body.errors;
+					expect(errors).not.to.be.undefined;
+					expect(errors).to.have.property('capacity');
+					var error = errors.capacity;
+					expect(error.message).to.be.equals('cannot update capacity below current quantity of habitants');
+					done();
+				})	
+				.catch(done)
+		});
+
+		it("should respond with a 422 and an errors object containing a validation error per field when failing validation",function(done){
+			var client = request.agent(app),
+			url = baseUrl + '/' + data.properties.property3._id;
+					
+			client
+				.post('/login')
+				.send({username:data.users.user3.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(url)
+						.send({
+							property:{
+								title:'a',
+								description:'a'
+							}
+						})
+						.expect(422);
+				})
+				.then(function(res){
+					var errors = res.body.errors;
+					expect(errors).not.to.be.undefined;
+					expect(errors).to.have.property('title');
+					expect(errors).to.have.property('description');
+					done();
+				})	
+				.catch(done)
+		});
+
+		it("should respond with 401 when user is not property owner or is not admin",function(done){
+			var client = request.agent(app),
+			url = baseUrl + '/' + data.properties.property3._id;
+					
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(url)
+						.send({
+							property:{
+								title:'a',
+								description:'a'
+							}
+						})
+						.expect(401);
+				})
+				.then(function(res){
+					done();
+				})	
+				.catch(done)
+		});
+		it("should respond with 401 when user is not authenticated",function(done){
+			var client = request.agent(app),
+			url = baseUrl + '/' + data.properties.property3._id;
+					
+			client
+				.post(url)
+				.send({
+					property:{
+						title:'a',
+						description:'a'
+					}
+				})
+				.expect(401)
+				.then(function(res){
+					done();
+				})	
+				.catch(done)
+		});
+		it("should respond with 404 when property does not exist",function(done){
+			var client = request.agent(app),
+			url = baseUrl + '/' + data.users.user3._id;
+					
+			client
+				.post('/login')
+				.send({username:data.users.adminuser.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(url)
+						.send({
+							property:{
+								title:"Apartamento en Torre Nueva, Costa del Este"
+							}
+						})
+						.expect(404);
+				})
+				.then(function(res){
+					done();
+				})	
+				.catch(done)
+		});
+
+		it("should respond with 422 when giving a bad id",function(done){
+			var client = request.agent(app),
+			url = baseUrl + '/sadasdaslolbadkey';
+					
+			client
+				.post('/login')
+				.send({username:data.users.adminuser.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(url)
+						.send({
+							property:{
+								title:"Apartamento en Torre Nueva, Costa del Este"
+							}
+						})
+						.expect(422);
+				})
+				.then(function(res){
+					done();
+				})	
+				.catch(done)
+		});
 
 	});
 
 	describe("Delete",function(){
 		var data;
 
+		before(function(done){
+			this.timeout(3000);
+
+			PropertiesData.get().then(function(rdata){
+				data = rdata;
+				done();
+			})
+			.catch(function(err){
+				done(err);
+			});
+		});
+
+		after(function(done){
+			eraseDb()
+			.then(function(){
+				done();
+			});
+		});
+
 		it("should have a property model available",function(){
 			expect(Invitation).not.to.be.undefined;
 		});
 
-		it("should delete a property when doing a sucessful delete request");
-		it("should respond with 401 when user is not authenticated");
-		it("should respond with 404 when property does not exist");
-		it("should respond with 401 when user is not property owner or is not admin");
-		it("should respond with 422 when giving a bad id");
+		it("should delete a property when doing a sucessful delete request",function(done){
+			var client = request.agent(app);
+
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.del(baseUrl + '/' + data.properties.property1._id)
+						.expect(200);
+				})
+				.then(function(res){
+					var property = res.body.property;
+					expect(property).not.to.be.undefined;
+					expect(property._id).to.be.equals(data.properties.property1._id.toString());
+					done();
+				})	
+				.catch(done);
+		});
+
+		it("should respond with 401 when user is not authenticated",function(done){
+			var client = request.agent(app);
+
+			client
+			.del(baseUrl + '/' + data.properties.property1._id)
+			.expect(401)
+			.then(function(res){
+				done();
+			})	
+			.catch(done);
+		});
+
+		it("should respond with 404 when property does not exist",function(done){
+			var client = request.agent(app);
+
+			client
+				.post('/login')
+				.send({username:data.users.adminuser.username,password:"12345678"})
+				.then(function(){
+					return client
+						.del(baseUrl + '/' + data.users.user1._id)
+						.expect(404);
+				})
+				.then(function(res){
+					done();
+				})	
+				.catch(done);
+		});
+
+		it("should respond with 401 when user is not property owner or is not admin",function(done){
+			var client = request.agent(app);
+
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.del(baseUrl + '/' + data.properties.property3._id)
+						.expect(401);
+				})
+				.then(function(res){
+					done();
+				})	
+				.catch(done);
+		});
+
+		it("should respond with 422 when giving a bad id",function(done){
+			var client = request.agent(app);
+
+			client
+				.post('/login')
+				.send({username:data.users.adminuser.username,password:"12345678"})
+				.then(function(){
+					return client
+						.del(baseUrl + '/sadasdasdsadabadkeylol')
+						.expect(422);
+				})
+				.then(function(res){
+					done();
+				})	
+				.catch(done);
+		});
 
 
 		// finish delete#describe()
 	})
+
+	describe("Adding Photos",function(){
+
+		it("should add a photo to the property when doing a successful upload");
+		it("should respond with 422 if the file uploaded is not an image");
+		it("should respond with 401 when is not authenticated");
+		it("should respond with 404 when property does not exist");
+		it("should respond with 401 when user is not property owner or admin");
+		it("should respond with 422 when providing a bad id");
+	});
+
+	describe("Listing Photos",function(){
+		it("should list property photos when doing a valid get");
+		it("should respond with 401 when is not authenticated");
+		it("should respond with 404 when property does not exist");
+		it("should respond with 422 when providing a bad id");
+	});
+
+	describe("Deleting Photos",function(){
+		it("should delete property photos when doing a valid delete request");
+		it("should respond with 401 when is not authenticated");
+		it("should respond with 404 when property does not exist");
+		it("should respond with 422 when providing a bad property id");
+		it("should respond with 404 when photo does not exist");
+		it("should respond with 422 when providing a bad photo id");
+	});
 
 // finish properties#describe()
 });
