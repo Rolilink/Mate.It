@@ -60,7 +60,7 @@ Body:
       type: 'required',
       value: undefined 
     } 
-   }
+  }
 } 
 ```
 

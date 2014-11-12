@@ -220,7 +220,7 @@ describe("Properties",function(){
 	});
 
 	describe("List",function(){
-		var data,listUrl = baseUrl + "/list"
+		var data,listUrl = baseUrl + "/list";
 
 		before(function(done){
 			this.timeout(3000);
@@ -389,16 +389,98 @@ describe("Properties",function(){
 	});
 
 	describe("Get",function(){
+
 		var data;
+
+		before(function(done){
+			this.timeout(3000);
+
+			PropertiesData.get().then(function(rdata){
+				data = rdata;
+				done();
+			})
+			.catch(function(err){
+				done(err);
+			});
+		});
+
+		after(function(done){
+			eraseDb()
+			.then(function(){
+				done();
+			});
+		});
 
 		it("should have a property model available",function(){
 			expect(Invitation).not.to.be.undefined;
 		});
 
-		it("should respond with the property when doing a valid get");
-		it("should respond with 401 when user is not authenticated");
-		it("should respond with 404 when property does not exist");
-		it("should respond with 422 when giving a bad id");
+		it("should respond with the property when doing a valid get",function(done){
+			var client = request.agent(app),
+			url = baseUrl + '/' + data.users.user1.property.data;
+					
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.get(url);
+				})
+				.then(function(res){
+					var property = res.body.property;
+					expect(property).not.to.be.undefined;
+					expect(property).to.have.property("_id",data.properties.property1._id.toString());
+					done();
+				})	
+				.catch(done)
+		});
+
+		it("should respond with 401 when user is not authenticated",function(done){
+			var client = request.agent(app),
+			url = baseUrl + '/' + data.users.user1.property.data;
+					
+			client
+				.get(url)
+				.expect(401)
+				.then(function(res){
+					done();
+				})	
+				.catch(done)
+		});
+		it("should respond with 404 when property does not exist",function(done){
+			var client = request.agent(app),
+			url = baseUrl + '/' + data.users.user1._id;
+					
+			client
+				.post('/login')
+				.send({username:data.users.adminuser.username,password:"12345678"})
+				.then(function(){
+					return client
+						.get(url)
+						.expect(404)
+				})
+				.then(function(res){
+					done();
+				})	
+				.catch(done)
+		});
+		it("should respond with 422 when giving a bad id",function(done){
+			var client = request.agent(app),
+			url = baseUrl + '/asdasdasdlolbadkey';
+					
+			client
+				.post('/login')
+				.send({username:data.users.adminuser.username,password:"12345678"})
+				.then(function(){
+					return client
+						.get(url)
+						.expect(422)
+				})
+				.then(function(res){
+					done();
+				})	
+				.catch(done)
+		});
 
 		//finish get#describe()
 	});
@@ -410,7 +492,7 @@ describe("Properties",function(){
 			expect(Invitation).not.to.be.undefined;
 		});
 
-		it("should update the property when doing a valid get");
+		it("should update the property when doing a valid post");
 		it("should respond with 404 when property does not exist");
 		it("should respond with 422 when giving a bad id");
 		it("should respond with a 422 and an errors object containing a validation error per field when failing validation");

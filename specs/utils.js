@@ -258,6 +258,63 @@ var setupPropertiesList = function(){
 	return deferred.promise;
 }
 
+var setupPropertiesGet = function(){
+	var deferred = q.defer();
+	// setup users and properties
+	var users = {
+		adminuser: new User({username:"adminuser",email:"adminuser@mateit.com",password:"12345678",active:true,role:"admin"}),
+		user1: new User({username:"usern1",email:"user1@user.com",password:"12345678",country:"PA",active:true}),
+		user2: new User({username:"usern2",email:"user2@user.com",password:"12345678",country:"PA",active:true}),
+		user3: new User({username:"usern3",email:"user3@user.com",password:"12345678",country:"PA",active:true}),
+		user4: new User({username:"usern4",email:"user4@user.com",password:"12345678",country:"PA",active:true}),
+		user5: new User({username:"usern5",email:"user5@user.com",password:"12345678",country:"PA",active:true}),
+		user6: new User({username:"usern6",email:"user6@user.com",password:"12345678",country:"PA",active:true}),
+		user7: new User({username:"usern7",email:"user7@user.com",password:"12345678",country:"PA",active:true}),
+		user8: new User({username:"usern8",email:"user8@user.com",password:"12345678",country:"PA",active:true})
+	},
+	properties = {
+		property1: new Property({title:"Apartamento en Torre Planetarium, Costa del Este",description:"asdasdasdasdasdasdasdasdsadasdasdasdasdas",address:"cerro viento circunvalacion E",price:110,loc:[9.010320, -79.466527],country:"PA",capacity:4,owner:users.user1._id}),
+		property2: new Property({title:"Apartamento en Torre Vitri Costa del Este",description:"asdasdasdasdasdasdasdasdsadasdasdasdasdas",address:"cerro viento circunvalacion E",price:240,loc:[9.010516, -79.464295],country:"PA",capacity:3,owner:users.user2._id}),
+		property3: new Property({title:"Apartamento en Pearl At The Sea",description:"asdasdasdasdasdasdasdasdsadasdasdasdasdas",address:"cerro viento circunvalacion E",price:130,loc:[9.010151, -79.465935],country:"PA",capacity:3,available:false,owner:users.user3._id,habitants:[users.user6._id,users.user7._id,users.user8._id]}),
+		property4: new Property({title:"Apartamento en el dorado",description:"asdasdasdasdasdasdasdasdsadasdasdasdasdas",address:"cerro viento circunvalacion E",price:120,loc:[20,-10],country:"PA",capacity:2,owner:users.user4._id}),
+		property5: new Property({title:"Aparatamento en el dorado tambien",description:"asdasdasdasdasdasdasdasdsadasdasdasdasdas",address:"cerro viento circunvalacion E",price:120,loc:[20,-10],country:"PA",capacity:2,owner:users.user5._id}),
+	};
+
+
+	users.user1.property = {isOwner:true,data:properties.property1._id};
+	users.user2.property = {isOwner:true,data:properties.property2._id};
+	users.user3.property = {isOwner:true,data:properties.property3._id};
+	users.user4.property = {isOwner:true,data:properties.property4._id};
+	users.user5.property = {isOwner:true,data:properties.property5._id};
+
+	users.user6.property = {isOwner:false,data:properties.property3._id};
+	users.user7.property = {isOwner:false,data:properties.property3._id};
+	users.user8.property = {isOwner:false,data:properties.property3._id};
+
+	// join users and properties in one object
+	var allEntities = _.extend(_.clone(users),properties);
+
+	// save transactions
+	var transactions = _.invoke(allEntities,'saveQ');
+
+	q.all(transactions)
+		.then(function(){
+			deferred.resolve({
+				users: users,
+				properties: properties,
+				areas:{
+					costa_del_este:[[9.007196, -79.478703],[9.024743, -79.458575]],
+					el_dorado:[[9.007031, -79.536381],[9.011948, -79.530158]]
+				}
+			});
+		})
+		.catch(function(err){
+			deferred.reject(err);
+		});
+
+	return deferred.promise;
+}
+
 exports.eraseDatabase = function(){
 	return q.all([
 		User.removeQ({}),
@@ -279,5 +336,6 @@ exports.users = {
 
 exports.properties = {
 	create: setupPropertiesCreate,
-	list: setupPropertiesList
+	list: setupPropertiesList,
+	get: setupPropertiesGet
 }

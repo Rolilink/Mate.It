@@ -24,8 +24,11 @@ app.post('/api/properties',authorization.is('User'),function(req,res,next){
  //returns the value of parameter 'id' brings back a specific property of id: id
 app.get('/api/properties/:id',authorization.is('User'),function(req,res,next){
 	seneca.act({controller:'property',action:'get',id:req.param('id')},function(err,result){
-		
+
 		if(err){
+			if(err.name == "CastError"){
+				return res.status(422).json({err:err});
+			}
 			return res.status(500).json({err:err});
 		}
 		
