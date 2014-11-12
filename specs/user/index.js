@@ -536,4 +536,130 @@ describe("Users",function(){
 		});
 
 	});
+
+	describe("Uploading Profile Picture",function(){
+		var data;
+
+		before(function(done){
+			this.timeout(3000);
+
+			UsersData.list().then(function(rdata){
+				data = rdata;
+				done();
+			})
+			.catch(function(err){
+				done(err);
+			});
+		});
+
+		after(function(done){
+			eraseDb()
+			.then(function(){
+				done();
+			});
+		});
+
+		it("should add a profile picture to the photo when doing a sucessful upload",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(baseUrl + '/' + data.users.user1._id + '/profilepic')
+						.attach('picture','specs/files/profilepic.jpg')
+						.expect(200);
+				})
+				.then(function(res){
+					var user = res.body.user;
+					expect(user).not.to.be.undefined;
+					expect(user).to.have.property('profilePicture','uploads/profile/usern1.jpg');
+					done();
+				})
+				.catch(done)
+		});
+
+		it("should respond with 422 if the file uploaded is not an image",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(baseUrl + '/' + data.users.user1._id + '/profilepic')
+						.attach('picture','specs/utils.js')
+						.expect(422);
+				})
+				.then(function(res){
+					var error = res.body.error;
+					expect(error).not.to.be.undefined;
+					expect(error).to.be.equals('file to upload is not an image');
+					done();
+				})
+				.catch(done)
+		});
+
+		it("should respond with 401 when is not authenticated",function(done){
+			var client = request.agent(app);
+			client
+				.post(baseUrl + '/' + data.users.user1._id + '/profilepic')
+				.attach('picture','specs/files/profilepic.jpg')
+				.expect(401)
+				.then(function(res){
+					done()
+				})
+				.catch(done)
+		});
+
+		it("should respond with 404 when user does not exist",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.adminuser.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(baseUrl + '/545327a2fe016f0000461675/profilepic')
+						.attach('picture','specs/files/profilepic.jpg')
+						.expect(404);
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(done)
+		});
+
+		it("should respond with 401 when user is not self or admin",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(baseUrl + '/' + data.users.user2._id + '/profilepic')
+						.attach('picture','specs/files/profilepic.jpg')
+						.expect(401);
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(done)
+		});
+
+		it("should respond with 422 when providing a bad user id",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.adminuser.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(baseUrl + '/assdsadasdlolbadkey/profilepic')
+						.attach('picture','specs/files/profilepic.jpg')
+						.expect(422);
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(done)
+		});
+	});
 });

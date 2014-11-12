@@ -8,12 +8,10 @@ var fs = require('fs');
 
 var readFile = function(filePath){
 	var deferred = q.defer();
-	console.log('reading file:' + filePath);
 	fs.readFile(filePath,function(err,data){
 		if(err)
 			return deferred.reject(err);
 
-		console.log('file readed:' + filePath);
 		return deferred.resolve(data);
 	});
 
@@ -22,11 +20,10 @@ var readFile = function(filePath){
 
 var writeFile = function(pathName,data){
 	var deferred = q.defer();
-	console.log('writting file:' + pathName);
 	fs.writeFile(pathName,data,function(err){
 		if(err)
 			return deferred.reject(err);
-		console.log('file wrote:' + pathName);
+
 		return deferred.resolve(pathName);
 	});
 
@@ -38,7 +35,6 @@ var removeFile = function(filePath){
 	fs.unlink(filePath,function(err){
 		if(err)
 			return deferred.reject(err);
-		console.log('file removed:' + filePath);
 		return deferred.resolve(filePath);
 	});
 	return deferred.promise;
