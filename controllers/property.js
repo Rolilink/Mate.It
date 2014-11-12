@@ -139,7 +139,7 @@ seneca.add({controller:'property',action:'listPictures'},function(args,cb){
 seneca.add({controller:'property',action:'deletePicture'},function(args,cb){
 	var id = args.id,
 	pictureId = args.pictureId,
-	handleSuccess = function(data){ cb(null,{pictures: data.photos}); },
+	handleSuccess = function(data){ cb(null,{property: data}); },
 	handleError = function(err){	cb(err,null); },
 	deletePicture = function(property){ return property.removePicture(pictureId); };
 

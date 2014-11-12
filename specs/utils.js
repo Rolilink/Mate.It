@@ -1,3 +1,5 @@
+var fs = require('fs');
+
 var setupInvitationsCreate = function(){
 	var deferred = q.defer();
 	// setup users and properties
@@ -322,6 +324,12 @@ exports.eraseDatabase = function(){
 		Invitation.removeQ({}),
 	]);
 };
+
+exports.clearDir = function(dirPath){
+	fs.readdirSync(appRoot + dirPath).forEach(function(fileName){
+		fs.unlinkSync(appRoot + dirPath + fileName);
+	});
+}
 
 exports.invitations = {
 	create: setupInvitationsCreate,

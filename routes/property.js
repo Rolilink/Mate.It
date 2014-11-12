@@ -119,12 +119,17 @@ app.get('/api/properties/:id/photos',authorization.is('User'),function(req,res,n
 app.del('/api/properties/:id/photos/:photoid',authorization.is('Owner'),function(req,res,next){
 	var id = req.param('id'),
 	pictureId = req.param('photoid');
-
 	seneca.act({controller:'property',action:'deletePicture',id:id, pictureId:pictureId},function(err,result){
 		if(err){
-			return res.status(500).json({err:err});
+			if(err.name == "PropertyNotFound")
+				return res.status(404).json({err:err});
+
+			if(err.name == "PhotoNotFound")
+				return res.status(404).json({err:err});
+			
+			return res.status(422).json({errors:err.errors});
 		}
-		res.status(200).json({deleted:result.deleted});
+		res.status(200).json({property:result.property});
 	});
 });
 

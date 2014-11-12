@@ -1,7 +1,8 @@
 var utils = require('../utils'),
 request = require('supertest-as-promised'),
 eraseDb = require ('../utils').eraseDatabase,
-PropertiesData = require('../utils').properties;
+PropertiesData = require('../utils').properties,
+clearDir = require('../utils').clearDir;
 
 describe("Properties",function(){
 	baseUrl = "/api/properties"
@@ -810,6 +811,7 @@ describe("Properties",function(){
 		});
 
 		after(function(done){
+			clearDir("/public/uploads/properties/");
 			eraseDb()
 			.then(function(){
 				done();
@@ -922,7 +924,7 @@ describe("Properties",function(){
 		});
 	});
 
-	describe.only("Listing Photos",function(){
+	describe("Listing Photos",function(){
 		var data;
 
 		before(function(done){
@@ -1008,12 +1010,154 @@ describe("Properties",function(){
 	});
 
 	describe("Deleting Photos",function(){
-		it("should delete property photos when doing a valid delete request");
-		it("should respond with 401 when is not authenticated");
-		it("should respond with 404 when property does not exist");
-		it("should respond with 422 when providing a bad property id");
-		it("should respond with 404 when photo does not exist");
-		it("should respond with 422 when providing a bad photo id");
+		
+		before(function(done){
+			this.timeout(3000);
+
+			PropertiesData.get().then(function(rdata){
+				data = rdata;
+				done();
+			})
+			.catch(function(err){
+				done(err);
+			});
+		});
+
+		after(function(done){
+			clearDir("/public/uploads/properties/");
+			eraseDb()
+			.then(function(){
+				done();
+			});
+		});
+
+		it("should delete property photos when doing a valid delete request",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(baseUrl + '/' + data.properties.property1._id + '/photos')
+						.attach('picture','specs/files/profilepic.jpg')
+						.expect(200);
+				})
+				.then(function(res){
+					var property = res.body.property;
+					var photo = property.photos[0];
+
+					return client
+						.del(baseUrl + '/' + data.properties.property1._id + '/photos/' + photo._id)
+						.expect(200)
+				})
+				.then(function(res){
+					var property = res.body.property;
+					expect(property).not.to.be.undefined;
+					expect(property).to.have.property('photos');
+					expect(property.photos).to.be.an.array;
+					expect(property.photos.length).to.be.equals(0);
+					done();
+				})
+				.catch(done)
+		});
+		it("should respond with 401 when is not authenticated",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(baseUrl + '/' + data.properties.property1._id + '/photos')
+						.attach('picture','specs/files/profilepic.jpg')
+						.expect(200);
+				})
+				.then(function(res){
+					var property = res.body.property;
+					var photo = property.photos[0];
+					var notAuthClient = request.agent(app);
+					return notAuthClient
+						.del(baseUrl + '/' + data.properties.property1._id + '/photos/' + photo._id)
+						.expect(401)
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(done)
+		});
+
+		it("should respond with 404 when property does not exist",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.adminuser.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(baseUrl + '/' + data.properties.property1._id + '/photos')
+						.attach('picture','specs/files/profilepic.jpg')
+						.expect(200);
+				})
+				.then(function(res){
+					var property = res.body.property;
+					var photo = property.photos[0];
+					return client
+						.del(baseUrl + '/' + data.users.user1._id + '/photos/' + photo._id)
+						.expect(404)
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(done)
+		});
+
+		it("should respond with 422 when providing a bad property id",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.adminuser.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(baseUrl + '/' + data.properties.property1._id + '/photos')
+						.attach('picture','specs/files/profilepic.jpg')
+						.expect(200);
+				})
+				.then(function(res){
+					var property = res.body.property;
+					var photo = property.photos[0];
+					return client
+						.del(baseUrl + '/sadasdaslolbadkey/photos/' + photo._id)
+						.expect(422)
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(done)
+		});
+
+		it("should respond with 404 when photo does not exist",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(baseUrl + '/' + data.properties.property1._id + '/photos')
+						.attach('picture','specs/files/profilepic.jpg')
+						.expect(200);
+				})
+				.then(function(res){
+					var property = res.body.property;
+					var photo = property.photos[0];
+
+					return client
+						.del(baseUrl + '/' + data.properties.property1._id + '/photos/' + property._id)
+						.expect(404)
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(done)
+		});
+
 	});
 
 // finish properties#describe()

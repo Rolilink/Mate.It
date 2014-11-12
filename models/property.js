@@ -40,11 +40,10 @@ Schema.methods.addPicture = function(file){
   }
 
   seneca.act({controller:'files',action:'upload', readPath: readPath, writePath: uploadPath},function(err,result){
-
   	if(err)
   		return deferred.reject(err);
   	var filePath = path.relative(app.get("publicdir"),result.filePath);
-    self.photos.push({url:filePath});
+    self.photos.push({id:fileName,url:filePath});
     deferred.resolve(self);	
   });
 	
@@ -54,8 +53,16 @@ Schema.methods.addPicture = function(file){
 Schema.methods.removePicture = function(id){
 	var deferred = q.defer(),
 	photo = this.photos.id(id),
-	filePath = appRoot + "/public/" + photo.url,
+	filepath,
 	self = this;
+
+	if(!photo){
+		var error = new Error('PhotoNotFound')
+		error.name = "PhotoNotFound";
+		deferred.reject(error);
+	}else{
+		filePath = appRoot + "/public/" + photo.url;
+	}
 
 	seneca.act({controller:'files',action:'delete',filePath:filePath},function(err,result){
 		if(err)	

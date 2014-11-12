@@ -1,7 +1,8 @@
 var utils = require('../utils'),
 request = require('supertest-as-promised'),
 eraseDb = require ('../utils').eraseDatabase,
-UsersData = require('../utils').users;
+UsersData = require('../utils').users,
+clearDir = require('../utils').clearDir;
 
 describe("Users",function(){
 	var baseUrl = "/api/users";
@@ -553,6 +554,7 @@ describe("Users",function(){
 		});
 
 		after(function(done){
+			clearDir("/public/uploads/profile/");
 			eraseDb()
 			.then(function(){
 				done();
