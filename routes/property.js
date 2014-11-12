@@ -88,20 +88,29 @@ app.post('/api/properties/:id/photos',authorization.is('Owner'),function(req,res
 	var picture = req.files.picture,
 	id = req.param('id');
 
+
+	if( ! /image/.test(picture.headers['content-type']) ){
+    return res.status(422).json({error:'file to upload is not an image'});
+  }
+
 	seneca.act({controller:"property", action:"addPicture",id:id, picture:picture},function(err,result){
 		if(err){
-			return res.status(500).json({err:err});
+			if(err.name == "PropertyNotFound")
+				return res.status(404).json({err:err});
+			return res.status(422).json({errors:err.errors});
 		}
-		res.status(200).json({picture:result.picture});
+		res.status(200).json({property:result.property});
 	});
 });
 
-app.get('/api/properties/:id/photos',function(req,res,next){
+app.get('/api/properties/:id/photos',authorization.is('User'),function(req,res,next){
 	var id = req.param('id');
 
 	seneca.act({controller:'property',action:'listPictures',id:id},function(err,result){
 		if(err){
-			return res.status(500).json({err:err});
+			if(err.name == "PropertyNotFound")
+				return res.status(404).json({err:err});
+			return res.status(422).json({errors:err.errors});
 		}
 		res.status(200).json({pictures:result.pictures});
 	});

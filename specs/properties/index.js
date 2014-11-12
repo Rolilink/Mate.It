@@ -797,19 +797,214 @@ describe("Properties",function(){
 
 	describe("Adding Photos",function(){
 
-		it("should add a photo to the property when doing a successful upload");
-		it("should respond with 422 if the file uploaded is not an image");
-		it("should respond with 401 when is not authenticated");
-		it("should respond with 404 when property does not exist");
-		it("should respond with 401 when user is not property owner or admin");
-		it("should respond with 422 when providing a bad id");
+		before(function(done){
+			this.timeout(3000);
+
+			PropertiesData.get().then(function(rdata){
+				data = rdata;
+				done();
+			})
+			.catch(function(err){
+				done(err);
+			});
+		});
+
+		after(function(done){
+			eraseDb()
+			.then(function(){
+				done();
+			});
+		});
+
+		it("should add a photo to the property when doing a successful upload",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(baseUrl + '/' + data.properties.property1._id + '/photos')
+						.attach('picture','specs/files/profilepic.jpg')
+						.expect(200);
+				})
+				.then(function(res){
+					var property = res.body.property;
+					expect(property).not.to.be.undefined;
+					expect(property).to.have.property('photos');
+					expect(property.photos).to.be.an.array;
+					expect(property.photos[0]).to.have.property('url');
+					done();
+				})
+				.catch(done)
+		});
+
+		it("should respond with 422 if the file uploaded is not an image",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(baseUrl + '/' + data.properties.property1._id + '/photos')
+						.attach('picture','specs/utils.js')
+						.expect(422);
+				})
+				.then(function(res){
+					var error = res.body.error;
+					expect(error).not.to.be.undefined;
+					expect(error).to.be.equals('file to upload is not an image');
+					done();
+				})
+				.catch(done)
+		});
+
+		it("should respond with 401 when is not authenticated",function(done){
+			var client = request.agent(app);
+			client
+				.post(baseUrl + '/' + data.properties.property1._id + '/photos')
+				.attach('picture','specs/files/profilepic.jpg')
+				.expect(401)
+				.then(function(res){
+					done();
+				})
+				.catch(done)
+		});
+
+		it("should respond with 404 when property does not exist",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.adminuser.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(baseUrl + '/' + data.users.user1._id + '/photos')
+						.attach('picture','specs/files/profilepic.jpg')
+						.expect(404);
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(done)
+		});
+
+		it("should respond with 401 when user is not property owner or admin",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(baseUrl + '/' + data.properties.property2._id + '/photos')
+						.attach('picture','specs/files/profilepic.jpg')
+						.expect(401);
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(done)
+		});
+
+		it("should respond with 422 when providing a bad id",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.adminuser.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(baseUrl + '/assdsadasdlolbadkey/photos')
+						.attach('picture','specs/files/profilepic.jpg')
+						.expect(422);
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(done)
+		});
 	});
 
-	describe("Listing Photos",function(){
-		it("should list property photos when doing a valid get");
-		it("should respond with 401 when is not authenticated");
-		it("should respond with 404 when property does not exist");
-		it("should respond with 422 when providing a bad id");
+	describe.only("Listing Photos",function(){
+		var data;
+
+		before(function(done){
+			this.timeout(3000);
+
+			PropertiesData.get().then(function(rdata){
+				data = rdata;
+				done();
+			})
+			.catch(function(err){
+				done(err);
+			});
+		});
+
+		after(function(done){
+			eraseDb()
+			.then(function(){
+				done();
+			});
+		});
+
+		it("should list property photos when doing a valid get",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.get(baseUrl + '/' + data.properties.property1._id + '/photos')
+						.expect(200);
+				})
+				.then(function(res){
+					var pictures = res.body.pictures;
+					expect(pictures).not.to.be.undefined;
+					expect(pictures).all.to.have.property('url');
+					done();
+				})
+				.catch(done)
+		});
+
+		it("should respond with 401 when is not authenticated",function(done){
+			var client = request.agent(app);
+			client
+				.get(baseUrl + '/' + data.properties.property1._id + '/photos')
+				.expect(401)
+				.then(function(res){
+					done();
+				})
+				.catch(done)
+		});
+
+		it("should respond with 404 when property does not exist",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.get(baseUrl + '/' + data.users.user1._id + '/photos')
+						.expect(404);
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(done)
+		});
+
+		it("should respond with 422 when providing a bad id",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.get(baseUrl + '/assdsadasdlolbadkey/photos')
+						.expect(422);
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(done)
+		});
 	});
 
 	describe("Deleting Photos",function(){

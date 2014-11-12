@@ -120,7 +120,7 @@ seneca.add({controller:'property',action:'update'},function(args,cb){
 seneca.add({controller:'property',action:'addPicture'},function(args,cb){
 	var id = args.id,
 	picture = args.picture,
-	handleSuccess = function(data){ cb(null,{picture: data.photos.$pop()}); },
+	handleSuccess = function(data){ cb(null,{property: data}); },
 	handleError = function(err){	cb(err,null); },
 	addPicture = function(property){ return property.addPicture(picture); };
 

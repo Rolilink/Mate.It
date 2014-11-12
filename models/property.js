@@ -40,7 +40,7 @@ Schema.methods.addPicture = function(file){
   }
 
   seneca.act({controller:'files',action:'upload', readPath: readPath, writePath: uploadPath},function(err,result){
-  	console.log(result);
+
   	if(err)
   		return deferred.reject(err);
   	var filePath = path.relative(app.get("publicdir"),result.filePath);
