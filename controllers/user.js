@@ -115,7 +115,7 @@ seneca.add({controller:'user',action:'editProfilePicture'},function(args,cb){
 	var id = args.id,
 	picture = args.picture,
 	setPicture = function(user){ return user.setProfilePicture(picture); },
-	handleSuccess = function(data){ cb(null,{picture:data}); },
+	handleSuccess = function(data){ cb(null,{user:data}); },
 	handleError = function(err){	cb(err,null); };
 	findUser(id,args.blacklist).then(setPicture).then(saveUser).then(handleSuccess,handleError);
 });
