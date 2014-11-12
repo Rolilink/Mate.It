@@ -8,8 +8,9 @@
 var saveUser = function(user){
 	var deferred = q.defer();
 	user.save(function(err){
-		if(err)
+		if(err){
 			return deferred.reject(err);
+		}
 		return deferred.resolve(user);
 	});
 	return deferred.promise;
@@ -32,6 +33,11 @@ var findUser = function(id,attr){
 	User.findById(id,attr).exec(function(err,user){
 		if(err)
 			return deferred.reject(err);
+		if(!user){
+			var error = new Error("user not found");
+			error.name = "UserNotFound";
+			return deferred.reject(error);
+		}
 		return deferred.resolve(user);
 	});
 	return deferred.promise;
@@ -55,7 +61,7 @@ seneca.add({controller:'user',action:'create'},function(args,cb){
 	var data = _.omit(args.data,['role','emailKey','active','aId','profilePicture','property']),
 	user = new User(data),
 	profilePicture = args.file,
-	handleSuccess = function(data){ cb(null,{user:data}); },
+	handleSuccess = function(data){ cb(null,{status:201,response:{user:{id:data.id,username:data.username,email:data.email,active:data.active}}}); },
 	handleError = function(err){ cb(err,null); };
 
 	saveUser(user).then(handleSuccess,handleError);

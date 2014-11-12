@@ -12,6 +12,12 @@ var findProperty = function(id){
  	Property.findById(id,function(err,property){
  		if(err)
  			return deferred.reject(err);
+ 		
+ 		if(!property){
+			var error = new Error("property not found");
+			error.name = "PropertyNotFound";
+			return deferred.reject(error);
+		}
  		return deferred.resolve(property);
  	});
 
@@ -71,7 +77,7 @@ seneca.add({controller:'property',action:'create'},function(args,cb){
 
 	var createdProperty = new Property(data);
 	createdProperty.setOwner(ownerId);
-	console.log(createdProperty);
+
 	saveProperty(createdProperty).then(updateUserProperty).then(handleSuccess,handleError);
 });
 

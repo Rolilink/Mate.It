@@ -1,9 +1,4 @@
-app.post('/login',
-passport.authenticate('local'),
-function(req, res) {
-	console.log('authenticated');
-  res.status(200).json({auth:true});
-});
+app.post('/login',passport.authenticate('local',{ successRedirect: '/',failureRedirect: '/login' }));
 
 app.get('/login',function(req,res){
 	if(!req.isAuthenticated())

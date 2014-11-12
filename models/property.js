@@ -8,23 +8,23 @@ uuid = require('node-uuid');
 
 
 var Schema = new mongoose.Schema({
-	capacity:{type:Number,min:1}, //ok
+	capacity:{required:true,type:Number,min:1}, //ok
 	available:{type:Boolean,default:true}, //ok
-	country:{type:String}, //ok
-	address:{type:String,unique:true,validate:[validate('len',10,70)]}, //ok
-	longitude:{type:Number,min:-180,max:180}, //ok
-	lattitude:{type:Number,min:-90,max:90}, //ok
-	price:{type:Number,min:100},
+	country:{required:true,type:String}, //ok
+	address:{required:true,type:String,validate:[validate('len',10,70)]}, //ok
+	loc:{required:true,type:[Number],index:'2dsphere'},
+	price:{required:true,type:Number,min:1},
 	createdAt:{type:Date,default:Date.now()},//ok
-	roomType:{type:String,enum:['private','shared']}, //ok
-	propertyType:{type:String,enum:['apartment','house','other']}, //ok
-	headLine:{type:String,validate:[validate('len',10,60)]},
-	description:{type:String,validate:[validate('len',10,500)]}, //ok 
-	title:{type:String}, // ok
-	photos:[{url:String}],
+	roomType:{type:String,enum:['private','shared'],default:"private"}, //ok
+	propertyType:{type:String,enum:['apartment','house','other'],default:"apartment"}, //ok
+	description:{required:true,type:String,validate:[validate('len',10,500)]}, //ok 
+	title:{required:true,type:String,validate:[validate('len',5,140)]}, // ok
+	photos:[{url:String,description:String}],
+	genderAllowed:{type:String,enum:['male','female','both'],default:"both"},
 	owner:{type:mongoose.Schema.Types.ObjectId, ref:'User'},
 	habitants:[{type:mongoose.Schema.Types.ObjectId, ref:'User'}],
-	comments:[{type:mongoose.Schema.Types.ObjectId, ref:'Comment'}]
+	comments:[{type:mongoose.Schema.Types.ObjectId, ref:'Comment'}],
+	amenities:[{type:String,enum:['kitchen','internet','tv','wifi','air_conditioning','washer','dryer','cable_tv','pets_allowed','gym','pool','smoking_allowed']}]
 });	
 
 Schema.methods.addPicture = function(file){
@@ -74,6 +74,44 @@ Schema.methods.setOwner = function(ownerId){
 	if(!this.owner)
 		this.owner = ownerId
 };
+
+Schema.methods.addHabitant = function(userid){
+	this.habitants.push(userid);
+
+	if(this.habitants === this.capacity)
+		this.available = false;
+};
+
+Schema.methods.isFull = function(){
+	return this.habitants.length >= this.capacity;
+};
+
+// Validate capacity > habitants.length
+Schema.pre('save',function(next){
+  var self = this;
+  
+  if (!self.isModified('capacity')){
+    return next();
+  };
+
+  if(self.capacity === self.habitants.length){
+  	this.available = false;
+  	next();
+  }
+
+  next();
+});
+
+Schema.path('capacity').validate(function(value,done){
+ 	var self = this;
+
+  if(self.habitants.length > 0 && self.capacity < self.habitants.length){
+  	return done(false);
+  }
+
+  done(true);
+
+},'cannot update capacity below current quantity of habitants');
 
 Schema.plugin(troop.timestamp);
 var paginate = require('./plugins/paginate');

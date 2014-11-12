@@ -3,78 +3,163 @@ extends ../layouts/main.jade
 
 // Main Area Content Block 
 block content
-	div.container#add-property-page
-		div.row#breadcrumbs
-			div.col-md-3
-				ol.breadcrumb
-					li 
-						a(href="/user/dashboard") Panel
-					li.active Propiedades
-					li.active Agregar
-		form(action="/api/properties",method="post")
-			div.row
-				div.col-md-6
-					div.form-group
-						label(for="ap-title") Titulo del clasificado
-						input.form-control#ap-title(type="text",name="title")
-				div.col-md-6
-					div.form-group
-						label(for="ap-desc") Descripcion
-						textarea.form-control#ap-desc(type="text",name="description")
-			div.row
-				div.col-md-4
-					div.form-group
-						label(for="ap-prop") Tipo de Propiedad
-						select.form-control#ap-prop(name="propertyType")
-							option(value="apartment") Apartamento
-							option(value="house") Casa 
-							option(value="other") Otros
-				div.col-md-4
-					div.form-group
-						label(for="ap-room") Tipo de Cuarto
-						select.form-control#ap-room(name="roomType")
-							option(value="shared") Compartido
-							option(value="private") Privado
-				div.col-md-4#price-row
-					label(for="ap-price") Precio
-					input.form-control#ap-price(type="text",name="price")
-					i.fa.fa-dollar
-			div.row
-				div.col-md-6
-					a.btn.btn-primary#photo-btn
-						i.fa.fa-camera
-						span Agregar Fotos
-					div.panel 
-						div.panel-body.photos-list
-						
-				div.col-md-6
-			div.row
-				div.col-md-6
-					label(for="ap-roomate") Ingresa el correo de roomates para invitarlos
-					input.form-control#ap-desc(type="text")
-					a.btn.btn-primary#roomate-btn
-						i.fa.fa-envelope
-						span Agregar Roomate
+  div.container#add-property-page
+    div.row#breadcrumbs
+      div.col-md-3
+        ol.breadcrumb
+          li 
+            a(href="/user/dashboard") Panel
+          li.active Propiedades
+          li.active Agregar
+    form#property-form(action="/api/properties",method="post")
+      div.row
+        div.col-md-12
+          h4 Datos del anuncio
+          hr.section-divider
+        div.col-md-6
+          div.form-group
+            label(for="ap-title") Titulo del clasificado
+            input.form-control#ap-title(type="text",name="title")
+        div.col-md-6
+          div.form-group
+            label(for="ap-desc") Descripcion
+            textarea.form-control#ap-desc(type="text",name="description")
+      div.row
+        div.col-md-12
+          h4 Datos de la propiedad
+          hr.section-divider
+        div.col-md-4
+          div.form-group
+            label(for="ap-prop") Tipo de Propiedad
+            select.form-control#ap-prop(name="propertyType")
+              option(value="apartment") Apartamento
+              option(value="house") Casa 
+              option(value="other") Otros
+        div.col-md-4
+          div.form-group
+            label(for="ap-room") Tipo de Cuarto
+            select.form-control#ap-room(name="roomType")
+              option(value="shared") Compartido
+              option(value="private") Privado
+        div.col-md-4#price-row
+          div.form-group
+            label(for="ap-price") Precio
+            input.form-control#ap-price(type="text",name="price")
+            i.fa.fa-dollar
+      div.row
+        div.col-md-4
+          div.form-group
+            label(for="ap-capacity") Capacidad
+            input.form-control#ap-capacity(type="text",name="capacity")
+        div.col-md-4
+          div.form-group
+            label(for="ap-address") Direccion
+            input.form-control#ap-address(type="text",name="address")
+        div.col-md-4
+          div.form-group
+            label(for="ap-gender") Se Permiten
+            select.form-control#ap-gender(name="genderAllowed")
+              option(value="both") Hombres y Mujeres
+              option(value="male") Solo Hombres
+              option(value="female") Solo Mujeres
+      div.row
+        div.col-md-6#upload-photos
+          input#photo-input(type="file",style="display:none;",multiple="")
+          a.btn.btn-primary#photo-btn
+            i.fa.fa-camera
+            span Agregar Fotos
+          div.panel 
+            div.panel-body.photos-list
+            
+        div.col-md-6
+      
+      div.row
+        div.col-md-12
+          h4 Amenidades
+          hr.section-divider
+        div.col-md-4
+          div.form-group
+            label
+              input(type="checkbox" name="amenities[kitchen]")
+              span Cocina
+          div.form-group
+            label
+              input(type="checkbox" name="amenities[internet]")
+              span Internet
+          div.form-group
+            label
+              input(type="checkbox" name="amenities[tv]")
+              span Tv
+          div.form-group
+            label
+              input(type="checkbox" name="amenities[wifi]")
+              span Wi-Fi
+        div.col-md-4
+          div.form-group
+            label
+              input(type="checkbox" name="amenities[air_conditioning]")
+              span Aire Acondicionado
+          div.form-group
+            label
+              input(type="checkbox" name="amenities[washer]")
+              span Lavadora
+          div.form-group
+            label
+              input(type="checkbox" name="amenities[dryer]")
+              span Secadora
+          div.form-group
+            label
+              input(type="checkbox" name="amenities[cable_tv]")
+              span Tv por cable
+        div.col-md-4
+          div.form-group
+            label
+              input(type="checkbox" name="amenities[pets_allowed]")
+              span Mascotas Permitidas
+          div.form-group
+            label
+              input(type="checkbox" name="amenities[gym]")
+              span Gimnasio
+          div.form-group
+            label
+              input(type="checkbox" name="amenities[pool]")
+              span Piscina
+          div.form-group
+            label
+              input(type="checkbox" name="amenities[smooking_allowerd]")
+              span Permitido Fumar
 
-				div.col-md-6
-					div.panel#roomate-list
-						div.panel-body
-				div.col-md-12.text-right.btns
-					a.btn.btn-success#btn-create
-						i.fa.fa-building-o
-						span Crear Propiedad
 
-					a.btn.btn-danger#btn-cancel
-						i.fa.fa-ban
-						span Cancelar
+      div.row
+        div.col-md-12
+          h4 Habitantes de la Propiedad(Opcional)
+          hr.section-divider
+        div.col-md-6
+          label(for="ap-roomate") Ingresa el correo de roomates para invitarlos
+          input.form-control#ap-desc(type="text")
+          a.btn.btn-primary#roomate-btn
+            i.fa.fa-envelope
+            span Agregar Roomate
+
+        div.col-md-6
+          div.panel#roomate-list
+            div.panel-body
+        div.col-md-12.text-right.btns
+          a.btn.btn-success#btn-create
+            i.fa.fa-building-o
+            span Crear Propiedad
+
+          a.btn.btn-danger#btn-cancel
+            i.fa.fa-ban
+            span Cancelar
 
 // page-specific styles
 block head
-	link(rel="stylesheet", href="/css/add-property-page.css")
+  link(rel="stylesheet", href="/css/add-property-page.css")
 
 block postlibraries
-	script.
-		require(['/js/app/apps/add-property-page.js'],function(addPropertyPage){
-			addPropertyPage.start();
-		});
-	
+  script.
+    require(['/js/app/apps/add-property-page.js'],function(addPropertyPage){
+      addPropertyPage.start();
+    });
+  

@@ -5,5 +5,8 @@
 	"db":{
 		"host":"localhost",
 		"db":"development"
+	},
+	"email":{
+		"key":"laBgJFZFVCwZmWZl9FR7EA"
 	}
 }

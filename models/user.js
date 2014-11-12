@@ -1,3 +1,5 @@
+//TODO: Test both invitation flows, clean, optimize and commit 
+
 var bcrypt = require('bcrypt'),
 SALT_WORK_FACTOR = 10,
 crypto = require('crypto'),
@@ -103,26 +105,21 @@ Schema.methods.addProperty = function(propertyId){
 };
 
 Schema.methods.removeProperty = function(){
-  this.property = null;
+  this.property = { };
 };
 
-Schema.methods.getProperty = function(){
-  var deferred = q.defer(),
-  self = this;
-  Property.populate(this.property,{path:'data'},function(err,property){
-    if(err)
-      return deferred.reject(err);
-    return deferred.resolve(self.property);
-  });
 
-  return deferred.promise;
-}
-
-Schema.methods.joinProperty = function(propertyId){
-  this.property = {
+Schema.methods.joinProperty = function(property){
+  var self = this;
+  // Add Habitant
+  self.property = {
     isOwner:false,
-    data: propertyId
+    data:property.id
   };
+
+  property.addHabitant(self.id);
+  
+  return property.saveQ();
 };
 
 Schema.methods.leaveProperty = function(){
@@ -141,12 +138,17 @@ Schema.methods.haveProperty = function(){
     return false;
 };
 
+Schema.methods.ownsAProperty = function(){
+  if(this.property)
+    return this.property.isOwner;
+  return false;
+};
+
 Schema.methods.ownProperty = function(propertyId){
   this.property = {
     isOwner:true,
     data: propertyId
   }
-  console.log(this);
   return this;
 }
 

@@ -1,5 +1,5 @@
 var autoIncrement = require('mongoose-auto-increment');
-global.mongoose = require('mongoose');
+global.mongoose = require('mongoose-q')(require('mongoose'));
 
 
 module.exports = function loadModels(cb){
@@ -18,7 +18,7 @@ module.exports = function loadModels(cb){
 				var modelName = file.charAt(0).toUpperCase() + file.slice(1).replace('.js','');
 			  var modelSchema = require("./" + file);
 			  modelSchema.plugin(autoIncrement.plugin,{ model: modelName, field: 'aId' });
-			  global[modelName]  = connection.model(modelName,modelSchema);
+			  global[modelName] = connection.model(modelName,modelSchema);
 			  if(app.get("env") == "development"){
 			  	console.log(modelName + " Model has been created");
 			  }
