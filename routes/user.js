@@ -125,23 +125,17 @@ app.post('/api/users/:id/profilepic',authorization.is('Self'),function(req,res){
 	});
 });
 
-app.post('/api/users/:id/property/:propid',authorization.is('Self'),function(req,res){
-	var id = req.param('id'),
-			propid = req.param('propid');
-			seneca.act({controller:"user",action:"addProperty", id:id, propid:propid,blacklist:'-password -emailKey -aId'},function(err,result){
-				if(err)
-					return res.status(500).json({err:err});
-				res.status(200).json({user:result});
-			});
-});
-
 app.del('/api/users/:id/property',authorization.is('Self'),function(req,res){
 	var id = req.param('id');
-			seneca.act({controller:"user",action:"removeProperty", id:id,blacklist:'-password -emailKey -aId'},function(err,result){
-				if(err)
-					return res.status(500).json({err:err});
-				res.status(200).json({user:result});
-			});
+	
+	seneca.act({controller:"user",action:"leaveProperty", id:id,blacklist:'-password -emailKey -aId'},function(err,result){
+		if(err){
+			var status = err.status || 500;
+			var error = err.message || err;
+			return res.status(status).json({error:error});
+		}
+		res.status(200).json({property:result.property});
+	});
 });
 
 app.post('/log/files',function(req,res){

@@ -123,7 +123,8 @@ Schema.methods.joinProperty = function(property){
 };
 
 Schema.methods.leaveProperty = function(){
-  this.property = null;
+  this.property.data = null;
+  this.property.isOwner = false;
 };
 
 Schema.methods.isOwner = function(propertyId){
@@ -150,6 +151,10 @@ Schema.methods.ownProperty = function(propertyId){
     data: propertyId
   }
   return this;
+}
+
+Schema.methods.populateProperty = function(propertyId){
+  return User.populateQ(this,{path:'property.data',model:'Property'});
 }
 
 module.exports = Schema;
