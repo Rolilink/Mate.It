@@ -664,4 +664,132 @@ describe("Users",function(){
 				.catch(done)
 		});
 	});
+
+	describe("Leave Property",function(){
+		var data;
+
+		before(function(done){
+			this.timeout(3000);
+
+			UsersData.joinprop().then(function(rdata){
+				data = rdata;
+				done();
+			})
+			.catch(function(err){
+				done(err);
+			});
+		});
+
+		after(function(done){
+			eraseDb()
+			.then(function(){
+				done();
+			});
+		});
+
+		it("Should leave the property and be reflected within user and property",function(done){
+			var client = request.agent(app);
+			client
+				.post('/login')
+				.send({username:data.users.user6.username,password:"12345678"})
+				.then(function(){
+					return client
+						.del(baseUrl + '/' + data.users.user6._id + "/property")
+						.expect(200)
+				})
+				.then(function(res){
+					var property = res.body.property;
+					
+					expect(property).not.to.be.undefined;
+					expect(property).to.have.a.property('habitants');
+					expect(property).to.have.a.property('_id',data.properties.property3._id.toString());
+					expect(property.habitants).to.be.an.array;
+					expect(property.habitants).to.have.length(2);
+					
+					return client
+						.get(baseUrl + '/' + data.users.user6._id)
+						.expect(200);
+				})
+				.then(function(res){
+					var user = res.body.user;
+
+					expect(user).not.to.be.undefined;
+					expect(user).to.have.a.property('property');
+					expect(user.property.data).to.be.null;
+					done();
+				})
+				.catch(done);
+
+		});
+
+		it("Should respond with 401 when user is not authenticated",function(done){
+			var client = request.agent(app);
+
+			client
+				.del(baseUrl + '/' + data.users.user6._id + "/property")
+				.expect(401)
+				.then(function(){
+					done();
+				})
+				.catch(done);
+		});
+
+		it("Should respond with 401 when user is not self",function(done){
+			var client = request.agent(app);
+
+			client
+				.post('/login')
+				.send({username:data.users.user6.username,password:"12345678"})
+				.then(function(){
+					return client
+						.del(baseUrl + '/' + data.users.user1._id + "/property")
+						.expect(401)
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(done);
+		});
+
+		it("Should respond with 422 user is not habitant of a property when user is not habitant of a property",function(done){
+			var client = request.agent(app);
+
+			client
+				.post('/login')
+				.send({username:data.users.user5.username,password:"12345678"})
+				.then(function(){
+					return client
+						.del(baseUrl + '/' + data.users.user5._id + "/property")
+						.expect(422)
+				})
+				.then(function(res){
+					var error = res.body.error;
+					expect(error).not.to.be.undefined;
+					expect(error).to.be.equals('user is not habitant of a property');
+					done();
+				})
+				.catch(done);
+		});
+
+		it("Should respond with 422 owners cant leave property when a owner is trying to leave property",function(done){
+			var client = request.agent(app);
+
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.del(baseUrl + '/' + data.users.user1._id + "/property")
+						.expect(422)
+				})
+				.then(function(res){
+					var error = res.body.error;
+					expect(error).not.to.be.undefined;
+					expect(error).to.be.equals('owners cant leave property');
+					done();
+				})
+				.catch(done);
+		});
+
+	});
 });

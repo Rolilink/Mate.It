@@ -131,14 +131,52 @@ seneca.add({controller:'user', action:'addProperty'}, function(args,cb){
 	findUser(id,args.blacklist).then(addProperty).then(saveUser).then(getProperty).then(handleSuccess,handleError);
 });
 
-seneca.add({controller:'user', action:'removeProperty'}, function(args,cb){
+seneca.add({controller:'user', action:'leaveProperty'}, function(args,cb){
 	var id = args.id,
-	removeProperty = function(user){ user.removeProperty(); return user; },
-	getProperty = function(user){ return user.getProperty(); },
+	property,
+	user,
 	handleSuccess = function(data){ cb(null,{property:data}); },
 	handleError = function(err){	cb(err,null); };
 
-	findUser(id,args.blacklist).then(removeProperty).then(saveUser).then(getProperty).then(handleSuccess,handleError);
+	findUser(id,args.blacklist)
+		.then(function(ruser){
+			user = ruser;
+			
+			if(!user.property.data){
+				var error = new Error();
+				error.name = "UserIsNotHabitant";
+				error.message = "user is not habitant of a property";
+				error.status = 422;
+				throw error;
+				return error;
+			}
+
+			if(user.property.isOwner){
+				var error = new Error();
+				error.name = "UserIsOwner";
+				error.message = "owners cant leave property";
+				error.status = 422;
+				throw error;
+				return error;
+			}
+
+			return user.populateProperty();
+		})
+		.then(function(){
+			property = user.property.data;
+			property.habitants.remove(user._id);
+			
+			user.leaveProperty();
+
+			return q.all([
+				property.saveQ(),
+				user.saveQ()
+			]);	
+		})
+		.then(function(){
+			handleSuccess(property)
+		})
+		.catch(handleError);
 });
 
 seneca.add({controller:'user',action:'deserializeUser'},function(args,cb){
