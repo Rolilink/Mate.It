@@ -10,8 +10,19 @@ var findComment = function(id){
  	var deferred = q.defer();
  	
  	Comment.findById(id,function(err,comment){
- 		if(err)
+ 		if(err){
+ 			if(err.name == "CastError")
+				err.status = 422;
  			return deferred.reject(err);
+ 		}
+
+ 		if(!comment){
+ 			var error = new Error('CommentNotFound');
+ 			error.msg = "Comment Not Found";
+ 			error.status = 404;
+ 			return deferred.reject(error);
+ 		}
+
  		return deferred.resolve(comment);
  	});
 
@@ -33,8 +44,11 @@ var findComments = function(query,attr,page,limit){
 var saveComment = function(comment){
 	var deferred = q.defer();
 	comment.save(function(err){
-		if(err)
+		if(err){
+			if(err.name === 'ValidationError')
+				err.status = 422;
 			return deferred.reject(err);
+		}
 		return deferred.resolve(comment);
 	});
 	return deferred.promise
