@@ -33,8 +33,11 @@ var findComments = function(query,attr,page,limit){
 var saveComment = function(comment){
 	var deferred = q.defer();
 	comment.save(function(err){
-		if(err)
+		if(err){
+			if(err.name === 'ValidationError')
+				err.status = 422;
 			return deferred.reject(err);
+		}
 		return deferred.resolve(comment);
 	});
 	return deferred.promise
