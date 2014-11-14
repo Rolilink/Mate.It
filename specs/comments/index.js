@@ -171,7 +171,7 @@ describe("Comments",function(){
 
 	});
 
-	describe.only("List",function(){
+	describe("List",function(){
 		var data;
 
 		before(function(done){
