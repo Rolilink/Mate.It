@@ -16,7 +16,7 @@ app.post('/api/comments',authorization.is('User'),function(req,res,next){
 });
  
  //returns the value of parameter 'id' brings back a specific comment of id: id
-app.get('/api/comments/:id',function(req,res,next){
+app.get('/api/comments/:id',authorization.is('User'),function(req,res,next){
 	seneca.act({controller:'comment',action:'get',id:req.param('id')},function(err,result){
 		
 		if(err){
@@ -34,7 +34,7 @@ app.get('/api/comments/:id',function(req,res,next){
 });
 
 //returns list of comments 
-app.get('/api/comments',function(req,res,next){
+app.get('/api/comments',authorization.is('User'),function(req,res,next){
 	seneca.act({controller:'comment',action:'list',query:{},page:req.param('page'),limit:req.param('limit')},function(err,result){
 		if(err){
 			return res.status(500).json({err:err});
@@ -43,7 +43,7 @@ app.get('/api/comments',function(req,res,next){
 	});
 });
 
-app.post('/api/comments/list',function(req,res,next){
+app.post('/api/comments/list',authorization.is('User'),function(req,res,next){
 	seneca.act({controller:'comment',action:'list',query:req.param('query'),page:req.param('page'),limit:req.param('limit')},function(err,result){
 		if(err){
 			return res.status(500).json({err:err});

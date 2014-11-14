@@ -171,7 +171,7 @@ describe("Comments",function(){
 
 	});
 
-	describe("List",function(){
+	describe.only("List",function(){
 		var data;
 
 		before(function(done){
@@ -191,6 +191,58 @@ describe("Comments",function(){
 			.then(function(){
 				done();
 			});
+		});
+
+		it("should have a comments module available",function(){
+			expect(Comment).not.to.be.undefined;
+		});
+
+		it("Should list users when doing a valid post",function(done){
+			var client = request.agent(app);
+
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.post(baseUrl + '/list')
+						.send({
+							query:{
+								property:data.properties.property1._id
+							},
+							page:1,
+							limit:5
+						})
+						.expect(200);
+				})
+				.then(function(res){
+					var comments = res.body.comments;
+					expect(comments).not.to.be.undefined;
+					expect(comments).to.be.an.array;
+					expect(comments).to.have.length(3);
+					expect(comments).all.to.have.a.property('property',data.properties.property1._id.toString());
+					done();
+				})
+				.catch(done);
+		});
+
+		it("Should respond with 401 when user is no authenticated",function(done){
+			var client = request.agent(app);
+
+			client
+				.post(baseUrl + '/list')
+				.send({
+					query:{
+						property:data.properties.property1._id
+					},
+					page:1,
+					limit:5
+				})
+				.expect(401)
+				.then(function(res){
+					done();
+				})
+				.catch(done);
 		});
 
 	});
