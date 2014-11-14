@@ -33,15 +33,6 @@ app.get('/api/comments/:id',authorization.is('User'),function(req,res,next){
 	});
 });
 
-//returns list of comments 
-app.get('/api/comments',authorization.is('User'),function(req,res,next){
-	seneca.act({controller:'comment',action:'list',query:{},page:req.param('page'),limit:req.param('limit')},function(err,result){
-		if(err){
-			return res.status(500).json({err:err});
-		}
-		res.status(200).json({comments:result.comments});
-	});
-});
 
 app.post('/api/comments/list',authorization.is('User'),function(req,res,next){
 	seneca.act({controller:'comment',action:'list',query:req.param('query'),page:req.param('page'),limit:req.param('limit')},function(err,result){
@@ -56,7 +47,8 @@ app.post('/api/comments/list',authorization.is('User'),function(req,res,next){
 app.del('/api/comments/:id',authorization.is('Admin'),function(req,res,next){
 	seneca.act({controller:'comment',action:'delete',id:req.param('id')},function(err,result){
 		if(err){
-			return res.status(500).json({err:err});
+			var status = err.status || 500;
+			return res.status(status).json({err:err});
 		}
 		res.status(200).json({message:'deleted'});
 	});

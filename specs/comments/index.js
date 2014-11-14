@@ -226,7 +226,7 @@ describe("Comments",function(){
 				.catch(done);
 		});
 
-		it("Should respond with 401 when user is no authenticated",function(done){
+		it("Should respond with 401 when user is not authenticated",function(done){
 			var client = request.agent(app);
 
 			client
@@ -253,7 +253,7 @@ describe("Comments",function(){
 		before(function(done){
 			this.timeout(3000);
 
-			CommentsData.create().then(function(rdata){
+			CommentsData.list().then(function(rdata){
 				data = rdata;
 				done();
 			})
@@ -269,6 +269,89 @@ describe("Comments",function(){
 			});
 		});
 
+		it("should have a comments module available",function(){
+			expect(Comment).not.to.be.undefined;
+		});
+
+		it("should respond with 200 when admin do a valid delete request",function(done){
+			var client = request.agent(app);
+
+			client
+				.post('/login')
+				.send({username:data.users.adminuser.username,password:"12345678"})
+				.then(function(){
+					return client
+						.del(baseUrl + '/' + data.comments.comment1._id)
+						.expect(200)
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(done);
+		});
+
+		it("Should respond with 401 when an user that is not admin try to erase comment",function(done){
+			var client = request.agent(app);
+
+			client
+				.post('/login')
+				.send({username:data.users.user1.username,password:"12345678"})
+				.then(function(){
+					return client
+						.del(baseUrl + '/' + data.comments.comment1._id)
+						.expect(401)
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(done);
+		});
+
+		it("Should respond with 401 when user is not authenticated",function(done){
+			var client = request.agent(app);
+
+			client
+				.del(baseUrl + '/' + data.comments.comment1._id)
+				.expect(401)
+				.then(function(res){
+					done();
+				})
+				.catch(done);
+		});
+
+		it("Should respond with 422 when providing a bad id",function(done){
+			var client = request.agent(app);
+
+			client
+				.post('/login')
+				.send({username:data.users.adminuser.username,password:"12345678"})
+				.then(function(){
+					return client
+						.del(baseUrl + '/aadsadsadlolbadkey')
+						.expect(422)
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(done);
+		});
+
+		it("Should respond with 404 when comment does not exist",function(done){
+			var client = request.agent(app);
+
+			client
+				.post('/login')
+				.send({username:data.users.adminuser.username,password:"12345678"})
+				.then(function(){
+					return client
+						.del(baseUrl + '/' + data.users.user1._id)
+						.expect(404)
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(done);
+		});
 	});
 
 });
