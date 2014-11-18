@@ -35,12 +35,26 @@ module.exports = function(grunt){
       }
     },
     mochaTest: {
-      test: {
+      acceptance: {
         options: {
           reporter: 'spec',
           quiet: false
         },
-        src: ['specs/**/*.js']
+        src: ['tests/index.js','tests/acceptance/**/*.js']
+      },
+      unit: {
+        options: {
+          reporter: 'spec',
+          quiet: false
+        },
+        src: ['tests/index.js','tests/unit/**/*.js']
+      },
+      integration: {
+        options: {
+          reporter: 'spec',
+          quiet: false
+        },
+        src: ['tests/index.js','tests/integration/**/*.js']
       }
     }
   });
@@ -52,7 +66,10 @@ module.exports = function(grunt){
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-mocha-test');
   
-  grunt.registerTask('test','mochaTest');
+  grunt.registerTask('test',['mochaTest:acceptance','mochaTest:unit','mochaTest:integration']);
+  grunt.registerTask('test:unit','mochaTest:unit');
+  grunt.registerTask('test:acceptance','mochaTest:acceptance');
+  grunt.registerTask('test:integration','mochaTest:integration');
   grunt.registerTask('stylesheets:build','compile the stylesheets.',['stylus:build','autoprefixer:build']);
   grunt.registerTask('build','Compiles all the assets and copies the files to build',['clean:build','stylesheets:build']);
   grunt.registerTask('default','Watches the project for change, compile jade files and stylus files',['build','watch']);

@@ -1,8 +1,8 @@
-var utils = require('../utils'),
+var utils = require('../../utils'),
 request = require('supertest-as-promised'),
-eraseDb = require ('../utils').eraseDatabase,
-UsersData = require('../utils').users,
-clearDir = require('../utils').clearDir;
+eraseDb = require ('../../utils').eraseDatabase,
+UsersData = require('../../utils').users,
+clearDir = require('../../utils').clearDir;
 
 describe("Users",function(){
 	var baseUrl = "/api/users";
@@ -569,7 +569,7 @@ describe("Users",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/' + data.users.user1._id + '/profilepic')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(200);
 				})
 				.then(function(res){
@@ -589,7 +589,7 @@ describe("Users",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/' + data.users.user1._id + '/profilepic')
-						.attach('picture','specs/utils.js')
+						.attach('picture','package.json')
 						.expect(422);
 				})
 				.then(function(res){
@@ -605,7 +605,7 @@ describe("Users",function(){
 			var client = request.agent(app);
 			client
 				.post(baseUrl + '/' + data.users.user1._id + '/profilepic')
-				.attach('picture','specs/files/profilepic.jpg')
+				.attach('picture','tests/acceptance/files/profilepic.jpg')
 				.expect(401)
 				.then(function(res){
 					done()
@@ -621,7 +621,7 @@ describe("Users",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/545327a2fe016f0000461675/profilepic')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(404);
 				})
 				.then(function(res){
@@ -638,7 +638,7 @@ describe("Users",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/' + data.users.user2._id + '/profilepic')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(401);
 				})
 				.then(function(res){
@@ -655,7 +655,7 @@ describe("Users",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/assdsadasdlolbadkey/profilepic')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(422);
 				})
 				.then(function(res){

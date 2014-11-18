@@ -493,7 +493,7 @@ exports.properties = {
 	create: setupPropertiesCreate,
 	list: setupPropertiesList,
 	get: setupPropertiesGet,
-	ratings: setupCommentsList
+	rating: setupCommentsList
 }
 
 exports.comments = {

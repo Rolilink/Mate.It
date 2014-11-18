@@ -1,8 +1,8 @@
-var utils = require('../utils'),
+var utils = require('../../utils'),
 request = require('supertest-as-promised'),
-eraseDb = require ('../utils').eraseDatabase,
-PropertiesData = require('../utils').properties,
-clearDir = require('../utils').clearDir;
+eraseDb = require ('../../utils').eraseDatabase,
+PropertiesData = require('../../utils').properties,
+clearDir = require('../../utils').clearDir;
 
 describe("Properties",function(){
 	baseUrl = "/api/properties"
@@ -826,7 +826,7 @@ describe("Properties",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/' + data.properties.property1._id + '/photos')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(200);
 				})
 				.then(function(res){
@@ -848,7 +848,7 @@ describe("Properties",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/' + data.properties.property1._id + '/photos')
-						.attach('picture','specs/utils.js')
+						.attach('picture','package.json')
 						.expect(422);
 				})
 				.then(function(res){
@@ -864,7 +864,7 @@ describe("Properties",function(){
 			var client = request.agent(app);
 			client
 				.post(baseUrl + '/' + data.properties.property1._id + '/photos')
-				.attach('picture','specs/files/profilepic.jpg')
+				.attach('picture','tests/acceptance/files/profilepic.jpg')
 				.expect(401)
 				.then(function(res){
 					done();
@@ -880,7 +880,7 @@ describe("Properties",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/' + data.users.user1._id + '/photos')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(404);
 				})
 				.then(function(res){
@@ -897,7 +897,7 @@ describe("Properties",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/' + data.properties.property2._id + '/photos')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(401);
 				})
 				.then(function(res){
@@ -914,7 +914,7 @@ describe("Properties",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/assdsadasdlolbadkey/photos')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(422);
 				})
 				.then(function(res){
@@ -1039,7 +1039,7 @@ describe("Properties",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/' + data.properties.property1._id + '/photos')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(200);
 				})
 				.then(function(res){
@@ -1068,7 +1068,7 @@ describe("Properties",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/' + data.properties.property1._id + '/photos')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(200);
 				})
 				.then(function(res){
@@ -1093,7 +1093,7 @@ describe("Properties",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/' + data.properties.property1._id + '/photos')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(200);
 				})
 				.then(function(res){
@@ -1117,7 +1117,7 @@ describe("Properties",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/' + data.properties.property1._id + '/photos')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(200);
 				})
 				.then(function(res){
@@ -1141,7 +1141,7 @@ describe("Properties",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/' + data.properties.property1._id + '/photos')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(200);
 				})
 				.then(function(res){
@@ -1160,13 +1160,13 @@ describe("Properties",function(){
 
 	});
 	
-	describe.only("Property Ratings",function(){
+	describe("Property Ratings",function(){
 		var data;
 
 		before(function(done){
 			this.timeout(3000);
 
-			PropertiesData.list().then(function(rdata){
+			PropertiesData.rating().then(function(rdata){
 				data = rdata;
 				done();
 			})
@@ -1187,11 +1187,11 @@ describe("Properties",function(){
 
 			client
 				.post('/login')
-				.send({username:data.users.user2._id,password:"12345678"})
+				.send({username:data.users.user2.username,password:"12345678"})
+				.expect(302)
 				.then(function(){
 					return client
-						.get(baseUrl + '/' + data.properties.property1._id + '/rating')
-						.expect(200);
+						.get(baseUrl + '/' + data.properties.property1._id + '/rating');
 				})
 				.then(function(res){
 					var rating = res.body.rating;
@@ -1221,7 +1221,7 @@ describe("Properties",function(){
 
 			client
 				.post('/login')
-				.send({username:data.users.user2._id,password:"12345678"})
+				.send({username:data.users.user2.username,password:"12345678"})
 				.then(function(){
 					return client
 						.get(baseUrl + '/asdasdasdlolbadkey/rating')
@@ -1238,7 +1238,7 @@ describe("Properties",function(){
 
 			client
 				.post('/login')
-				.send({username:data.users.user2._id,password:"12345678"})
+				.send({username:data.users.user2.username,password:"12345678"})
 				.then(function(){
 					return client
 						.get(baseUrl + '/' + data.users.user1._id + '/rating')

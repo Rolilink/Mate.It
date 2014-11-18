@@ -1,7 +1,7 @@
-var utils = require('../utils'),
+var utils = require('../../utils'),
 request = require('supertest-as-promised'),
-eraseDb = require ('../utils').eraseDatabase,
-CommentsData = require('../utils').comments;
+eraseDb = require ('../../utils').eraseDatabase,
+CommentsData = require('../../utils').comments;
 
 describe("Comments",function(){
 	var baseUrl = "/api/comments";
