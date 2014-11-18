@@ -429,9 +429,9 @@ var setupCommentsList = function(){
 		property1: new Property({title:"Apartamento en Torre Planetarium, Costa del Este",description:"asdasdasdasdasdasdasdasdsadasdasdasdasdas",address:"cerro viento circunvalacion E",price:110,loc:[9.010320, -79.466527],country:"PA",capacity:4,owner:users.user1._id})
 	},
 	comments = {
-		comment1: new Comment({content:"Excelente apartamento",property:properties.property1._id,user:users.user2._id}),
-		comment2: new Comment({content:"Excelente apartamento",property:properties.property1._id,user:users.user3._id}),
-		comment3: new Comment({content:"Excelente apartamento",property:properties.property1._id,user:users.user4._id})
+		comment1: new Comment({content:"Excelente apartamento",rating:5,property:properties.property1._id,user:users.user2._id}),
+		comment2: new Comment({content:"Excelente apartamento",rating:5,property:properties.property1._id,user:users.user3._id}),
+		comment3: new Comment({content:"Excelente apartamento",rating:5,property:properties.property1._id,user:users.user4._id})
 	}
 
 
@@ -492,10 +492,13 @@ exports.users = {
 exports.properties = {
 	create: setupPropertiesCreate,
 	list: setupPropertiesList,
-	get: setupPropertiesGet
+	get: setupPropertiesGet,
+	ratings: setupCommentsList
 }
 
 exports.comments = {
 	create: setupCommentsCreate,
 	list: setupCommentsList
 }
+
+

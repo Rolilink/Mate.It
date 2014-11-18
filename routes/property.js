@@ -133,7 +133,6 @@ app.del('/api/properties/:id/photos/:photoid',authorization.is('Owner'),function
 	});
 });
 
-
 app.get('/properties/create',authorization.is('User'),function(req,res){
 	res.render('property/new',{user:req.user});
 });
