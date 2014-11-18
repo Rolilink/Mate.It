@@ -1,8 +1,8 @@
-var utils = require('../utils'),
+var utils = require('../../utils'),
 request = require('supertest-as-promised'),
-eraseDb = require ('../utils').eraseDatabase,
-PropertiesData = require('../utils').properties,
-clearDir = require('../utils').clearDir;
+eraseDb = require ('../../utils').eraseDatabase,
+PropertiesData = require('../../utils').properties,
+clearDir = require('../../utils').clearDir;
 
 describe("Properties",function(){
 	baseUrl = "/api/properties"
@@ -826,7 +826,7 @@ describe("Properties",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/' + data.properties.property1._id + '/photos')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(200);
 				})
 				.then(function(res){
@@ -848,7 +848,7 @@ describe("Properties",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/' + data.properties.property1._id + '/photos')
-						.attach('picture','specs/utils.js')
+						.attach('picture','package.json')
 						.expect(422);
 				})
 				.then(function(res){
@@ -864,7 +864,7 @@ describe("Properties",function(){
 			var client = request.agent(app);
 			client
 				.post(baseUrl + '/' + data.properties.property1._id + '/photos')
-				.attach('picture','specs/files/profilepic.jpg')
+				.attach('picture','tests/acceptance/files/profilepic.jpg')
 				.expect(401)
 				.then(function(res){
 					done();
@@ -880,7 +880,7 @@ describe("Properties",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/' + data.users.user1._id + '/photos')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(404);
 				})
 				.then(function(res){
@@ -897,7 +897,7 @@ describe("Properties",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/' + data.properties.property2._id + '/photos')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(401);
 				})
 				.then(function(res){
@@ -914,7 +914,7 @@ describe("Properties",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/assdsadasdlolbadkey/photos')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(422);
 				})
 				.then(function(res){
@@ -1039,7 +1039,7 @@ describe("Properties",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/' + data.properties.property1._id + '/photos')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(200);
 				})
 				.then(function(res){
@@ -1068,7 +1068,7 @@ describe("Properties",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/' + data.properties.property1._id + '/photos')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(200);
 				})
 				.then(function(res){
@@ -1093,7 +1093,7 @@ describe("Properties",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/' + data.properties.property1._id + '/photos')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(200);
 				})
 				.then(function(res){
@@ -1117,7 +1117,7 @@ describe("Properties",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/' + data.properties.property1._id + '/photos')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(200);
 				})
 				.then(function(res){
@@ -1141,7 +1141,7 @@ describe("Properties",function(){
 				.then(function(){
 					return client
 						.post(baseUrl + '/' + data.properties.property1._id + '/photos')
-						.attach('picture','specs/files/profilepic.jpg')
+						.attach('picture','tests/acceptance/files/profilepic.jpg')
 						.expect(200);
 				})
 				.then(function(res){
@@ -1156,6 +1156,98 @@ describe("Properties",function(){
 					done();
 				})
 				.catch(done)
+		});
+
+	});
+	
+	describe("Property Ratings",function(){
+		var data;
+
+		before(function(done){
+			this.timeout(3000);
+
+			PropertiesData.rating().then(function(rdata){
+				data = rdata;
+				done();
+			})
+			.catch(function(err){
+				done(err);
+			});
+		});
+
+		after(function(done){
+			eraseDb()
+			.then(function(){
+				done();
+			});
+		});
+
+		it("should return the rating average when sending a valid post",function(done){
+			var client = request.agent(app);
+
+			client
+				.post('/login')
+				.send({username:data.users.user2.username,password:"12345678"})
+				.expect(302)
+				.then(function(){
+					return client
+						.get(baseUrl + '/' + data.properties.property1._id + '/rating');
+				})
+				.then(function(res){
+					var rating = res.body.rating;
+
+					expect(rating).not.to.be.undefined;
+					expect(rating).to.be.a.number;
+					expect(rating).to.be.equals(5);
+					done();
+				})
+				.catch(done);
+		});
+
+		it("should respond with 401 when user is not authenticated",function(done){
+			var client = request.agent(app);
+
+			client
+				.get(baseUrl + '/' + data.properties.property1._id + '/rating')
+				.expect(401)
+				.then(function(res){
+					done();
+				})
+				.catch(done);
+		});
+
+		it("should respond with 422 when giving a bad id",function(done){
+			var client = request.agent(app);
+
+			client
+				.post('/login')
+				.send({username:data.users.user2.username,password:"12345678"})
+				.then(function(){
+					return client
+						.get(baseUrl + '/asdasdasdlolbadkey/rating')
+						.expect(422);
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(done);
+		});
+
+		it("should respond with 404 when property does not exist",function(done){
+				var client = request.agent(app);
+
+			client
+				.post('/login')
+				.send({username:data.users.user2.username,password:"12345678"})
+				.then(function(){
+					return client
+						.get(baseUrl + '/' + data.users.user1._id + '/rating')
+						.expect(404);
+				})
+				.then(function(res){
+					done();
+				})
+				.catch(done);
 		});
 
 	});

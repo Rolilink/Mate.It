@@ -133,6 +133,30 @@ app.del('/api/properties/:id/photos/:photoid',authorization.is('Owner'),function
 	});
 });
 
+app.get('/api/properties/:id/rating',authorization.is('User'),function(req,res){
+	var id = req.param('id');
+
+	if(!/^[0-9a-fA-F]{24}$/.test(id))
+		return res.status(422).send();
+
+	Comment.findQ({property:id})
+	.then(function(comments,err){
+
+		if(comments.length === 0){
+			return res.status(404).send();
+		}
+
+		if(err){
+			return res.status(500).json({errors:err.errors});
+		}
+
+		var length = comments.length;
+		var sum = _.reduce(comments, function(memo,comment){ return memo + comment.rating; }, 0);
+		var average = sum / length;
+		return res.status(200).json({rating:average});
+	});
+
+});
 
 app.get('/properties/create',authorization.is('User'),function(req,res){
 	res.render('property/new',{user:req.user});

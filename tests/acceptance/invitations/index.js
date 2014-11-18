@@ -1,7 +1,7 @@
-var utils = require('../utils'),
+var utils = require('../../utils'),
 request = require('supertest-as-promised'),
-eraseDb = require ('../utils').eraseDatabase,
-invitationsData = require('../utils').invitations;
+eraseDb = require ('../../utils').eraseDatabase,
+invitationsData = require('../../utils').invitations;
 
 
 describe("Invitations:",function(){

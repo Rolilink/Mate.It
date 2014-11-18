@@ -1,7 +1,8 @@
 var Schema = new mongoose.Schema({
 	content:{type:String,required:true},
   user:{type:mongoose.Schema.Types.ObjectId, ref:'User',required:true},
-  property:{type:mongoose.Schema.Types.ObjectId, ref:'Property',index:true,required:true}
+  property:{type:mongoose.Schema.Types.ObjectId, ref:'Property',index:true,required:true},
+  rating: {type:Number,min:1,max:5}
 });
 
 Schema.path('user').validate(function(value,done){
