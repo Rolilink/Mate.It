@@ -12,8 +12,9 @@ app.post('/api/properties',authorization.is('User'),function(req,res,next){
 	if(!req.userCan('Create Property'))
 		return handleError('You already have a property created.');
 	
+	console.log("Body:",req.body);
 	// User can create a property
-	seneca.act({controller:'property',action:'create',data:req.body.property,owner:req.user.id},function(err,result){
+	seneca.act({controller:'property',action:'create',data:req.param('property'),owner:req.user.id},function(err,result){
 		if(err)
 			return handleError(err);
 		return handleSuccess(result);
@@ -159,6 +160,11 @@ app.get('/api/properties/:id/rating',authorization.is('User'),function(req,res){
 });
 
 app.get('/properties/create',authorization.is('User'),function(req,res){
-	res.render('property/new',{user:req.user});
+	var fs = require('fs');
+	var data = fs.readFileSync(appRoot + '/data/countries.json',{encoding:"utf8"});
+	var countries = JSON.parse(data);
+
+	res.render('property/new',{user:req.user,countries:countries});
 });
+
 
