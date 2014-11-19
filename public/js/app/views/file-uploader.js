@@ -7,7 +7,8 @@ define(['jquery','backbone','underscore','app/models/picture','app/collections/p
 		initialize: function(opts){
 			_.templateSettings.variable = "data";
 			this.fileInput = this.$el.find('#photo-input');
-			this.pictures = new Pictures({model:Picture});
+			this.pictures = new (Pictures.extend({model:Picture}))();
+			console.log(this.pictures.length);
 			this.template = _.template("<div class='upload-pic' id='picture-<%- data.picture.id %>'><img src='<%- data.picture.readData %>' /></div>");
 			this.photoList = this.$el.find('.photos-list');
 		},
@@ -15,6 +16,7 @@ define(['jquery','backbone','underscore','app/models/picture','app/collections/p
 			view.bind('propertyCreated',this.upload,this);
 		},
 		upload: function(e){
+			console.log(this.pictures.length);
 			if(this.pictures.length > 0)
 				this.pictures.upload(e.property).done(function(){
 					console.log('finished');

@@ -101,3 +101,8 @@
 #add-property-page form label > span {
   margin-left: 10px;
 }
+
+/* line 61 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+#add-property-page form .map-canvas {
+  height: 350px;
+}

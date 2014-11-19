@@ -11,6 +11,7 @@ define(['jquery','backbone','underscore','backbone.validation','jquery.serialize
 			var data = this.$el.serializeObject();
 			this.model.set(data);
 			this.model.amenitiesToArray();
+			this.model.locToArray();
 			if(this.model.isValid(true)){
 				this.submit();
 			}

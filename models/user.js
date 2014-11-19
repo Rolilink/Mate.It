@@ -21,8 +21,8 @@ var Schema = new mongoose.Schema({
   role: {type:String,default:"user"},
   profilePicture: {type:String},
   property: {
-    isOwner: {type:Boolean},
-    data: {type: mongoose.Schema.Types.ObjectId,ref:'Property'}
+    isOwner: {type:Boolean,default:false},
+    data: {type: mongoose.Schema.Types.ObjectId,ref:'Property',default:null}
   }
 });
 

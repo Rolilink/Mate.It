@@ -52,6 +52,13 @@ define(['backbone','underscore','backbone.validation'],function(Backbone,_){
 
 			this.attributes.amenities = amenities;
 		},
+		locToArray: function(){
+			this.attributes.loc = [];
+			this.attributes.loc[0] = this.attributes["loc[0]"];
+			this.attributes.loc[1] = this.attributes["loc[1]"];
+			delete this.attributes["loc[0]"];
+			delete this.attributes["loc[1]"];
+		},
 		isSaved: function(){
 			return this.attributes.id != undefined;
 		},

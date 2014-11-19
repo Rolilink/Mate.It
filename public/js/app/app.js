@@ -7,10 +7,12 @@ require.config({
 		backbone:'//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min',
 		bootstrap:'//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min',
 		'bootstrap-select':'//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select',
-		'backbone.validation':'//cdnjs.cloudflare.com/ajax/libs/backbone.validation/0.9.1/backbone-validation-min'
+		'backbone.validation':'//cdnjs.cloudflare.com/ajax/libs/backbone.validation/0.9.1/backbone-validation-min',
+		"jquery.map.picker":'libs/jquery.map.picker'
 	},
 	shim:{
 		'jquery.serializeObject':['jquery'],
+		'jquery.map.picker':['jquery'],
 		'bootstrap': ['jquery'],
 		'bootstrap-select' : ['bootstrap'],
 		'backbone': {

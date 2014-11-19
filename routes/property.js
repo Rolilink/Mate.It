@@ -160,6 +160,11 @@ app.get('/api/properties/:id/rating',authorization.is('User'),function(req,res){
 });
 
 app.get('/properties/create',authorization.is('User'),function(req,res){
-	res.render('property/new',{user:req.user});
+	var fs = require('fs');
+	var data = fs.readFileSync(appRoot + '/data/countries.json',{encoding:"utf8"});
+	var countries = JSON.parse(data);
+
+	res.render('property/new',{user:req.user,countries:countries});
 });
+
 
