@@ -30,12 +30,15 @@ define(['backbone','underscore','backbone.validation'],function(Backbone,_){
 			}
 		},
 		urlRoot: '/api/properties',
-		url: function(){
-			console.log(this.urlRoot);
-			if(!this.attributes._id)
-				return this.urlRoot + '/';
-			else
-				return this.urlRoot + '/' + this.attributes._id;
+		url: function(method){
+			var urlMap = {
+    		    'create': this.urlRoot,
+    		    'update': this.urlRoot + '/' + this.get('_id'),
+    		    'delete': this.urlRoot + '/' + this.get('_id'),
+    		    'read': this.urlRoot + '/' + this.get('_id')
+    	};
+
+    	return urlMap[method];
 		},
 		amenitiesToArray: function(){
 		  var amenities = [],
@@ -73,6 +76,42 @@ define(['backbone','underscore','backbone.validation'],function(Backbone,_){
 		},
 		deletePhoto: function(id){
 		 delete self.attributes.photos[id];
-		}
+		},
+		 sync: function(method, model, options){
+    	
+    	var methodMap = {
+    		    'create': 'POST',
+    		    'update': 'POST',
+    		    'delete': 'DELETE',
+    		    'read': 'GET'
+    	};
+    	
+    	var type = methodMap[method];
+ 
+        // Default options, unless specified.
+        options || (options = {});
+ 
+        // Default JSON-request options.
+        var params = {type: type, dataType: 'json', contentType:"application/json"};
+ 
+        // Ensure that we have a URL.
+        if (!options.url) {
+          params.url = this.url(method) || urlError();
+        }
+    	
+        // Don't process data on a non-GET request.
+        if (params.type !== 'GET' && !Backbone.emulateJSON) {
+          params.processData = false;
+        }
+
+        var json = {
+        	property: model.toJSON()
+        };
+
+        params.data = JSON.stringify(json);
+        
+        // Make the request, allowing the user to override any Ajax options.
+        return $.ajax(_.extend(params, options));        
+    }
 	});
 });
