@@ -68,7 +68,10 @@ block content
             label(for="ap-country") Pais
             select.form-control#ap-country(name="country")
               each country in countries
-                option(value=country.code)= country.name
+                if country.code == "PA"
+                  option(selected="selected" , value=country.code)= country.name
+                else
+                  option(value=country.code)= country.name
       div.row
         div.col-md-6#upload-photos
           input#photo-input(type="file",style="display:none;",multiple="")
