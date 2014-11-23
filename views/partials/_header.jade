@@ -1,0 +1,13 @@
+nav.navbar.navbar-inverse(role="navigation")
+  div.container
+    div.navbar-header.col-md-3
+        a(href="/").navbar-brand MateIt
+    div.navbar-header.col-md-4
+      if user
+        form(action="/properties/find").form-inline
+          div.form-group#search-input
+            input(type="text", placeholder="Busco Espacio Cerca De").form-control 
+            a.btn.btn-success#btn-create
+              i.fa.fa-search
+              span Buscar
+        
