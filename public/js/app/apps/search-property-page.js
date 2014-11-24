@@ -25,10 +25,14 @@ define(['jquery','underscore','backbone','app/views/property-map','app/collectio
 	}
 
 	var updateProperties = function(bounds){
+		$("div.loading").show();
 		properties.search({query:getQuery(bounds)});
 	};
 
 	var renderProperties = function(data){
+		setTimeout(function(){
+			$("div.loading").hide();
+		},1000);
 		var json = data.map(function(obj){
 			return obj.toJSON();
 		});
