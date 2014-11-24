@@ -56,8 +56,15 @@ define(['jquery','backbone','underscore'],function($,Backbone,_){
 
 			
 			_.each(properties,function(property){
+				var image = "";
+				if(property.propertyType === "apartment")
+					image = "/img/apt-marker.png"
+
+				if(property.propertyType === "house")
+					image = "/img/house-marker.png"
+
 				var position = new google.maps.LatLng(property.loc[0],property.loc[1]);
-				var marker = new google.maps.Marker({position:position});
+				var marker = new google.maps.Marker({position:position,icon:image});
 				marker.setMap(self.map);
 				self.markers[property._id] = marker;
 			});
