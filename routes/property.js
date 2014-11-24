@@ -167,4 +167,12 @@ app.get('/properties/create',authorization.is('User'),function(req,res){
 	res.render('property/new',{user:req.user,countries:countries});
 });
 
+app.get('/',authorization.is('User'),function(req,res){
+	var center = {};
+	center.lng = req.param('lng');
+	center.lat = req.param('lat');
+
+	res.render('property/search',{user:req.user,center:center});
+});
+
 
