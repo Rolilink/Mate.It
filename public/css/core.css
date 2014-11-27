@@ -8,3 +8,8 @@ body {
   font-family: 'Lato', sans-serif;
   background: #f5f7fa;
 }
+
+/* line 7 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/core.styl */
+.float-right {
+  float: right;
+}

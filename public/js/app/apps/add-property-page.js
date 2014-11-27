@@ -11,6 +11,7 @@ define(['jquery','app/views/property-form','app/views/file-uploader','app/models
 		var fileUploader = new FileUploader({model:property,el:'div#upload-photos'});
 		var mapPicker = new MapPicker({el:'div#map-picker'});
 		fileUploader.bindToPropertyForm(propertyForm);
+		
 	}
 
 

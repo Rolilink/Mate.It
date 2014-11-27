@@ -1,0 +1,94 @@
+
+/* line 1 : /Users/rolilink/Sites/Mate It/Api Server/node_modules/grunt-contrib-stylus/node_modules/stylus/lib/functions/index.styl */
+
+/* line 1 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/colors.styl */
+
+/* line 35 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+
+/* line 1 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar {
+  z-index: 2;
+  border-radius: 0px !important;
+}
+
+/* line 4 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar form {
+  margin-top: 8px;
+}
+
+/* line 6 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar form input {
+  width: 300px !important;
+}
+
+/* line 8 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar form .btn {
+  margin-left: 10px;
+}
+
+/* line 10 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar form .btn span {
+  margin-left: 3px;
+}
+
+/* line 12 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar div.circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: middle;
+  margin-right: 10px;
+  margin-top: -8px;
+}
+
+/* line 21 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar div.circle img {
+  width: 110%;
+  height: auto;
+}
+
+/* line 24 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar li {
+  text-transform: capitalize;
+}
+
+/* line 3 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/search-map.styl */
+div.container-fluid {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-top: 50px;
+  padding-right: 0;
+  padding-left: 0;
+  position: absolute !important;
+}
+
+/* line 12 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/search-map.styl */
+div.container-fluid div.loading {
+  top: 53px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.8);
+  position: absolute !important;
+  z-index: 100;
+}
+
+/* line 20 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/search-map.styl */
+div.container-fluid div.loading i.fa.fa-refresh.fa-spin {
+  color: #3bafda;
+  top: 40%;
+  left: 50%;
+  margin-left: -30px;
+  font-size: 60px;
+  position: absolute !important;
+}
+
+/* line 27 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/search-map.styl */
+div.container-fluid #search-map {
+  height: 100%;
+  padding-right: 0;
+}

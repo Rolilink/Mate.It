@@ -1,0 +1,25 @@
+// Extends Layout
+extends ../layouts/main.jade
+
+// Main Area Content Block 
+block content
+ div.container-fluid
+  div.loading
+   i.fa.fa-refresh.fa-spin
+  div.col-md-4#search-list
+  div.col-md-8#search-map
+
+// page-specific styles
+block head
+  link(rel="stylesheet", href="/css/search-map.css")
+
+block postlibraries
+  script(src="//maps.google.com/maps/api/js?sensor=false&libraries=places")
+  if center
+    script
+      |  var center = !{JSON.stringify(center)}; 
+  script.
+    require(['/js/app/apps/search-property-page.js','/js/app/apps/header.js'],function(SearchPropertyPage,autocomplete){
+      SearchPropertyPage.start();
+    });
+  

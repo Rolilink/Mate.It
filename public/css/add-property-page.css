@@ -3,58 +3,112 @@
 
 /* line 1 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/colors.styl */
 
-/* line 3 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+/* line 35 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
 
-/* line 6 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+/* line 1 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar {
+  z-index: 2;
+  border-radius: 0px !important;
+}
+
+/* line 4 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar form {
+  margin-top: 8px;
+}
+
+/* line 6 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar form input {
+  width: 300px !important;
+}
+
+/* line 8 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar form .btn {
+  margin-left: 10px;
+}
+
+/* line 10 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar form .btn span {
+  margin-left: 3px;
+}
+
+/* line 12 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar div.circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: middle;
+  margin-right: 10px;
+  margin-top: -8px;
+}
+
+/* line 21 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar div.circle img {
+  width: 110%;
+  height: auto;
+}
+
+/* line 24 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar li {
+  text-transform: capitalize;
+}
+
+/* line 4 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+#add-property-page {
+  margin-top: 60px;
+}
+
+/* line 7 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
 #add-property-page #breadcrumbs {
   margin-top: 20px;
 }
 
-/* line 8 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+/* line 9 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
 #add-property-page form {
   margin-bottom: 40px;
 }
 
-/* line 10 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+/* line 11 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
 #add-property-page form div.row {
   margin-top: 10px;
 }
 
-/* line 12 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+/* line 13 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
 #add-property-page form div.row div.form-group > label {
   margin-bottom: 10px;
 }
 
-/* line 14 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+/* line 15 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
 #add-property-page form div.row #price-row {
   position: relative;
   margin-top: 4px;
 }
 
-/* line 17 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+/* line 18 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
 #add-property-page form div.row #price-row input {
   padding-left: 25px;
 }
 
-/* line 19 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+/* line 20 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
 #add-property-page form div.row #price-row i.fa-dollar {
   position: absolute;
   top: 51%;
   left: 25px;
 }
 
-/* line 24 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+/* line 25 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
 #add-property-page form div.row .btn span {
   margin-left: 8px;
 }
 
-/* line 27 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+/* line 28 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
 #add-property-page form div.row .panel-body.photos-list {
   margin-top: 10px;
   min-height: 150px;
 }
 
-/* line 30 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+/* line 31 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
 #add-property-page form div.row .panel-body.photos-list div.upload-pic {
   width: 100px;
   height: 100px;
@@ -63,46 +117,46 @@
   margin-left: 10px;
 }
 
-/* line 36 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+/* line 37 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
 #add-property-page form div.row .panel-body.photos-list div.upload-pic img {
   width: 150%;
   margin-left: -50%;
 }
 
-/* line 40 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+/* line 41 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
 #add-property-page form div.row #roomate-btn {
   margin-top: 20px;
 }
 
-/* line 43 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+/* line 44 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
 #add-property-page form div.row div#roomate-list {
   margin-top: 20px;
   height: 120px;
 }
 
-/* line 47 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+/* line 48 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
 #add-property-page form div.btns > .btn {
   margin-left: 10px;
 }
 
-/* line 50 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+/* line 51 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
 #add-property-page form h4 {
   margin-bottom: 5px;
 }
 
-/* line 53 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+/* line 54 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
 #add-property-page form .section-divider {
   border-bottom: solid 1px #aab2bd;
   margin-bottom: 15px;
   width: 100%;
 }
 
-/* line 58 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+/* line 59 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
 #add-property-page form label > span {
   margin-left: 10px;
 }
 
-/* line 61 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+/* line 62 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
 #add-property-page form .map-canvas {
   height: 350px;
 }

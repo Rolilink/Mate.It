@@ -68,7 +68,10 @@ block content
             label(for="ap-country") Pais
             select.form-control#ap-country(name="country")
               each country in countries
-                option(value=country.code)= country.name
+                if country.code == "PA"
+                  option(selected="selected",value=country.code)= country.name
+                else
+                  option(value=country.code)= country.name
       div.row
         div.col-md-6#upload-photos
           input#photo-input(type="file",style="display:none;",multiple="")
@@ -157,7 +160,7 @@ block head
 block postlibraries
   script(src="//maps.google.com/maps/api/js?sensor=false&libraries=places")
   script.
-    require(['/js/app/apps/add-property-page.js'],function(addPropertyPage){
+    require(['/js/app/apps/add-property-page.js','/js/app/apps/header.js'],function(addPropertyPage,autocomplete){
       addPropertyPage.start();
     });
   

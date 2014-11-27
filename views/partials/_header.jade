@@ -1,0 +1,39 @@
+nav.navbar.navbar-inverse.navbar-fixed-top(role="navigation")
+  div.container
+    div.navbar-header.col-md-1
+        a(href="/").navbar-brand MateIt
+    div.navbar-header.col-md-6
+      if user
+        form(action="/properties/find").form-inline
+          div.form-group#search-input
+            input(type="text", placeholder="Busco Espacio Cerca De").form-control 
+            a.btn.btn-primary#btn-search(disabled="false")
+              i.fa.fa-search
+              span Buscar
+    div.navbar-header.col-md-5
+      if user
+        ul.navbar-nav.nav.float-right
+          if user.profilepic
+            li
+              a(href="/user/dashboard")
+                div.circle
+                  img(src="user.profilepic", alt="")
+                span= user.username 
+          else
+            li
+              a(href="/user/dashboard")
+                  div.circle
+                    img(src="/img/profile_avatar_default.png", alt="")
+                  span= user.username 
+          li
+            a(href="/user/dashboard") Panel de Control
+          li
+            a(href="/logout") Logout
+      else
+        ul.navbar-nav.nav.float-right
+          li
+            a(href="/login") Login
+          li
+            a(href="/users/new") Signup
+
+        
