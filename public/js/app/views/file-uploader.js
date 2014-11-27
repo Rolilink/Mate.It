@@ -12,15 +12,15 @@ define(['jquery','backbone','underscore','app/models/picture','app/collections/p
 			this.template = _.template("<div class='upload-pic' id='picture-<%- data.picture.id %>'><img src='<%- data.picture.readData %>' /></div>");
 			this.photoList = this.$el.find('.photos-list');
 		},
-		bindToPropertyForm: function(view){
-			view.bind('propertyCreated',this.upload,this);
-		},
-		upload: function(e){
-			console.log(this.pictures.length);
-			if(this.pictures.length > 0)
-				this.pictures.upload(e.property).done(function(){
-					console.log('finished');
+		upload: function(data){
+			var self = this;
+			if(this.pictures.length > 0){
+				self.trigger('upload_started');
+				return this.pictures.upload(data.property).done(function(){
+					self.trigger('upload_finished',data.property);
 				});
+			}
+			self.trigger('upload_finished',data.property);
 		},
 		proxyClick: function(e){
 			this.fileInput.trigger('click');

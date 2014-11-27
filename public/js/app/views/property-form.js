@@ -1,7 +1,7 @@
 define(['jquery','backbone','underscore','backbone.validation','jquery.serializeObject'],function($,Backbone,_){
 	return Backbone.View.extend({
 		events:{
-			'click #btn-signup':'validate'
+			'click #btn-create':'validate'
 		},
 		initialize: function(opts){
 			this.model = opts.model;
@@ -34,11 +34,12 @@ define(['jquery','backbone','underscore','backbone.validation','jquery.serialize
 		submit:function(){
 			this.model.once('sync',this.onApiResponse,this);
 			this.model.once('error',this.onErrorResponse,this);
+			this.trigger('creating_property',{})
 			this.model.save();
 		},
 		onApiResponse: function(model,response){
 			console.log(this);
-			this.trigger('propertyCreated',{property:model})
+			this.trigger('property_created',{property:model})
 		},
 		onErrorResponse: function(){
 			console.log('error');

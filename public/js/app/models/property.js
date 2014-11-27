@@ -62,28 +62,6 @@ define(['backbone','underscore','backbone.validation'],function(Backbone,_){
 		isSaved: function(){
 			return this.attributes.id != undefined;
 		},
-		addPhotos: function(photos){
-			var self = this;
-			if(!this.attributes.photos)
-				this.attributes.photos = [];
-			
-			if(photos.length){
-				this.attributes.photos = _.union(this.attributes.photos,photos);
-				return this;
-			}
-			_.each(photos,function(photo){
-				self.attributes.photos[photo.id] = photo;
-			});	
-
-			return this;
-
-		},
-		havePhotos: function(){
-			return this.attributes.photos.length && this.attributes.photos.length > 0;
-		},
-		deletePhoto: function(id){
-		 delete self.attributes.photos[id];
-		},
 		 sync: function(method, model, options){
     	
     	var methodMap = {
