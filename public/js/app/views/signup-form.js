@@ -10,8 +10,6 @@ define(['jquery','backbone','underscore','backbone.validation','jquery.serialize
 		validate: function(e){
 			var data = this.$el.serializeObject();
 			this.model.set(data);
-			this.model.amenitiesToArray();
-			this.model.locToArray();
 			if(this.model.isValid(true)){
 				this.submit();
 			}
@@ -37,8 +35,7 @@ define(['jquery','backbone','underscore','backbone.validation','jquery.serialize
 			this.model.save();
 		},
 		onApiResponse: function(model,response){
-			console.log(this);
-			this.trigger('propertyCreated',{property:model})
+			this.trigger('user_created',{user:model})
 		},
 		onErrorResponse: function(){
 			console.log('error');

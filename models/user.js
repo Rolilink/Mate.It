@@ -9,14 +9,13 @@ path = require('path');
 
 
 var Schema = new mongoose.Schema({
-	name: {type:String,validate:[validate('len',1,50),validate('regex',/^[A-Za-z ]+$/)]},
+	name: {type:String,required:true,validate:[validate('len',2,100),validate('regex', /^[A-Za-z ]+$/ )]},
 	password: {type:String,required:true,validate:[validate('len',6)]},
 	username: {type:String,unique:true,required:true,validate:[validate('len',6,20),validate('regex',/^[a-z A-Z][a-zA-Z0-9_\-]+[a-zA-Z0-9]+$/)]},
 	email: {type:String,unique:true,required:true,validate:[validate('isEmail')]},
 	country: String,
 	birthdate: Date,
-	emailKey: String,
-	active: {type:Boolean,default:false},
+	active: {type:Boolean,default:true},
   createdAt:{type:Date,default:Date.now()},
   role: {type:String,default:"user"},
   profilePicture: {type:String},
@@ -53,20 +52,6 @@ Schema.pre('save',function(next,done){
       });
     }
   });
-});
-
-// Save emailKey for validation
-Schema.pre('save',function(next,done){
-  var self = this;
-  if (!self.isModified('email') || !self.isModified('username')){
-      next();
-      return done();
-    };
-
-  var hash = crypto.createHash('md5').update(this.email + this.username ).digest("hex");
-	this.emailKey = hash;
-  next();
-  done();
 });
 
 

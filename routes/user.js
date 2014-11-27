@@ -138,6 +138,18 @@ app.del('/api/users/:id/property',authorization.is('Self'),function(req,res){
 	});
 });
 
+app.get('/users/new',function(req,res){
+	
+	if(req.isAuthenticated())
+		return res.status(404).send();
+
+	var fs = require('fs');
+	var data = fs.readFileSync(appRoot + '/data/countries.json',{encoding:"utf8"});
+	var countries = JSON.parse(data);
+
+	res.render('users/new',{user:req.user,countries:countries});
+});
+
 app.post('/log/files',function(req,res){
 	console.log(req.files);
 });
