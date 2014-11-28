@@ -1,10 +1,17 @@
-define(['jquery','underscore','backbone','app/views/property-form','app/views/file-uploader','app/models/property','app/views/map-picker'],function($,_,Backbone,PropertyForm,FileUploader,Property,MapPicker){
-	var property,pubSub,propertyForm,fileUploader,mapPicker;
+define(['jquery','underscore','backbone','app/views/property-form','app/views/file-uploader','app/models/property','app/views/map-picker','app/views/google-autocomplete'],function($,_,Backbone,PropertyForm,FileUploader,Property,MapPicker,GoogleAutocomplete){
+	var property,pubSub,propertyForm,fileUploader,mapPicker,googleAutocomplete;
 	var start = function(){
 		$(function(){
 			setupView();
 		});
 	};
+
+	var searchProperties = function(data){
+		var place = data.place;
+		var lat = place.geometry.location.lat();
+	  var lng = place.geometry.location.lng();
+	  window.location.href = "/?lat=" + lat + "&lng=" + lng;
+	}
 
 	var setupView = function(){
 		pubSub = _.extend({},Backbone.Events);
@@ -12,6 +19,7 @@ define(['jquery','underscore','backbone','app/views/property-form','app/views/fi
 		propertyForm = new PropertyForm({model:property,el:'form#property-form'});
 		fileUploader = new FileUploader({model:property,el:'div#upload-photos'});
 		mapPicker = new MapPicker({el:'div#map-picker'});
+		googleAutocomplete = new GoogleAutocomplete({el:"#search-form"});
 		setupEvents();
 	}
 
@@ -20,7 +28,7 @@ define(['jquery','underscore','backbone','app/views/property-form','app/views/fi
 		pubSub.listenTo(propertyForm,"property_created",startUpload);
 		//pubSub.listenTo(fileUploader,"upload_started",onUploadStarted);
 		pubSub.listenTo(fileUploader,"upload_finished",onUploadFinished);
-
+		pubSub.listenTo(googleAutocomplete,"place_changed",searchProperties);
 	}
 
 	var startUpload = function(rproperty){

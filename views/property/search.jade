@@ -19,7 +19,7 @@ block postlibraries
     script
       |  var center = !{JSON.stringify(center)}; 
   script.
-    require(['/js/app/apps/search-property-page.js','/js/app/apps/header.js'],function(SearchPropertyPage,autocomplete){
+    require(['/js/app/apps/search-property-page.js'],function(SearchPropertyPage){
       SearchPropertyPage.start();
     });
   

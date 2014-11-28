@@ -1,9 +1,19 @@
-define(['jquery','underscore','backbone','app/views/property-map','app/collections/properties'],function($,_,Backbone,PropertyMap,Properties){
-	var propertyMap,pubSub,properties;
+define(['jquery','underscore','backbone','app/views/property-map','app/collections/properties','app/views/google-autocomplete'],function($,_,Backbone,PropertyMap,Properties,GoogleAutocomplete){
+	var propertyMap,pubSub,properties,googleAutocomplete;
+
+	var searchProperties = function(data){
+		var place = data.place;
+		var lat = place.geometry.location.lat();
+	  var lng = place.geometry.location.lng();
+
+	  propertyMap.setCenter(lat,lng);
+	}
+
 	var start = function(){
 		pubSub = _.extend({},Backbone.Events);
 		propertyMap = new PropertyMap({el:"#search-map",center:{lng:center.lng,lat:center.lat},zoom:15});
 		properties = new Properties();
+		googleAutocomplete = new GoogleAutocomplete({el:"#search-form"});
 		setupEvents();
 	}
 
@@ -11,6 +21,7 @@ define(['jquery','underscore','backbone','app/views/property-map','app/collectio
 		pubSub.listenToOnce(propertyMap,'bounds_changed',updateProperties);
 		pubSub.listenTo(propertyMap,'idle',updateProperties);
 		pubSub.listenTo(properties,'reset',renderProperties);
+		pubSub.listenTo(googleAutocomplete,'place_changed',searchProperties);
 	}
 
 	var getQuery = function(params){
@@ -40,7 +51,12 @@ define(['jquery','underscore','backbone','app/views/property-map','app/collectio
 		propertyMap.renderMarkersLayer(json);
 	};
 
+	var onAutoComplete = function(){
+
+	}
+
 	return{
-		start:start
+		start:start,
+		pubSub:pubSub
 	}
 });

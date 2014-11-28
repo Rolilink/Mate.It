@@ -13,12 +13,19 @@ define(['jquery','backbone','underscore'],function($,Backbone,_){
 			});
 		},
 		setCenter: function(lat,lng){
-			if(!this.map)
-				this.center = new google.maps.LatLng(lat,lng);
+			
+			this.center = new google.maps.LatLng(lat,lng);
+			
+			if(this.map)
+				this.map.setCenter(this.center);	
+		
+
 		},
 		setZoom: function(zoom){
-			if(!this.map)
-				this.zoom = zoom;
+			this.zoom = zoom;
+
+			if(this.map)
+				this.map.setZoom(this.zoom);
 		},
 		setupEvents:function(){
 			var self = this;
