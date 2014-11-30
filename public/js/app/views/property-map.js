@@ -2,6 +2,16 @@ define(['jquery','backbone','underscore'],function($,Backbone,_){
 	return Backbone.View.extend({
 		initialize: function(params){
 			var self = this;
+
+			if(google.maps && google.maps.Map){
+				if(params.center)
+					self.setCenter(params.center.lat,params.center.lng);
+				if(params.zoom)
+					self.setZoom(params.zoom);
+
+				self.markers = {};
+				return self.render();
+			}
 			google.maps.event.addDomListener(window,'load',function(){
 				if(params.center)
 					self.setCenter(params.center.lat,params.center.lng);
