@@ -4,7 +4,7 @@ define(['jquery','backbone','underscore'],function($,Backbone,_){
 			var petitionsMade = 0,
 			petitionsCompleted = 0
 			deferred = new $.Deferred(),
-			id = model.get('id'),
+			id = model.get('_id'),
 			self = this;
 
 			this.forEach(function(model){

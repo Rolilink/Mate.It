@@ -25,7 +25,7 @@ define(['jquery','underscore','backbone','app/views/property-form','app/views/fi
 
 	var setupEvents = function(){
 		pubSub.listenTo(propertyForm,"creating_property",startLoading);
-		pubSub.listenTo(propertyForm,"property_created",startUpload);
+		pubSub.listenTo(propertyForm.model,"sync",startUpload);
 		//pubSub.listenTo(fileUploader,"upload_started",onUploadStarted);
 		pubSub.listenTo(fileUploader,"upload_finished",onUploadFinished);
 		pubSub.listenTo(googleAutocomplete,"place_changed",searchProperties);
@@ -40,10 +40,10 @@ define(['jquery','underscore','backbone','app/views/property-form','app/views/fi
 		$("div.loading").show();
 	}
 
-	var onUploadFinished = function(rproperty){
+	var onUploadFinished = function(){
 		stopLoading();
-		var lat = rproperty.get('loc')[0];
-		var lng = rproperty.get('loc')[1];
+		var lat = propertyForm.model.get('loc')[0];
+		var lng = propertyForm.model.get('loc')[1];
 
 		window.location.href = "/?lat=" + lat + "&lng=" + lng; 
 	}

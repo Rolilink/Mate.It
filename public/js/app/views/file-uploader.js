@@ -16,11 +16,12 @@ define(['jquery','backbone','underscore','app/models/picture','app/collections/p
 			var self = this;
 			if(this.pictures.length > 0){
 				self.trigger('upload_started');
-				return this.pictures.upload(data.property).done(function(){
+				  this.pictures.upload(data).done(function(){
 					self.trigger('upload_finished',data.property);
 				});
+			}else{
+				self.trigger('upload_finished',data.property);
 			}
-			self.trigger('upload_finished',data.property);
 		},
 		proxyClick: function(e){
 			this.fileInput.trigger('click');
