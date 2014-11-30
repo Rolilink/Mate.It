@@ -12,7 +12,6 @@ app.post('/api/properties',authorization.is('User'),function(req,res,next){
 	if(!req.userCan('Create Property'))
 		return handleError('You already have a property created.');
 	
-	console.log("Body:",req.body);
 	// User can create a property
 	seneca.act({controller:'property',action:'create',data:req.param('property'),owner:req.user.id},function(err,result){
 		if(err)

@@ -78,6 +78,13 @@ define(['backbone','underscore','backbone.validation'],function(Backbone,_){
  
         // Default JSON-request options.
         var params = {type: type, dataType: 'json', contentType:"application/json"};
+
+        options.originalSuccess = options.success;
+
+        options.success = function(res){	
+        	console.log(res);
+        	return options.originalSuccess(res.property);
+        }
  
         // Ensure that we have a URL.
         if (!options.url) {

@@ -38,11 +38,10 @@ define(['jquery','backbone','underscore','backbone.validation','jquery.serialize
 			this.model.save();
 		},
 		onApiResponse: function(model,response){
-			console.log(this);
-			this.trigger('property_created',{property:model})
+			this.trigger('property_created',{id:response.property._id})
 		},
-		onErrorResponse: function(){
-			console.log('error');
+		onErrorResponse: function(response){
+			console.log('error:',response.error);
 		}
 	});
 });
