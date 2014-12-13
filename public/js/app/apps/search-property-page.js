@@ -1,4 +1,4 @@
-define(['jquery','underscore','backbone','app/views/property-map','app/collections/properties','app/views/google-autocomplete'],function($,_,Backbone,PropertyMap,Properties,GoogleAutocomplete){
+define(['jquery','underscore','backbone','app/views/property-map','app/collections/properties','app/views/google-autocomplete','app/views/property-list'],function($,_,Backbone,PropertyMap,Properties,GoogleAutocomplete,PropertyList){
 	var propertyMap,pubSub,properties,googleAutocomplete;
 
 	var searchProperties = function(data){
@@ -13,6 +13,7 @@ define(['jquery','underscore','backbone','app/views/property-map','app/collectio
 		pubSub = _.extend({},Backbone.Events);
 		propertyMap = new PropertyMap({el:"#search-map",center:{lng:center.lng,lat:center.lat},zoom:15});
 		properties = new Properties();
+		propertyList = new PropertyList();
 		googleAutocomplete = new GoogleAutocomplete({el:"#search-form"});
 		setupEvents();
 	}

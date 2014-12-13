@@ -45,6 +45,7 @@
     "mocha": "^2.0.1",
     "supertest-as-promised": "^1.0.0",
     "chai": "^1.9.2",
-    "chai-things": "^0.2.0"
+    "chai-things": "^0.2.0",
+    "grunt-contrib-jade": "^0.13.0"
   }
 }
