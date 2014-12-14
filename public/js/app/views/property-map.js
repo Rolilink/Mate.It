@@ -81,10 +81,26 @@ define(['jquery','backbone','underscore'],function($,Backbone,_){
 					image = "/img/house-marker.png"
 
 				var position = new google.maps.LatLng(property.loc[0],property.loc[1]);
-				var marker = new google.maps.Marker({position:position,icon:image});
+				var marker = new google.maps.Marker({position:position,icon:image,propertyType:property.propertyType,title:property.title});
 				marker.setMap(self.map);
 				self.markers[property._id] = marker;
 			});
+		},
+		setActiveMarker: function(e){
+			var marker = this.markers[e.id]
+
+			if(marker.propertyType == "apartment")
+				marker.setIcon("/img/apt-marker-active.png")
+			else
+				marker.setIcon("/img/house-marker-active.png")
+		},
+		clearActiveMarker: function(e){
+			var marker = this.markers[e.id]
+			
+			if(marker.propertyType == "apartment")
+				marker.setIcon("/img/apt-marker.png")
+			else
+				marker.setIcon("/img/house-marker.png")
 		}
 	});
 });

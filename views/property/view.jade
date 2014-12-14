@@ -1,0 +1,22 @@
+// Extends Layout
+extends ../layouts/main.jade
+
+// Main Area Content Block 
+block content
+ div.container-fluid
+  div.row#header-image
+  div.row#header-tabs
+    a(href="#acerca_de") Acerca De
+    a(href="#roommates") RoomMates
+    a(href="#localizacion") Localizacion
+    a(href="#comentarios") Comentarios
+  div.row#content 
+
+// page-specific styles
+block head
+  link(rel="stylesheet", href="/css/detail-page.css")
+
+//block postlibraries
+  script(src="//maps.google.com/maps/api/js?sensor=false&libraries=places")
+  
+  
