@@ -8,7 +8,8 @@ require.config({
 		bootstrap:'//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min',
 		'bootstrap-select':'//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select',
 		'backbone.validation':'//cdnjs.cloudflare.com/ajax/libs/backbone.validation/0.9.1/backbone-validation-min',
-		"jquery.map.picker":'libs/jquery.map.picker'
+		"jquery.map.picker":'libs/jquery.map.picker',
+		jade:"libs/jade"
 	},
 	shim:{
 		'jquery.serializeObject':['jquery'],
@@ -21,7 +22,10 @@ require.config({
         return Backbone.noConflict();
       }
     },
-    'backbone.validation':['backbone']
+    'backbone.validation':['backbone'],
+    jade: {
+    	exports: 'jade'
+  	}
 	}
 });
 

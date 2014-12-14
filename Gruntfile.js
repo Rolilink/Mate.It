@@ -32,6 +32,10 @@ module.exports = function(grunt){
       stylesheets:{
         files:'stylesheets/*.styl',
         tasks: ['stylesheets:build']
+      },
+      jade:{
+        files:'views/templates/*.jade',
+        tasks: ['jade:build']
       }
     },
     mochaTest: {
@@ -56,6 +60,22 @@ module.exports = function(grunt){
         },
         src: ['tests/index.js','tests/integration/**/*.js']
       }
+    },
+    jade: {
+      build:{
+        options:{
+          amd:true,
+          client:true,
+          namespace:false
+        },
+        files: [{
+          expand: true,
+          cwd: 'views/templates/',
+          src: [ '*.jade' ],
+          dest: 'public/js/app/templates',
+          ext: '.js'
+        }]
+      }
     }
   });
 
@@ -64,6 +84,7 @@ module.exports = function(grunt){
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-autoprefixer');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-jade');
   grunt.loadNpmTasks('grunt-mocha-test');
   
   grunt.registerTask('test',['mochaTest:acceptance','mochaTest:unit','mochaTest:integration']);
@@ -71,6 +92,6 @@ module.exports = function(grunt){
   grunt.registerTask('test:acceptance','mochaTest:acceptance');
   grunt.registerTask('test:integration','mochaTest:integration');
   grunt.registerTask('stylesheets:build','compile the stylesheets.',['stylus:build','autoprefixer:build']);
-  grunt.registerTask('build','Compiles all the assets and copies the files to build',['clean:build','stylesheets:build']);
+  grunt.registerTask('build','Compiles all the assets and copies the files to build',['clean:build','stylesheets:build','jade:build']);
   grunt.registerTask('default','Watches the project for change, compile jade files and stylus files',['build','watch']);
 }

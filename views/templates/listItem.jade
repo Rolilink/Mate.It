@@ -1,0 +1,18 @@
+div.panel.list-item(data-id=property._id)
+	div.panel-body
+		div.col-md-4
+			div.photo
+				if property.photos.length > 0
+					img(src=property.photos[0].url, alt="")
+				else
+					img(src="/img/default_property.png")
+			a.btn.btn-primary(href="/properties/" + property._id) Ver Detalles
+		div.col-md-8
+			h4= property.title
+			p
+				span.price= property.price + "$ - "
+				span.left= (1 + property.habitants.length) + " personas"
+			if property.description.length > 79
+				p= property.description.substring(0,79) + " ....."
+			else
+				p= property.description
