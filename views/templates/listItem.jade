@@ -6,7 +6,7 @@ div.panel.list-item(data-id=property._id)
 					img(src=property.photos[0].url, alt="")
 				else
 					img(src="/img/default_property.png")
-			a.btn.btn-primary(href="/properties/" + property._id) Ver Detalles
+			a.btn.btn-primary(href="/properties/" + property._id + "/view") Ver Detalles
 		div.col-md-8
 			h4= property.title
 			p

@@ -174,4 +174,40 @@ app.get('/',authorization.is('User'),function(req,res){
 	res.render('property/search',{user:req.user,center:center});
 });
 
+app.get('/properties/:id/view',function(req,res){
+
+	var id = req.param('id'),
+	property;
+
+	var find = Property.findByIdQ(id);
+
+	find
+	.then(function(rproperty){
+		property = rproperty;
+		
+		if(!property)
+			return false;
+	
+		return Property.populateQ(property,{path:'habitants',model:'User'});
+	})
+	.then(function(rproperty){
+		
+		if(!property)
+			return false;
+		
+		return Property.populateQ(property,{path:'owner',model:'User'});
+	})
+	.then(function(rproperty){
+	
+		if(!property)
+			return res.status(404).send('property not found');
+		
+		res.status(200).render('property/view',{property:property})
+	})
+	.catch(function(err){
+		res.status(500).send({error:err});
+	});
+
+});
+
 
