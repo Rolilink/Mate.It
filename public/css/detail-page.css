@@ -1,0 +1,55 @@
+
+/* line 1 : /Users/rolilink/Sites/Mate It/Api Server/node_modules/grunt-contrib-stylus/node_modules/stylus/lib/functions/index.styl */
+
+/* line 1 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/colors.styl */
+
+/* line 35 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+
+/* line 1 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar {
+  z-index: 2;
+  border-radius: 0px !important;
+}
+
+/* line 4 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar form {
+  margin-top: 8px;
+}
+
+/* line 6 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar form input {
+  width: 400px !important;
+}
+
+/* line 8 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar form .btn {
+  margin-left: 10px;
+}
+
+/* line 10 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar form .btn span {
+  margin-left: 3px;
+}
+
+/* line 12 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar div.circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: middle;
+  margin-right: 10px;
+  margin-top: -8px;
+}
+
+/* line 21 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar div.circle img {
+  width: 110%;
+  height: auto;
+}
+
+/* line 24 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar li {
+  text-transform: capitalize;
+}
