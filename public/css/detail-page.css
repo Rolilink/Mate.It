@@ -53,3 +53,184 @@
 .navbar li {
   text-transform: capitalize;
 }
+
+/* line 3 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+.text-align-right {
+  text-align: right;
+}
+
+/* line 5 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* line 8 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #header-image {
+  height: 350px;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+/* line 13 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #header-image div.content {
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 130px;
+  position: absolute;
+  background: rgba(0,0,0,0.3);
+}
+
+/* line 20 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #header-image div.content div {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+/* line 23 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #header-image div.content h2 {
+  font-size: 28px;
+  color: #fff;
+  margin-top: 40px;
+  margin-bottom: 5px;
+  text-transform: capitalize;
+}
+
+/* line 29 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #header-image div.content h2.price {
+  color: #a0d468;
+}
+
+/* line 31 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #header-image div.content p {
+  margin-top: 0px;
+  text-transform: capitalize;
+  color: #fff;
+  font-size: 16px;
+}
+
+/* line 36 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #header-image img {
+  width: 100%;
+  margin-top: -30%;
+}
+
+/* line 39 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #header-tabs {
+  background-color: #4fc1e9;
+  height: 60px;
+  padding-left: 40px;
+}
+
+/* line 43 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #header-tabs div.col-md-9 {
+  padding-left: 0px;
+}
+
+/* line 45 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #header-tabs div.col-md-9 a {
+  color: #fff;
+  height: 60px;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 20px;
+  display: inline-block;
+  font-size: 16px;
+}
+
+/* line 53 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #header-tabs div.col-md-9 a i.fa {
+  margin-right: 5px;
+  font-size: 18px;
+}
+
+/* line 56 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #header-tabs div.col-md-9 a:hover {
+  background: #3a8daa;
+}
+
+/* line 58 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #header-tabs div.col-md-3 {
+  padding-right: 0px;
+}
+
+/* line 60 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #header-tabs div.col-md-3 a {
+  color: #fff;
+  height: 60px;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 20px;
+  display: inline-block;
+  font-size: 16px;
+  background: #3bafda;
+}
+
+/* line 69 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #header-tabs div.col-md-3 a i.fa {
+  margin-right: 5px;
+  font-size: 18px;
+}
+
+/* line 72 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #header-tabs div.col-md-3 a:hover {
+  background: #3a8daa;
+}
+
+/* line 75 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #content {
+  padding-top: 40px;
+}
+
+/* line 78 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+
+/* line 79 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #content #acerca_de #zoom-image {
+  margin-left: 50px;
+  margin-bottom: 20px;
+  width: 300px;
+  height: 300px;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+/* line 86 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #content #acerca_de #zoom-image img {
+  height: auto;
+  width: 125%;
+}
+
+/* line 89 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #content #acerca_de #mini-images {
+  margin-left: 50px;
+  margin-bottom: 40px;
+}
+
+/* line 92 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #content #acerca_de #mini-images .mini-image {
+  width: 40px;
+  margin-right: 10px;
+  height: 40px;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  display: inline-block;
+}
+
+/* line 99 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #content #acerca_de #mini-images .mini-image img {
+  width: 200%;
+}
+
+/* line 101 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #content h4 {
+  margin-top: 0px;
+}
+
+/* line 103 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #content p {
+  font-size: 16px;
+  color: #656d78;
+  text-transform: capitalize;
+}

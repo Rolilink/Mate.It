@@ -1,0 +1,11 @@
+.col-md-4
+	div#zoom-image
+		img(src="/" + property.photos[0].url)
+	div#mini-images
+		each photo in property.photos
+			div.mini-image
+				img(src="/" + photo.url)
+div.col-md-8
+	h4 Descripcion
+	p= property.description
+	
