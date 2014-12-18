@@ -42,7 +42,11 @@ block content
 block head
   link(rel="stylesheet", href="/css/detail-page.css")
 
-//block postlibraries
+block postlibraries
   script(src="//maps.google.com/maps/api/js?sensor=false&libraries=places")
+  script.
+    require(['/js/app/apps/detail-page.js'],function(detailPage){
+      detailPage.start();
+    });
   
   
