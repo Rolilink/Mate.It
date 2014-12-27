@@ -39,9 +39,12 @@ define(['jquery','backbone','underscore'],function($,Backbone,_){
 		},
 		setupEvents:function(){
 			var self = this;
-
 			google.maps.event.addListener(self.map, "idle", function() {
   			self.trigger('idle',{bounds:self.getBounds()});
+			});
+
+			google.maps.event.addListener(self.map, "tilesloaded", function() {
+  			self.trigger('tiles_loaded',{});
 			});
 
 		},
@@ -61,7 +64,6 @@ define(['jquery','backbone','underscore'],function($,Backbone,_){
 		render: function(){
 			this.map = new google.maps.Map(this.$el[0],{center:this.center,zoom:this.zoom});
 			this.setupEvents();
-			
 		},
 		renderMarkersLayer: function(properties){
 			var self = this;
@@ -101,6 +103,18 @@ define(['jquery','backbone','underscore'],function($,Backbone,_){
 				marker.setIcon("/img/apt-marker.png")
 			else
 				marker.setIcon("/img/house-marker.png")
+		},
+		renderMarker: function(property){
+			var image = "";
+			if(property.propertyType === "apartment")
+				image = "/img/apt-marker.png"
+
+			if(property.propertyType === "house")
+				image = "/img/house-marker.png"
+
+			var position = new google.maps.LatLng(property.loc[0],property.loc[1]);
+			var marker = new google.maps.Marker({position:position,icon:image,propertyType:property.propertyType,title:property.title});
+			marker.setMap(this.map);
 		}
 	});
 });

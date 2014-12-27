@@ -19,7 +19,6 @@ define(['jquery','underscore','backbone','app/views/property-map','app/collectio
 	}
 
 	var setupEvents = function(){
-		pubSub.listenToOnce(propertyMap,'bounds_changed',updateProperties);
 		pubSub.listenTo(propertyMap,'idle',updateProperties);
 		pubSub.listenTo(properties,'reset',renderProperties);
 		pubSub.listenTo(propertyList,'hover_over',activateMarker);

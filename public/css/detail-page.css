@@ -67,7 +67,7 @@
 
 /* line 8 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
 #detail-page #header-image {
-  height: 350px;
+  height: 250px;
   position: relative;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -78,7 +78,7 @@
   left: 0;
   bottom: 0;
   right: 0;
-  height: 130px;
+  height: 100px;
   position: absolute;
   background: rgba(0,0,0,0.3);
 }
@@ -93,7 +93,7 @@
 #detail-page #header-image div.content h2 {
   font-size: 28px;
   color: #fff;
-  margin-top: 40px;
+  margin-top: 20px;
   margin-bottom: 5px;
   text-transform: capitalize;
 }
@@ -236,18 +236,30 @@
 }
 
 /* line 108 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #content #localizacion {
+  height: 400px;
+  margin-top: -40px;
+}
 
-/* line 109 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+/* line 112 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+
+/* line 114 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
 #detail-page #content #roommates .habitant {
   margin-bottom: 40px;
 }
 
-/* line 111 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+/* line 117 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
 #detail-page #content #roommates .habitant h4 {
   margin-top: 0px;
 }
 
-/* line 113 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+/* line 120 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
 #detail-page #content #roommates .habitant img {
   width: 100%;
+}
+
+/* line 123 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #content #roommates .habitant p {
+  color: #656d78;
+  text-transform: capitalize;
 }

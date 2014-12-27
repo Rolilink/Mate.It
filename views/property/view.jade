@@ -37,8 +37,9 @@ block content
     div#content
       //div#acerca_de
         include ../partials/_acerca-tab.jade
-      div#roommates
+      //div#roommates
         include ../partials/_roommates-tab.jade
+      div#localizacion
 
 // page-specific styles
 block head
@@ -47,8 +48,9 @@ block head
 block postlibraries
   script(src="//maps.google.com/maps/api/js?sensor=false&libraries=places")
   script.
+    var property =!{JSON.stringify(property)};
     require(['/js/app/apps/detail-page.js'],function(detailPage){
-      detailPage.start();
+      detailPage.start(property);
     });
   
   
