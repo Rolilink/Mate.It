@@ -19,7 +19,7 @@ var Schema = new mongoose.Schema({
 	active: {type:Boolean,default:true},
   createdAt:{type:Date,default:Date.now()},
   role: {type:String,default:"user"},
-  profilePicture: {type:String},
+  profilePicture: {type:String,default:'/img/profile_avatar_default.png'},
   property: {
     isOwner: {type:Boolean,default:false},
     data: {type: mongoose.Schema.Types.ObjectId,ref:'Property',default:null}

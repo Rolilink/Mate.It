@@ -224,13 +224,30 @@
 }
 
 /* line 101 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
-#detail-page #content h4 {
+#detail-page #content #acerca_de h4 {
   margin-top: 0px;
 }
 
 /* line 103 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
-#detail-page #content p {
+#detail-page #content #acerca_de p {
   font-size: 16px;
   color: #656d78;
   text-transform: capitalize;
+}
+
+/* line 108 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+
+/* line 109 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #content #roommates .habitant {
+  margin-bottom: 40px;
+}
+
+/* line 111 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #content #roommates .habitant h4 {
+  margin-top: 0px;
+}
+
+/* line 113 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #content #roommates .habitant img {
+  width: 100%;
 }
