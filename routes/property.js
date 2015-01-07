@@ -177,7 +177,8 @@ app.get('/',authorization.is('User'),function(req,res){
 app.get('/properties/:id/view',function(req,res){
 
 	var id = req.param('id'),
-	property;
+	property,
+	comments;
 
 	var find = Property.findByIdQ(id);
 
@@ -202,7 +203,14 @@ app.get('/properties/:id/view',function(req,res){
 		if(!property)
 			return res.status(404).send('property not found');
 		
-		res.status(200).render('property/view',{property:property})
+		return Comment.find({property: property._id}).populate({path:'user',model:'User', select:'name username profilePicture -_id'}).execQ();
+	})
+	.then(function(comments){
+		
+		if(!property )
+			return false;
+		
+		res.status(200).render('property/view',{property:property,user:req.user,comments:comments});
 	})
 	.catch(function(err){
 		res.status(500).send({error:err});

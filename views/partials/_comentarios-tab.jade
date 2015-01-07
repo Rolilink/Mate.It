@@ -1,0 +1,32 @@
+div.col-md-12#control
+	div.panel
+		div.panel-body
+			form.form-inline
+				div.form-group
+					label(for="comment") Comentario:
+					textarea.form-control(name="comment", cols="50", rows="2")
+				div.form-group
+					label(for="rating") Rating:
+					select(name="rating")
+						for value in [1,2,3,4,5]
+							option(value=value)= value
+				div.form-group
+					input.btn.btn-primary#btn-puntuacion(type="submit", value="Agregar Puntuacion")
+
+div.col-md-12#comment-list
+	each comment in comments
+		div.col-md-6.comment.panel(id="comment-" + comment._id)
+			div.panel-body
+				div.col-md-2.left-side
+					div.photo
+						img(src=comment.user.profilePicture)
+				div.col-md-10
+					div
+						h4= comment.user.name
+						div.rating
+							- var n = 0;
+							while n < comment.rating
+								- n++;
+								i.fa.fa-star
+
+					p= comment.content
