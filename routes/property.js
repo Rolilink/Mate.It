@@ -218,4 +218,37 @@ app.get('/properties/:id/view',function(req,res){
 
 });
 
+app.post('/properties/:id/contact',function(req,res){
+	var propertyId = req.param('id'),
+	user = req.user,
+	message = req.param('message');
+
+	if(!propertyId)
+		return res.status(400).json({error:'property id not provided'});
+
+	if(!message)
+		return res.status(400).json({error:'message not provided'});
+	
+
+
+	Property.findById(propertyId)
+	.populate({path:'owner',model:'User'})
+	.execQ()
+	.then(function(rproperty){
+		
+		if(!rproperty)
+			return res.status(400).json({error:'propertyId not found'});
+
+		return user.sendContactEmail({message:message,title:rproperty.title,owner:rproperty.owner});
+	})
+	.then(function(){
+		return res.status(200).json({sended:true});
+	})
+	.catch(function(err){
+		return res.status(400).json({error:err});
+	});	
+
+
+});
+
 

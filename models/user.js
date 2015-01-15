@@ -143,4 +143,42 @@ Schema.methods.populateProperty = function(propertyId){
   return User.populateQ(this,{path:'property.data',model:'Property'});
 }
 
+Schema.methods.sendContactEmail = function(opts){
+  var deferred = q.defer(),
+  options = {
+    template_name:"email-contacto",
+    template_content:[],
+    message:{
+      subject:"Interesado en propiedad: " + opts.title,
+      from_email: this.email,
+      from_name: this.username,
+      to:[
+        {
+          email: opts.owner.email,
+          name: opts.owner.username,
+          type: "to"
+        }
+      ],
+      global_merge_vars:[]
+    }
+  };
+
+  options.message.global_merge_vars.push({name:"NAME",content:this.name});
+  options.message.global_merge_vars.push({name:"MESSAGE",content:opts.message});
+  options.message.global_merge_vars.push({name:"TITLE",content:opts.title});
+
+
+  emailClient.messages.sendTemplate(
+    options,
+    function(result){
+      deferred.resolve();
+    },
+    function(err){
+      deferred.reject(err);
+    }
+  );
+
+  return deferred.promise;
+}
+
 module.exports = Schema;
