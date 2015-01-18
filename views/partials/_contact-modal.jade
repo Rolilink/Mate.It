@@ -1,0 +1,16 @@
+div.modal.fade#contacto-modal
+	div.modal-dialog
+		div.modal-content
+			div.modal-header
+				button(type="button", data-dismiss="modal", aria-label="Close").close
+					span(aria-hidden="true") &times;
+				h4.modal-title Contacto
+			div.modal-body
+				form(action = "/properties/" + property._id + "/contact")
+					div.form-group
+						label(for="message") Mensaje a Enviar
+						textarea(name="message", rows="10", cols="10").form-control
+			div.modal-footer
+				button(type="button", data-dismiss="modal").btn.btn-danger Cerrar
+				button(type="button",).btn.btn-primary#btn-comentario Enviar Correo
+

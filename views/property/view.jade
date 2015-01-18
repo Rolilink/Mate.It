@@ -7,6 +7,8 @@ block content
   - if(property.propertyType == "house"){ propertyType = "apartamento"}
   - if(property.roomType == "private"){ roomType = "privado" }
   div.container-fluid#detail-page
+    div
+      include ../partials/_contact-modal.jade
     div#header-image
       div.content
         div.col-md-9
@@ -31,15 +33,15 @@ block content
           i.fa.fa-comments-o
           | Comentarios
       div.col-md-3.text-align-right
-        a(href="#contacto")
+        a(href="#contacto",data-toggle="modal", data-target="#contacto-modal")
           i.fa.fa-envelope-o
           | Contacto
     div#content
-      //div#acerca_de
+      div#acerca_de(style="display:none;")
         include ../partials/_acerca-tab.jade
-      //div#roommates
+      div#roommates(style="display:none;")
         include ../partials/_roommates-tab.jade
-      //div#localizacion
+      div#localizacion(style="display:none;")
       div#comentarios
         include ../partials/_comentarios-tab.jade
 
