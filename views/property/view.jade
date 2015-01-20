@@ -20,16 +20,16 @@ block content
         img(src="/" + property.photos[0].url)
     div#header-tabs
       div.col-md-9
-        a(href="#acerca_de")
+        a.tabActive(href="#acerca_de",role="tab", data-toggle="tab")
           i.fa.fa-comment-o
           | Acerca De
-        a(href="#roommates")
+        a(href="#roommates",role="tab", data-toggle="tab")
           i.fa.fa-users
           | RoomMates
-        a(href="#localizacion")
+        a(href="#localizacion", role="tab", data-toggle="tab")
           i.fa.fa-map-marker
           | Localización
-        a(href="#comentarios")
+        a(href="#comentarios",role="tab", data-toggle="tab")
           i.fa.fa-comments-o
           | Comentarios
       div.col-md-3.text-align-right
@@ -37,12 +37,13 @@ block content
           i.fa.fa-envelope-o
           | Contacto
     div#content
-      div#acerca_de(style="display:none;")
+      div#acerca_de.tab-content.active
         include ../partials/_acerca-tab.jade
-      div#roommates(style="display:none;")
+      div#roommates.tab-content
         include ../partials/_roommates-tab.jade
-      div#localizacion(style="display:none;")
-      div#comentarios
+      div#localizacion.tab-content
+        div.map
+      div#comentarios.tab-content
         include ../partials/_comentarios-tab.jade
 
 // page-specific styles

@@ -7,9 +7,22 @@ define(['jquery','bootstrap','underscore','backbone','app/views/image-zoomer','a
 		comment = new Comment({property:rproperty._id});
 		imageZoomer = new ImageZoomer({el:'#image-zoomer'});
 		commentForm = new CommentForm({el:"#comment-form",model:comment});
-		locationMap = new PropertyMap({el:'#localizacion',center:{lat:property.loc[0],lng:property.loc[1]},zoom:13});
 		contactModal = new ContactModal({el:"#contacto-modal"});
+		locationMap = new PropertyMap({el:'#localizacion',center:{lat:property.loc[0],lng:property.loc[1]},zoom:13});
 		pubSub.listenToOnce(locationMap,'tiles_loaded',renderMarker);
+
+		$("#header-tabs").on("shown.bs.tab",function(e){
+
+			$(".tabActive").removeClass("tabActive");
+			$(e.target).addClass("tabActive");
+
+			if($(e.target).attr('href') == "#localizacion"){
+				locationMap.triggerResize({lat:property.loc[0],lng:property.loc[1]});
+			}
+
+
+		});
+
 	};	
 
 	var renderMarker = function(){

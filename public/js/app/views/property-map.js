@@ -115,6 +115,10 @@ define(['jquery','backbone','underscore'],function($,Backbone,_){
 			var position = new google.maps.LatLng(property.loc[0],property.loc[1]);
 			var marker = new google.maps.Marker({position:position,icon:image,propertyType:property.propertyType,title:property.title});
 			marker.setMap(this.map);
+		},
+		triggerResize: function(opts){
+			google.maps.event.trigger(this.map, 'resize');
+			this.setCenter(opts.lat,opts.lng);
 		}
 	});
 });
