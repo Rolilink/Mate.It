@@ -22,8 +22,12 @@ nav.navbar.navbar-inverse.navbar-fixed-top(role="navigation")
                   div.circle
                     img(src="/img/profile_avatar_default.png", alt="")
                   span= user.username 
-          li
-            a(href="/user/dashboard") Panel de Control
+          if user.property && user.property.data != null
+            li
+              a(href="/properties/update") Actualizar Propiedad
+          else
+            li
+              a(href="/properties/create") Crear Propiedad
           li
             a(href="/logout") Logout
       else
