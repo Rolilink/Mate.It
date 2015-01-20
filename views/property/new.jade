@@ -14,6 +14,9 @@ block content
           li.active Propiedades
           li.active Agregar
     form#property-form(action="/api/properties",method="post")
+      div.row.alert.alert-danger(style="display:none;")
+        h6(style="margin-top:0px; margin-bottom:5px;") Errores:
+        ul
       div.row
         div.col-md-12
           h4 Datos del anuncio
