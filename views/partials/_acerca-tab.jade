@@ -1,4 +1,4 @@
-
+- var amenities = {"kitchen":"Cocina","internet":"Internet","tv":"Tv","wifi":"Wifi","air_conditioning":"Aire Acondicionado","washer":"Lavadora","dryer":"Secadora","cable_tv":"TV por cable","pets_allowed":"Mascotas Permitidas","gym":"Gimnasio","pool":"Piscina","smoking_allowed":"Permitido Fumar"};
 script(type="text/javascript", src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5209b414182b7ea8", async="async")
 div.col-md-4#image-zoomer
 	div#zoom-image
@@ -45,7 +45,7 @@ div.col-md-8
 		each amenity in property.amenities
 			div.col-md-4.align-center
 				i.fa.fa-check
-				p.amenity= amenity
+				p.amenity= amenities[amenity]
 	br
 	br
 	h4 Compartir en Redes Sociales:
