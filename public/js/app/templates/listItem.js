@@ -14,7 +14,16 @@ else
 {
 buf.push("<img src=\"/img/default_property.png\"/>");
 }
-buf.push("</div><a" + (jade.attr("href", "/properties/" + property._id + "/view", true, false)) + " class=\"btn btn-primary\">Ver Detalles</a></div><div class=\"col-md-8\"><h4>" + (jade.escape(null == (jade_interp = property.title) ? "" : jade_interp)) + "</h4><p><span class=\"price\">" + (jade.escape(null == (jade_interp = property.price + "$ - ") ? "" : jade_interp)) + "</span><span class=\"left\">" + (jade.escape(null == (jade_interp = (1 + property.habitants.length) + " personas") ? "" : jade_interp)) + "</span></p>");
+buf.push("</div><a" + (jade.attr("href", "/properties/" + property._id + "/view", true, false)) + " class=\"btn btn-primary\">Ver Detalles</a></div><div class=\"col-md-8\"><h4>" + (jade.escape(null == (jade_interp = property.title) ? "" : jade_interp)) + "</h4><p><span class=\"price\">" + (jade.escape(null == (jade_interp = property.price + "$ - ") ? "" : jade_interp)) + "</span>");
+if ( property.roomType == "private")
+{
+buf.push("<span class=\"left\">Cuartos Privados Disponibles: </span>");
+}
+else
+{
+buf.push("<span class=\"left\">Cuartos Compartidos Disponibles: </span>");
+}
+buf.push("<span class=\"left\">" + (jade.escape(null == (jade_interp = - 1 - property.habitants.length + property.capacity) ? "" : jade_interp)) + "</span></p>");
 if ( property.description.length > 79)
 {
 buf.push("<p>" + (jade.escape(null == (jade_interp = property.description.substring(0,79) + " .....") ? "" : jade_interp)) + "</p>");

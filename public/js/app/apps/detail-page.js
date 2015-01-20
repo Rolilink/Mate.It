@@ -14,6 +14,7 @@ define(['jquery','bootstrap','underscore','backbone','app/views/image-zoomer','a
 		$("#header-tabs").on("shown.bs.tab",function(e){
 
 			$(".tabActive").removeClass("tabActive");
+			
 			$(e.target).addClass("tabActive");
 
 			if($(e.target).attr('href') == "#localizacion"){
