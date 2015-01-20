@@ -1,3 +1,5 @@
+
+script(type="text/javascript", src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5209b414182b7ea8", async="async")
 div.col-md-4#image-zoomer
 	div#zoom-image
 		img(src="/" + property.photos[0].url)
@@ -9,6 +11,11 @@ div.col-md-8
 	h4 Descripcion:
 	hr
 	p= property.description
+	br
+	br
+	h4 Direccion:
+	hr
+	p= property.address
 	br
 	br
 	h4 Inquilinos Permitidos:
@@ -39,7 +46,11 @@ div.col-md-8
 			div.col-md-4.align-center
 				i.fa.fa-check
 				p.amenity= amenity
-
+	br
+	br
+	h4 Compartir en Redes Sociales:
+	hr
+	div.addthis_sharing_toolbox
 	div(style="margin-bottom:40px")
 
 	
