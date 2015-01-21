@@ -1,3 +1,38 @@
+div.modal.fade#as-modal
+  div.modal-dialog
+    div.modal-content
+      div.modal-header
+        button.close(type="button", data-dismiss="modal", aria-label="Close")
+          span &times;
+        h4.modal-title Opciones Avanzadas
+      div.modal-content
+        div.row
+          div.col-md-8.div.col-md-offset-2
+            form
+              div.form-group
+                label(for="genderAllowed") Genero Permitido
+                select(name="genderAllowed").form-control
+                  option(value="both") Ambos
+                  option(value="male") Solo Hombres
+                  option(value="female") Solo Mujeres
+              
+              div.form-group
+                label(for="propertyType") Tipo de Propiedad
+                select(name="propertyType").form-control
+                  option(value="both") Ambos
+                  option(value="apartment") Apartamento
+                  option(value="house") Casas
+               
+              div.form-group
+                label(for="roomType") Tipo de Espacio
+                select(name="roomType").form-control
+                  option(value="both") Ambos
+                  option(value="private") Cuarto Privado
+                  option(value="shared") Cuarto Compartido
+
+      div.modal-footer
+        button.btn.btn-primary(data-dismiss="modal") Cerrar
+
 nav.navbar.navbar-inverse.navbar-fixed-top(role="navigation")
   div.container
     div.navbar-header.col-md-1
@@ -9,7 +44,7 @@ nav.navbar.navbar-inverse.navbar-fixed-top(role="navigation")
             input(type="text", placeholder="Busco Espacio Cerca De").form-control 
           ul.navbar-nav.nav#advanced-search
             li
-              a(href="")
+              a(data-toggle="modal", data-target="#as-modal")
                 i.fa.fa-cog
     div.navbar-header.col-md-5
       if user
