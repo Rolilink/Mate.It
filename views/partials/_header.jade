@@ -7,6 +7,10 @@ nav.navbar.navbar-inverse.navbar-fixed-top(role="navigation")
         form(action="/properties/find").form-inline#search-form
           div.form-group#search-input
             input(type="text", placeholder="Busco Espacio Cerca De").form-control 
+          ul.navbar-nav.nav#advanced-search
+            li
+              a(href="")
+                i.fa.fa-cog
     div.navbar-header.col-md-5
       if user
         ul.navbar-nav.nav.float-right
