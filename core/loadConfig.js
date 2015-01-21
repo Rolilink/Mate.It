@@ -1,7 +1,8 @@
 global.config = require('../conf');
 var RedisStore = require('connect-redis')(express),
 redis = require('redis').createClient(),
-path = require("path");
+path = require("path"),
+flash = require('connect-flash');
 
 function setUpEmail(){
 	var mandrilKey = config.get("email:key"),
@@ -129,6 +130,7 @@ function setConfig(){
 		secret: 'cats wants to see the world burn',
 		store: new RedisStore({host:'localhost',port: 6497, client:redis})
 	}));
+	app.use(flash());
 	app.use(passport.initialize());
   app.use(passport.session());
   app.use(authorization.middleware());
