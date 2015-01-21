@@ -7,12 +7,22 @@
 // Save User Function Wrapped in a Promise
 var saveUser = function(user){
 	var deferred = q.defer();
-	user.save(function(err){
-		if(err){
-			return deferred.reject(err);
-		}
-		return deferred.resolve(user);
+	User
+	.findOneQ({"$or":{username:user.username,email:user.email}})
+	.then(function(user){
+		if(user)
+			return deferred.reject(new Error("User Exist"));
+		user.save(function(err){
+			if(err){	
+				return deferred.reject(err);
+			}
+			return deferred.resolve(user);
+		});
+	})
+	.catch(function(err){
+		deferred.reject(err);
 	});
+	
 	return deferred.promise;
 }
 
@@ -62,9 +72,11 @@ seneca.add({controller:'user',action:'create'},function(args,cb){
 	user = new User(data),
 	profilePicture = args.file,
 	handleSuccess = function(data){ cb(null,{status:201,response:{user:{id:data.id,username:data.username,email:data.email,active:data.active}}}); },
-	handleError = function(err){ cb(err,null); };
+	handleError = function(err){ console.log("err"); cb(err,null); };
 
-	saveUser(user).then(handleSuccess,handleError);
+	saveUser(user)
+	.then(handleSuccess)
+	.catch(handleError);
 });
 
 // check limit

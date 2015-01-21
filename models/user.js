@@ -9,7 +9,7 @@ path = require('path');
 
 
 var Schema = new mongoose.Schema({
-	name: {type:String,required:true,validate:[validate('len',2,100),validate('regex', /^[A-Za-z ]+$/ )]},
+	name: {type:String,validate:[validate('len',2,100),validate('regex', /^[A-Za-z ]+$/ )]},
 	password: {type:String,required:true,validate:[validate('len',6)]},
 	username: {type:String,unique:true,required:true,validate:[validate('len',6,20),validate('regex',/^[a-z A-Z][a-zA-Z0-9_\-]+[a-zA-Z0-9]+$/)]},
 	email: {type:String,unique:true,required:true,validate:[validate('isEmail')]},
