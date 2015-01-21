@@ -3,20 +3,58 @@ extends ../layouts/main.jade
 
 // Main Area Content Block 
 block content
- div.container-fluid
-  div.row#header-image
-  div.row#header-tabs
-    a(href="#acerca_de") Acerca De
-    a(href="#roommates") RoomMates
-    a(href="#localizacion") Localizacion
-    a(href="#comentarios") Comentarios
-  div.row#content 
+  - var propertyType = "apartamento",roomType = "compartido"
+  - if(property.propertyType == "house"){ propertyType = "apartamento"}
+  - if(property.roomType == "private"){ roomType = "privado" }
+  div.container-fluid#detail-page
+    div
+      include ../partials/_contact-modal.jade
+    div#header-image
+      div.content
+        div.col-md-9
+          h2= property.title
+          p= propertyType + " - " + roomType
+        div.col-md-3.text-align-right.price
+          h2.price= property.price + "$"
+      if property.photos.length > 0
+        img(src="/" + property.photos[0].url)
+    div#header-tabs
+      div.col-md-9
+        a.tabActive(href="#acerca_de",role="tab", data-toggle="tab")
+          i.fa.fa-comment-o
+          | Acerca De
+        a(href="#roommates",role="tab", data-toggle="tab")
+          i.fa.fa-users
+          | RoomMates
+        a(href="#localizacion", role="tab", data-toggle="tab")
+          i.fa.fa-map-marker
+          | Localización
+        a(href="#comentarios",role="tab", data-toggle="tab")
+          i.fa.fa-comments-o
+          | Comentarios
+      div.col-md-3.text-align-right
+        a(href="#contacto",data-toggle="modal", data-target="#contacto-modal")
+          i.fa.fa-envelope-o
+          | Contacto
+    div#content
+      div#acerca_de.tab-content.active
+        include ../partials/_acerca-tab.jade
+      div#roommates.tab-content
+        include ../partials/_roommates-tab.jade
+      div#localizacion.tab-content
+        div.map
+      div#comentarios.tab-content
+        include ../partials/_comentarios-tab.jade
 
 // page-specific styles
 block head
   link(rel="stylesheet", href="/css/detail-page.css")
 
-//block postlibraries
+block postlibraries
   script(src="//maps.google.com/maps/api/js?sensor=false&libraries=places")
+  script.
+    require(['/js/app/apps/detail-page.js'],function(detailPage){
+      detailPage.start(!{JSON.stringify(property)},!{JSON.stringify(user)},!{JSON.stringify(comments)});
+    });
   
   

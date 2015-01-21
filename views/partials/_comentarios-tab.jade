@@ -1,0 +1,34 @@
+div.col-md-10.col-md-offset-1#error
+div.col-md-12#control
+	div.panel
+		div.panel-body
+			form.form-inline#comment-form
+				div.form-group
+					label(for="content") Comentario:
+					textarea.form-control(name="content", cols="50", rows="2")
+				div.form-group
+					label(for="rating") Rating:
+					select(name="rating")
+						for value in [1,2,3,4,5]
+							option(value=value)= value
+				div.form-group
+					a.btn.btn-primary#btn-comentario(href="#") Agregar Comentario
+
+div.col-md-12#comment-list
+	each comment in comments
+		div.col-md-6.comment(id="comment-" + comment._id)
+			div.panel
+				div.panel-body
+					div.col-md-2.left-side
+						div.photo
+							img(src=comment.user.profilePicture)
+					div.col-md-10
+						div
+							h4= comment.user.name
+							div.rating
+								- var n = 0;
+								while n < comment.rating
+									- n++;
+									i.fa.fa-star
+
+						p= comment.content

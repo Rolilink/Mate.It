@@ -1,0 +1,56 @@
+- var amenities = {"kitchen":"Cocina","internet":"Internet","tv":"Tv","wifi":"Wifi","air_conditioning":"Aire Acondicionado","washer":"Lavadora","dryer":"Secadora","cable_tv":"TV por cable","pets_allowed":"Mascotas Permitidas","gym":"Gimnasio","pool":"Piscina","smoking_allowed":"Permitido Fumar"};
+script(type="text/javascript", src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5209b414182b7ea8", async="async")
+div.col-md-4#image-zoomer
+	div#zoom-image
+		img(src="/" + property.photos[0].url)
+	div#mini-images
+		each photo in property.photos
+			div.mini-image
+				img(src="/" + photo.url)
+div.col-md-8
+	h4 Descripcion:
+	hr
+	p= property.description
+	br
+	br
+	h4 Direccion:
+	hr
+	p= property.address
+	br
+	br
+	h4 Inquilinos Permitidos:
+	hr
+	if property.genderAllowed == "male"
+		p Solo Hombres
+
+	if property.genderAllowed == "female"
+		p Solo Mujeres
+
+	if property.genderAllowed == "both"
+		p Hombres y Mujeres
+	br
+	br
+	h4 Espacios Disponibles:
+	hr
+	- var available = (- 1 - property.habitants.length + property.capacity);
+	if available > 1
+		p=  available + " Espacios Disponibles"
+	else
+		p=  available + " Espacio Disponible"
+	br
+	br
+	h4 Amenidades:
+	hr
+	div.row
+		each amenity in property.amenities
+			div.col-md-4.align-center
+				i.fa.fa-check
+				p.amenity= amenities[amenity]
+	br
+	br
+	h4 Compartir en Redes Sociales:
+	hr
+	div.addthis_sharing_toolbox
+	div(style="margin-bottom:40px")
+
+	

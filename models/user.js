@@ -13,12 +13,13 @@ var Schema = new mongoose.Schema({
 	password: {type:String,required:true,validate:[validate('len',6)]},
 	username: {type:String,unique:true,required:true,validate:[validate('len',6,20),validate('regex',/^[a-z A-Z][a-zA-Z0-9_\-]+[a-zA-Z0-9]+$/)]},
 	email: {type:String,unique:true,required:true,validate:[validate('isEmail')]},
-	country: String,
+	description: String,
+  country: String,
 	birthdate: Date,
 	active: {type:Boolean,default:true},
   createdAt:{type:Date,default:Date.now()},
   role: {type:String,default:"user"},
-  profilePicture: {type:String},
+  profilePicture: {type:String,default:'/img/profile_avatar_default.png'},
   property: {
     isOwner: {type:Boolean,default:false},
     data: {type: mongoose.Schema.Types.ObjectId,ref:'Property',default:null}
@@ -140,6 +141,44 @@ Schema.methods.ownProperty = function(propertyId){
 
 Schema.methods.populateProperty = function(propertyId){
   return User.populateQ(this,{path:'property.data',model:'Property'});
+}
+
+Schema.methods.sendContactEmail = function(opts){
+  var deferred = q.defer(),
+  options = {
+    template_name:"email-contacto",
+    template_content:[],
+    message:{
+      subject:"Interesado en propiedad: " + opts.title,
+      from_email: this.email,
+      from_name: this.username,
+      to:[
+        {
+          email: opts.owner.email,
+          name: opts.owner.username,
+          type: "to"
+        }
+      ],
+      global_merge_vars:[]
+    }
+  };
+
+  options.message.global_merge_vars.push({name:"NAME",content:this.name});
+  options.message.global_merge_vars.push({name:"MESSAGE",content:opts.message});
+  options.message.global_merge_vars.push({name:"TITLE",content:opts.title});
+
+
+  emailClient.messages.sendTemplate(
+    options,
+    function(result){
+      deferred.resolve();
+    },
+    function(err){
+      deferred.reject(err);
+    }
+  );
+
+  return deferred.promise;
 }
 
 module.exports = Schema;

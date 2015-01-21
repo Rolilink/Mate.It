@@ -174,4 +174,81 @@ app.get('/',authorization.is('User'),function(req,res){
 	res.render('property/search',{user:req.user,center:center});
 });
 
+app.get('/properties/:id/view',function(req,res){
+
+	var id = req.param('id'),
+	property,
+	comments;
+
+	var find = Property.findByIdQ(id);
+
+	find
+	.then(function(rproperty){
+		property = rproperty;
+		
+		if(!property)
+			return false;
+	
+		return Property.populateQ(property,{path:'habitants',model:'User'});
+	})
+	.then(function(rproperty){
+		
+		if(!property)
+			return false;
+		
+		return Property.populateQ(property,{path:'owner',model:'User'});
+	})
+	.then(function(rproperty){
+	
+		if(!property)
+			return res.status(404).send('property not found');
+		
+		return Comment.find({property: property._id}).populate({path:'user',model:'User', select:'name username profilePicture -_id'}).execQ();
+	})
+	.then(function(comments){
+		
+		if(!property )
+			return false;
+		
+		res.status(200).render('property/view',{property:property,user:req.user,comments:comments});
+	})
+	.catch(function(err){
+		res.status(500).send({error:err});
+	});
+
+});
+
+app.post('/properties/:id/contact',function(req,res){
+	var propertyId = req.param('id'),
+	user = req.user,
+	message = req.param('message');
+
+	if(!propertyId)
+		return res.status(400).json({error:'property id not provided'});
+
+	if(!message)
+		return res.status(400).json({error:'message not provided'});
+	
+
+
+	Property.findById(propertyId)
+	.populate({path:'owner',model:'User'})
+	.execQ()
+	.then(function(rproperty){
+		
+		if(!rproperty)
+			return res.status(400).json({error:'propertyId not found'});
+
+		return user.sendContactEmail({message:message,title:rproperty.title,owner:rproperty.owner});
+	})
+	.then(function(){
+		return res.status(200).json({sended:true});
+	})
+	.catch(function(err){
+		return res.status(400).json({error:err});
+	});	
+
+
+});
+
 
