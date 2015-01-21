@@ -10,6 +10,13 @@ block content
           div.panel-body
             form()#signup-form
               h3.text-center Registro
+              if message
+                div.alert.alert-danger
+                  ul
+                    li= message
+              else
+                div.alert.alert-danger(style="display:none;")
+                  ul
               div.form-group
                 label(for="user-username") Nombre de Usuario 
                 input.form-control#user-username(type="text",name="username")

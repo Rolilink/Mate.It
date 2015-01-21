@@ -146,8 +146,9 @@ app.get('/users/new',function(req,res){
 	var fs = require('fs');
 	var data = fs.readFileSync(appRoot + '/data/countries.json',{encoding:"utf8"});
 	var countries = JSON.parse(data);
+	var message = req.param('message');
 
-	res.render('users/new',{user:req.user,countries:countries});
+	res.render('users/new',{user:req.user,countries:countries,message:message});
 });
 
 app.post('/log/files',function(req,res){
