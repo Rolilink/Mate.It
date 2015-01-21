@@ -43,7 +43,6 @@ define(['jquery','backbone','underscore','backbone.validation','jquery.serialize
 			$(input).parent().removeClass('has-error').addClass('has-success');
 		},
 		onInvalid: function(v,attr,error){
-			console.log(error);
 			var input = v.$el.find('[name="' + attr + '"]');
 			$(input).parent().removeClass('has-success').addClass('has-error').append('<div class="alert alert-danger>' + error + '</div>');
 			v.$el.find(".alert ul").append("<li data-attr='"+ attr + "'>" +  error_translate[error] + "</li>");

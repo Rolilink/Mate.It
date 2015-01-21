@@ -158,7 +158,11 @@ app.get('/api/properties/:id/rating',authorization.is('User'),function(req,res){
 
 });
 
-app.get('/properties/create',authorization.is('User'),function(req,res){
+app.get('/properties/create',function(req,res){
+
+	if(!req.user || !req.user.is('User'))
+		return res.redirect('/login');
+
 	var fs = require('fs');
 	var data = fs.readFileSync(appRoot + '/data/countries.json',{encoding:"utf8"});
 	var countries = JSON.parse(data);
@@ -166,7 +170,11 @@ app.get('/properties/create',authorization.is('User'),function(req,res){
 	res.render('property/new',{user:req.user,countries:countries});
 });
 
-app.get('/',authorization.is('User'),function(req,res){
+app.get('/',function(req,res){
+	
+	if(!req.user || !req.user.is('User'))
+		return res.redirect('/login');
+
 	var center = {};
 	center.lng = req.param('lng') || -79.51666699999998;
 	center.lat = req.param('lat') || 8.983333;
@@ -175,6 +183,9 @@ app.get('/',authorization.is('User'),function(req,res){
 });
 
 app.get('/properties/:id/view',function(req,res){
+
+	if(!req.user || !req.user.is('User'))
+		return res.redirect('/login');
 
 	var id = req.param('id'),
 	property,
