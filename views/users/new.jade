@@ -34,9 +34,6 @@ block content
                 select.form-control#ap-country(name="country")
                   each country in countries
                     option(value=country.code)= country.name
-              div.form-group
-                label(for="user-birthdate") Fecha de Nacimiento
-                input.form-control#user-birthdate(type="text",name="birthdate")
               a.btn.btn-primary#btn-signup
                 i.fa.fa-user
                 span Registrarse

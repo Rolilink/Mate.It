@@ -1,5 +1,5 @@
-define(['jquery','underscore','backbone','app/views/property-map','app/collections/properties','app/views/google-autocomplete','app/views/property-list'],function($,_,Backbone,PropertyMap,Properties,GoogleAutocomplete,PropertyList){
-	var propertyMap,pubSub,properties,googleAutocomplete,propertyList;
+define(['jquery','underscore','backbone','app/views/property-map','app/collections/properties','app/views/google-autocomplete','app/views/property-list','app/views/advanced-search'],function($,_,Backbone,PropertyMap,Properties,GoogleAutocomplete,PropertyList,AdvancedSearch){
+	var propertyMap,pubSub,properties,googleAutocomplete,propertyList,advancedSearch,searchOpts={};
 
 	var searchProperties = function(data){
 		var place = data.place;
@@ -15,6 +15,7 @@ define(['jquery','underscore','backbone','app/views/property-map','app/collectio
 		properties = new Properties();
 		propertyList = new PropertyList({el:"#search-list"});
 		googleAutocomplete = new GoogleAutocomplete({el:"#search-form"});
+		advancedSearch = new AdvancedSearch({el:"#as-modal"});
 		setupEvents();
 	}
 
@@ -24,19 +25,25 @@ define(['jquery','underscore','backbone','app/views/property-map','app/collectio
 		pubSub.listenTo(propertyList,'hover_over',activateMarker);
 		pubSub.listenTo(propertyList,'hover_out',clearActiveMarker);
 		pubSub.listenTo(googleAutocomplete,'place_changed',searchProperties);
+		pubSub.listenTo(advancedSearch,'options_changed',updateOptions)
 	}
 
 	var activateMarker = function(e){
 		propertyMap.setActiveMarker(e);
 	}
 
+	var updateOptions = function(opts){
+		searchOpts = opts || {};
+		var bounds = propertyMap.getBounds();
+		updateProperties({bounds:bounds});
+	}
 
 	var clearActiveMarker = function(e){
 		propertyMap.clearActiveMarker(e);
 	}
 
 	var getQuery = function(params){
-		return {
+		var q = {
 				loc:{
 					"$geoWithin":{
 						'$box':params.bounds
@@ -44,6 +51,21 @@ define(['jquery','underscore','backbone','app/views/property-map','app/collectio
 				},
 				available:true
 		};
+
+		if(searchOpts.genderAllowed && searchOpts.genderAllowed != "both")
+			q.genderAllowed = searchOpts.genderAllowed
+
+		if(searchOpts.propertyType && searchOpts.propertyType != "both")
+			q.propertyType = searchOpts.propertyType
+
+		if(searchOpts.roomType && searchOpts.roomType != "both")
+			q.roomType = searchOpts.roomType
+
+		if(searchOpts["price-range-max"] && searchOpts["price-range-min"])
+			q.price = {"$gte":searchOpts["price-range-min"],"$lte":searchOpts["price-range-max"]}
+
+		console.log(q);
+		return q;
 	}
 
 	var updateProperties = function(bounds){
