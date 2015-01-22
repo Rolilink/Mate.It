@@ -179,7 +179,7 @@ app.get('/',function(req,res){
 	center.lng = req.param('lng') || -79.51666699999998;
 	center.lat = req.param('lat') || 8.983333;
 
-	res.render('property/search',{user:req.user,center:center});
+	res.render('property/search',{user:req.user,center:center,advanced:true});
 });
 
 app.get('/properties/:id/view',function(req,res){

@@ -20,7 +20,7 @@
 
 }); */
 
-define(['jquery','backbone','underscore'],function($,Backbone,_){
+define(['jquery','backbone','underscore','bootstrap'],function($,Backbone,_,bootstrap){
 	return Backbone.View.extend({
 		events:{
 			"submit":"stopSubmit"
