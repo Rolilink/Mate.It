@@ -8,7 +8,7 @@
 var saveUser = function(user){
 	var deferred = q.defer();
 	User
-	.findOneQ({"$or":{username:user.username,email:user.email}})
+	.findOneQ({"$or":[{username:user.username},{email:user.email}]})
 	.then(function(user){
 		if(user)
 			return deferred.reject(new Error("User Exist"));
