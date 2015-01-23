@@ -54,7 +54,7 @@ define(['jquery','backbone','underscore','backbone.validation','jquery.serialize
 			this.trigger('user_created',{user:model})
 		},
 		onErrorResponse: function(model){
-			window.location.href = window.location.href + "?message=usuario ya existe"
+			window.location.href = "/users/new?message=usuario ya existe"
 		}
 	});
 });

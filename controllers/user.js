@@ -7,11 +7,20 @@
 // Save User Function Wrapped in a Promise
 var saveUser = function(user){
 	var deferred = q.defer();
+
 	User
-	.findOneQ({"$or":{username:user.username,email:user.email}})
-	.then(function(user){
-		if(user)
+	.findQ({email:user.email})
+	.then(function(ruser){
+		console.log(ruser);
+		if(ruser.length > 0)
 			return deferred.reject(new Error("User Exist"));
+
+		return User.findQ({username:user.username});
+	})
+	.then(function(ruser){
+		if(ruser.length > 0)
+			return deferred.reject(new Error("User Exist"));
+		
 		user.save(function(err){
 			if(err){	
 				return deferred.reject(err);
