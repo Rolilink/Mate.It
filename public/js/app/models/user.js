@@ -52,7 +52,6 @@ define(['backbone','underscore','backbone.validation'],function(Backbone,_){
         options.originalSuccess = options.success;
 
         options.success = function(res){
-        	console.log(res);
         	return options.originalSuccess(res.user);
         }
  

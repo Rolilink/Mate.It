@@ -68,13 +68,13 @@ nav.navbar.navbar-inverse.navbar-fixed-top(role="navigation")
         ul.navbar-nav.nav.float-right
           if user.profilepic
             li
-              a(href="/user/dashboard")
+              a(href="/users/update")
                 div.circle
                   img(src="user.profilepic", alt="")
                 span= user.username 
           else
             li
-              a(href="/user/dashboard")
+              a(href="/users/update")
                   div.circle
                     img(src="/img/profile_avatar_default.png", alt="")
                   span= user.username 

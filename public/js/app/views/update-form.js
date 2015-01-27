@@ -52,10 +52,11 @@ define(['jquery','backbone','underscore','backbone.validation','jquery.serialize
 			this.model.save();
 		},
 		onApiResponse: function(model,response){
-			this.trigger('user_created',{user:model})
+			model.unset("password");
+			this.trigger('user_updated',{user:model})
 		},
 		onErrorResponse: function(model){
-			window.location.href = "/users/new?message=usuario ya existe"
+			window.location.href = "/users/update?message=usuario ya existe"
 		}
 	});
 });
