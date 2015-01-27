@@ -3,35 +3,16 @@
  * @author: Rolilink
  */
 
-
 // Save User Function Wrapped in a Promise
 var saveUser = function(user){
 	var deferred = q.defer();
 
-	User
-	.findQ({email:user.email})
-	.then(function(ruser){
-		console.log(ruser);
-		if(ruser.length > 0)
-			return deferred.reject(new Error("User Exist"));
-
-		return User.findQ({username:user.username});
-	})
-	.then(function(ruser){
-		if(ruser.length > 0)
-			return deferred.reject(new Error("User Exist"));
-		
-		user.save(function(err){
-			if(err){	
-				return deferred.reject(err);
-			}
-			return deferred.resolve(user);
-		});
-	})
-	.catch(function(err){
-		deferred.reject(err);
+	user.save(function(err){
+		if(err){
+			return deferred.reject(err);
+		}
+		return deferred.resolve(user);
 	});
-	
 	return deferred.promise;
 }
 
@@ -83,9 +64,28 @@ seneca.add({controller:'user',action:'create'},function(args,cb){
 	handleSuccess = function(data){ cb(null,{status:201,response:{user:{id:data.id,username:data.username,email:data.email,active:data.active}}}); },
 	handleError = function(err){ console.log("err"); cb(err,null); };
 
-	saveUser(user)
-	.then(handleSuccess)
-	.catch(handleError);
+	User
+	.findQ({email:user.email})
+	.then(function(ruser){
+		console.log(ruser);
+		if(ruser.length > 0)
+			return handleError(new Error("User Exist"));
+
+		return User.findQ({username:user.username});
+	})
+	.then(function(ruser){
+		if(ruser.length > 0)
+			return handleError(new Error("User Exist"));
+		
+		saveUser(user)
+		.then(handleSuccess)
+		.catch(handleError);
+	
+	})
+	.catch(function(err){
+		return handleError(new Error("User Exist"));
+	});
+
 });
 
 // check limit
