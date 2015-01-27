@@ -1,0 +1,118 @@
+
+/* line 1 : /Users/rolilink/Sites/Mate It/Api Server/node_modules/grunt-contrib-stylus/node_modules/stylus/lib/functions/index.styl */
+
+/* line 1 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/colors.styl */
+
+/* line 35 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+
+/* line 1 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar {
+  z-index: 2;
+  border-radius: 0px !important;
+}
+
+/* line 4 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+
+/* line 5 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar form input {
+  width: 400px !important;
+}
+
+/* line 7 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar form .btn {
+  margin-left: 10px;
+}
+
+/* line 9 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar form .btn span {
+  margin-left: 3px;
+}
+
+/* line 11 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar div.circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: middle;
+  margin-right: 10px;
+  margin-top: -8px;
+}
+
+/* line 20 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar div.circle img {
+  width: 110%;
+  height: auto;
+}
+
+/* line 23 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar li {
+  text-transform: capitalize;
+}
+
+/* line 25 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/header.styl */
+.navbar #advanced-search {
+  display: inline-block;
+  font-size: 20px;
+  float: none;
+  vertical-align: middle;
+}
+
+/* line 4 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
+#user-dashboard {
+  margin-top: 53px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+}
+
+/* line 11 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
+#user-dashboard > div.row {
+  height: 100%;
+}
+
+/* line 13 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
+#user-dashboard > div.row #dashboard-navigation {
+  padding-left: 0px;
+  padding-right: 0px;
+  height: 100%;
+  color: #fff;
+  background-color: #2cb0d6;
+}
+
+/* line 19 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
+#user-dashboard > div.row #dashboard-navigation nav,
+#user-dashboard > div.row #dashboard-navigation ul,
+#user-dashboard > div.row #dashboard-navigation li {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+/* line 22 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
+#user-dashboard > div.row #dashboard-navigation nav {
+  margin-top: 10px;
+}
+
+/* line 24 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
+#user-dashboard > div.row #dashboard-navigation li {
+  width: 100%;
+  text-align: center;
+  list-style: none;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* line 25 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
+#user-dashboard > div.row #dashboard-navigation li:hover,
+#user-dashboard > div.row #dashboard-navigation li.active {
+  background-color: #228dac;
+}
+
+/* line 32 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
+#user-dashboard > div.row #dashboard-navigation a {
+  color: #fff;
+  font-size: 30px;
+}
