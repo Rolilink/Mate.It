@@ -20,7 +20,7 @@ block content
             img(src=user.profilePicture)
             input(type="file",name="profilePicture")
           div.col-md-8
-            form(action="")
+            form(action="/api/users/" + user._id)#update-user-form
               if message
                 div.alert.alert-danger
                   ul
@@ -29,28 +29,29 @@ block content
                 div.alert.alert-danger(style="display:none;")
                   ul
               div.form-group
-                label(for="user-username") Nombre de Usuario 
-                input.form-control#user-username(type="text",name="username")
-              div.form-group
                 label(for="user-name") Nombre y Apellido
-                input.form-control#user-name(type="text",name="name")
+                input.form-control#user-name(type="text",name="name",placeholder=user.name)
               div.form-group
                 label(for="user-email") Correo
-                input.form-control#user-email(type="text",name="email")
+                input.form-control#user-email(type="text",name="email",placeholder=user.email)
               div.form-group
                 label(for="user-password") Contraseña
                 input.form-control#user-password(type="password",name="password")
               div.form-group
                 label(for="user-description") Descripcion
-                textarea.form-control#user-description(name="description")
+                textarea.form-control#user-description(name="description",placeholder=user.description)
               div.form-group
                 label(for="ap-country") Pais
                 select.form-control#ap-country(name="country")
                   each country in countries
-                    option(value=country.code)= country.name
-              a.btn.btn-primary#btn-update
-                i.fa.fa-user
-                span Actualizar
+                    if country.code == user.country
+                      option(value=country.code, selected="selected")= country.name
+                    else
+                      option(value=country.code)= country.name
+              div.form-group(style="text-align: right")
+                a.btn.btn-primary#btn-update
+                  i.fa.fa-user
+                  span Actualizar
 
         div.update-user-data
 
@@ -58,9 +59,11 @@ block content
 block head
   link(rel="stylesheet", href="/css/update-user.css")
 
-//block postlibraries
+block postlibraries
   script.
+    var user = !{JSON.stringify(user)};
     require(['/js/app/apps/update-user.js'],function(updatePage){
-     updatePage.start();
+      console.log(user);
+      updatePage.start(user);
     });
   
