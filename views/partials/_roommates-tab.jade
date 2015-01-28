@@ -5,7 +5,8 @@
 for user, index in users
 	div.col-md-6.habitant
 		div.col-md-4
-			img(src=user.profilePicture, alt="")
+			div.picture
+				img(src=user.profilePicture, alt="")
 		div.col-md-8
 			if index == 0
 				h4= user.name + " (Owner)"

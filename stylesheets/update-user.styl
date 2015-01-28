@@ -1,0 +1,59 @@
+@import colors
+@import header
+
+#user-dashboard
+	margin-top 53px
+	top 0
+	left 0
+	right 0
+	bottom 0
+	position absolute
+	& > div.row
+		height 100%
+		
+		#update-user
+			padding-top 80px
+			
+			input[type="file"]
+				margin-top 15px
+			
+			#btn-update
+				margin-top 20px
+				font-size 16px
+				i.fa
+					font-size 18px
+					margin-right 10px
+			div.profile-pic
+				width 200px
+				height 200px
+				overflow-x hidden
+				overflow-y hidden
+				img
+					width 100%
+
+		#dashboard-navigation
+			padding-left 0px
+			padding-right 0px
+			height 100%
+			color white
+			background-color #2cb0d6
+			nav, ul, li 
+				margin-left 0
+				padding-left 0
+			nav
+				margin-top 10px
+			li
+				&:hover,&.active
+					background-color #228dac
+				text-align center
+				list-style none
+				padding-top 10px
+				padding-bottom 10px
+				width 100%
+			a 
+				display inline-block
+				width 100%
+				color white
+				font-size 30px
+			
+	

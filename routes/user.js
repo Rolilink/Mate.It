@@ -151,6 +151,17 @@ app.get('/users/new',function(req,res){
 	res.render('users/new',{user:req.user,countries:countries,message:message});
 });
 
+app.get('/users/update',function(req,res){
+	if(!req.isAuthenticated())
+		return res.status(404).send();
+
+	var fs = require('fs');
+	var data = fs.readFileSync(appRoot + '/data/countries.json',{encoding:"utf8"});
+	var countries = JSON.parse(data);
+
+	res.render('users/update',{user:req.user,countries:countries});
+});
+
 app.post('/log/files',function(req,res){
 	console.log(req.files);
 });

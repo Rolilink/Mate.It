@@ -122,7 +122,11 @@ seneca.add({controller:'user',action:'update'},function(args,cb){
 	var data = _.omit(args.data,['role','emailKey','active','aId','profilePicture','property']),
 	id = args.id,
 	profilePicture = args.file,
-	handleSuccess = function(data){ cb(null,{user:data}); },
+	handleSuccess = function(data){
+		var data = _.omit(data.toJSON(),'password');
+		console.log(data);
+		cb(null,{user:data});
+	},
 	handleError = function(err){	cb(err,null); },
 	updateUser = function(user){ return _.extend(user,data); };
 
@@ -202,7 +206,7 @@ seneca.add({controller:'user', action:'leaveProperty'}, function(args,cb){
 
 seneca.add({controller:'user',action:'deserializeUser'},function(args,cb){
 	var id= args.id,
-	handleSuccess = function(data){ cb(null,{user:data}); },
+	handleSuccess = function(data){ cb(null,{	user:data}); },
 	handleError = function(err){	cb(err,null); };
 
 	findUser(id,'-emailKey -aId').then(handleSuccess,handleError);

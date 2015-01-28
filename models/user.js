@@ -66,17 +66,21 @@ Schema.methods.setProfilePicture = function(file){
   fileName = self.username + path.extname(file.originalFilename),
   uploadPath = appRoot + "/public/uploads/profile/" + fileName,
   readPath = file.path;
+
   if( ! /image/.test(file.headers['content-type']) ){
     deferred.reject("file is not an image.");
     return deferred.promise;
   }
 
+  console.log('uploadPath:',uploadPath);
+  console.log('readPath:',readPath);
+  console.log('fileName:',fileName);
   seneca.act({controller:'files',action:'upload', readPath: readPath, writePath: uploadPath },function(err,result){ 
     if(err)
       deferred.reject(err);
 
     var filePath = path.relative(app.get("publicdir"),result.filePath);
-    self.profilePicture = filePath;
+    self.profilePicture = "/" + filePath;
     deferred.resolve(self);
   });
 

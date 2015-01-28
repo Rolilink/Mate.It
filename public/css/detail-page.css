@@ -301,20 +301,28 @@ body {
 }
 
 /* line 138 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
-#detail-page #content #roommates .habitant img {
+#detail-page #content #roommates .habitant div.picture {
+  width: 175px;
+  height: 175px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+/* line 143 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+#detail-page #content #roommates .habitant div.picture img {
   width: 100%;
 }
 
-/* line 141 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+/* line 145 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
 #detail-page #content #roommates .habitant p {
   color: #656d78;
 }
 
-/* line 144 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+/* line 148 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
 
-/* line 146 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+/* line 150 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
 
-/* line 147 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+/* line 151 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
 #detail-page #content #comentarios #control form {
   margin-right: auto;
   margin-left: auto;
@@ -323,24 +331,24 @@ body {
   margin-bottom: 10px;
 }
 
-/* line 153 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+/* line 157 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
 #detail-page #content #comentarios #control form div.form-group {
   margin-right: 70px;
 }
 
-/* line 155 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+/* line 159 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
 #detail-page #content #comentarios #control form div.form-group label {
   margin-right: 10px;
 }
 
-/* line 157 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+/* line 161 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
 #detail-page #content #comentarios #control form div.form-group select {
   width: 200px;
 }
 
-/* line 161 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+/* line 165 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
 
-/* line 162 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+/* line 166 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
 #detail-page #content #comentarios .comment div.photo {
   width: 75px;
   height: 75px;
@@ -351,26 +359,26 @@ body {
   margin-bottom: 10px;
 }
 
-/* line 170 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+/* line 174 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
 #detail-page #content #comentarios .comment div.photo img {
   width: 100%;
 }
 
-/* line 172 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+/* line 176 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
 #detail-page #content #comentarios .comment h4 {
   margin-top: 0px;
   margin-bottom: 0px;
   display: inline-block;
 }
 
-/* line 177 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+/* line 181 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
 #detail-page #content #comentarios .comment p {
   margin-top: 5px;
   font-size: 16px;
   color: #656d78;
 }
 
-/* line 182 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
+/* line 186 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/detail-page.styl */
 #detail-page #content #comentarios .comment div.rating {
   display: inline-block;
   color: #ffce54;

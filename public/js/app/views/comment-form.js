@@ -1,5 +1,8 @@
 define(['jquery','backbone','underscore','backbone.validation','jquery.serializeObject'],function($,Backbone,_){
-	return Backbone.View.extend({
+		var translation = {
+			"Content is required": "Por favor llenar el campo de contenido."
+		}
+		return Backbone.View.extend({
 		events:{
 			'click #btn-comentario':'validate'
 		},
@@ -28,7 +31,7 @@ define(['jquery','backbone','underscore','backbone.validation','jquery.serialize
 		onInvalid: function(v,attr,error){
 			var input = v.$el.find('[name="' + attr + '"]');
 			$(input).parent().removeClass('has-success').addClass('has-error');
-			$("#error").text(error).addClass("alert alert-danger");
+			$("#error").text(translation[error]).addClass("alert alert-danger");
 		},
 		submit:function(){
 			this.model.once('sync',this.onApiResponse,this);
@@ -38,8 +41,8 @@ define(['jquery','backbone','underscore','backbone.validation','jquery.serialize
 		onApiResponse: function(model,response){
 			window.location.reload();
 		},
-		onErrorResponse: function(){
-			console.log('error');
+		onErrorResponse: function(response){
+			$("#error").text("Ya has escrito un comentario.").addClass("alert alert-danger");
 		}
 	});
 });

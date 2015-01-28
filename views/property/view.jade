@@ -32,10 +32,11 @@ block content
         a(href="#comentarios",role="tab", data-toggle="tab")
           i.fa.fa-comments-o
           | Comentarios
-      div.col-md-3.text-align-right
-        a(href="#contacto",data-toggle="modal", data-target="#contacto-modal")
-          i.fa.fa-envelope-o
-          | Contacto
+      if !user.property.isOwner && user.property.data != property._id
+        div.col-md-3.text-align-right
+          a(href="#contacto",data-toggle="modal", data-target="#contacto-modal")
+            i.fa.fa-envelope-o
+            | Contacto
     div#content
       div#acerca_de.tab-content.active
         include ../partials/_acerca-tab.jade
