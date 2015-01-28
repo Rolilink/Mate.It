@@ -70,13 +70,13 @@ nav.navbar.navbar-inverse.navbar-fixed-top(role="navigation")
             li
               a(href="/users/update")
                 div.circle
-                  img(src="user.profilepic", alt="")
+                  img(src=user.profilePicture, alt="")
                 span= user.username 
           else
             li
               a(href="/users/update")
                   div.circle
-                    img(src="/img/profile_avatar_default.png", alt="")
+                    img(src=user.profilePicture, alt="")
                   span= user.username 
           if user.property && user.property.data != null
             li

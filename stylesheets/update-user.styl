@@ -12,7 +12,7 @@
 		height 100%
 		
 		#update-user
-			padding-top 40px
+			padding-top 80px
 			
 			input[type="file"]
 				margin-top 15px
@@ -23,6 +23,13 @@
 				i.fa
 					font-size 18px
 					margin-right 10px
+			div.profile-pic
+				width 200px
+				height 200px
+				overflow-x hidden
+				overflow-y hidden
+				img
+					width 100%
 
 		#dashboard-navigation
 			padding-left 0px
@@ -38,12 +45,14 @@
 			li
 				&:hover,&.active
 					background-color #228dac
-				width 100%
 				text-align center
 				list-style none
 				padding-top 10px
 				padding-bottom 10px
+				width 100%
 			a 
+				display inline-block
+				width 100%
 				color white
 				font-size 30px
 			

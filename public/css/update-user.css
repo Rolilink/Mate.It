@@ -76,7 +76,7 @@
 
 /* line 14 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
 #user-dashboard > div.row #update-user {
-  padding-top: 40px;
+  padding-top: 80px;
 }
 
 /* line 17 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
@@ -96,7 +96,20 @@
   margin-right: 10px;
 }
 
-/* line 27 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
+/* line 26 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
+#user-dashboard > div.row #update-user div.profile-pic {
+  width: 200px;
+  height: 200px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+/* line 31 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
+#user-dashboard > div.row #update-user div.profile-pic img {
+  width: 100%;
+}
+
+/* line 34 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
 #user-dashboard > div.row #dashboard-navigation {
   padding-left: 0px;
   padding-right: 0px;
@@ -105,7 +118,7 @@
   background-color: #2cb0d6;
 }
 
-/* line 33 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
+/* line 40 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
 #user-dashboard > div.row #dashboard-navigation nav,
 #user-dashboard > div.row #dashboard-navigation ul,
 #user-dashboard > div.row #dashboard-navigation li {
@@ -113,28 +126,30 @@
   padding-left: 0;
 }
 
-/* line 36 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
+/* line 43 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
 #user-dashboard > div.row #dashboard-navigation nav {
   margin-top: 10px;
 }
 
-/* line 38 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
+/* line 45 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
 #user-dashboard > div.row #dashboard-navigation li {
-  width: 100%;
   text-align: center;
   list-style: none;
   padding-top: 10px;
   padding-bottom: 10px;
+  width: 100%;
 }
 
-/* line 39 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
+/* line 46 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
 #user-dashboard > div.row #dashboard-navigation li:hover,
 #user-dashboard > div.row #dashboard-navigation li.active {
   background-color: #228dac;
 }
 
-/* line 46 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
+/* line 53 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/update-user.styl */
 #user-dashboard > div.row #dashboard-navigation a {
+  display: inline-block;
+  width: 100%;
   color: #fff;
   font-size: 30px;
 }

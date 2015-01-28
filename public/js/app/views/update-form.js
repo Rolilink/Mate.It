@@ -20,11 +20,24 @@ define(['jquery','backbone','underscore','backbone.validation','jquery.serialize
 			console.log(this.model);
 		},
 		validate: function(e){
-			var data = this.$el.serializeObject();
+			var data = this.$el.serializeObject() ,
+			self = this;
+
+
+			data = _.omit(data,function(val){
+				return val === "";
+			});
+
 			this.model.set(data);
 			this.$el.find(".alert").hide();
 			this.$el.find(".alert ul").empty();
-			if(this.model.isValid(true)){
+
+
+			var keysInvalid = _.filter(data,function(val,key){	
+				return !self.model.isValid(key);
+			});
+
+			if(keysInvalid.length === 0){
 				this.submit();
 			}
 		},

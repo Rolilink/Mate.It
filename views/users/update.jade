@@ -14,13 +14,15 @@ block content
             li
               a(href="/properties/update")
                 i.fa.fa-building-o
-      div.col-md-11#update-user
-        div.update-profile-pic
-          div.col-md-3
-            img(src=user.profilePicture)
-            input(type="file",name="profilePicture")
-          div.col-md-8
-            form(action="/api/users/" + user._id)#update-user-form
+      div.col-md-10.col-md-offset-1#update-user
+        form(action="/api/users/" + user._id)#update-user-form
+          div.update-profile-pic
+            div.col-md-3
+              div.profile-pic
+                img(src=user.profilePicture)
+              input#photo-input(type="file",name="profilePicture")
+            div.col-md-8
+            
               if message
                 div.alert.alert-danger
                   ul
@@ -52,8 +54,6 @@ block content
                 a.btn.btn-primary#btn-update
                   i.fa.fa-user
                   span Actualizar
-
-        div.update-user-data
 
 // page-specific styles
 block head
