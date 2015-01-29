@@ -84,8 +84,26 @@ Schema.methods.setOwner = function(ownerId){
 Schema.methods.addHabitant = function(userid){
 	this.habitants.push(userid);
 
-	if(this.habitants === this.capacity)
+	if(this.habitants.length === this.capacity)
 		this.available = false;
+};
+
+Schema.methods.removeHabitant = function(userid,fn){
+	var self = this;
+	User.findById(userid,'-password',function(err,habitant){
+		console.log(habitant);
+		self.habitants.remove(userid);
+		console.log(self.habitants);
+		habitant.property.data = null;
+		habitant.property.isOwner = false;
+		habitant.save();
+
+		if(self.habitants.length < self.capacity)
+			self.available = true;
+		
+		fn(self);
+
+	});
 };
 
 Schema.methods.isFull = function(){

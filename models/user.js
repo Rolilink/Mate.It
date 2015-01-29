@@ -35,7 +35,10 @@ Schema.pre('save',function(next,done){
 	var self = this;
     if (!self.isModified('password')){
       next();
-      return done();
+      if(done)
+        return done();
+      else
+        return;
     };
 
 	bcrypt.genSalt(SALT_WORK_FACTOR,function(err,salt){

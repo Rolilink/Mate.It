@@ -15,7 +15,8 @@ define(['jquery','backbone','underscore','backbone.validation','jquery.serialize
 
 	return Backbone.View.extend({
 		events:{
-			'click #btn-update':'validate'
+			'click #btn-update':'validate',
+			'click .user-remove-btn a':'removeHabitant'
 		},
 		initialize: function(opts){
 			this.model = opts.model;
@@ -59,6 +60,17 @@ define(['jquery','backbone','underscore','backbone.validation','jquery.serialize
 			this.model.once('error',this.onErrorResponse,this);
 			this.trigger('creating_property',{})
 			this.model.save();
+		},
+		removeHabitant:function(e){
+			var self = this;
+			var id = $(e.target).attr('data-id');
+			$.ajax({
+				url: "/api/properties/" + this.model.get('id') + "/habitants/" + id,
+				type:"DELETE",
+				success: function(result){
+					document.location.href = document.location.href;
+				}
+			});
 		},
 		onApiResponse: function(model,response){
 			this.trigger('property_created',{id:response.property._id})

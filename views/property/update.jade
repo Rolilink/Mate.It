@@ -190,8 +190,21 @@ block content
               else
                 input(type="checkbox" name="amenities[smooking_allowed]")
               span Permitido Fumar
-
-
+      div.row#habitants
+        if property.habitants.length > 0
+          div.col-md-12
+            h4 Habitantes
+            hr.section-divider
+            each user in property.habitants
+              - console.log(user);
+              div.roommate.col-md-6.panel(data-id= '' + user._id)
+                div.panel-body
+                  div.col-md-8
+                    div.photo
+                      img(src=user.profilePicture)
+                    h4.name= user.name
+                  div.col-md-4.user-remove-btn
+                    a.btn.btn-danger(data-id = '' + user._id) Hechar de la propiedad
       div.row
         div.col-md-12.text-right.btns
           a.btn.btn-success#btn-update

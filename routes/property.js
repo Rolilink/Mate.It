@@ -133,6 +133,24 @@ app.del('/api/properties/:id/photos/:photoid',authorization.is('Owner'),function
 	});
 });
 
+app.del('/api/properties/:id/habitants/:userid',authorization.is('Owner'),function(req,res,next){
+	var id = req.param('id'),
+	userId = req.param('userid');
+	
+	seneca.act({controller:'property',action:'removeUser',id:id, userId:userId},function(err,result){
+		if(err){
+			if(err.name == "PropertyNotFound")
+				return res.status(404).json({err:err});
+
+			if(err.name == "UserNotFound")
+				return res.status(404).json({err:err});
+			
+			return res.status(422).json({errors:err.errors});
+		}
+		res.status(200).json({property:result.property});
+	});
+});
+
 app.get('/api/properties/:id/rating',authorization.is('User'),function(req,res){
 	var id = req.param('id');
 
@@ -275,18 +293,21 @@ app.get('/properties/update',function(req,res){
 		return res.status(400).json({error:'you are not owner of a property'});
 
 	Property.findById(propertyId)
+	.populate({path:'habitants',model:'User',select:'name _id profilePicture'})
 	.execQ()
 	.then(function(rproperty){
 		
 		if(!rproperty)
 			return res.status(400).json({error:'propertyId not found'});
 
-		res.render('property/update',{user:req.user,property:rproperty,countries:countries,_:require('underscore')});
+		res.render('property/update',{user:req.user,property:rproperty.toJSON(),countries:countries,_:require('underscore')});
 	})
 	.catch(function(err){
 		return res.status(400).json({error:err});
 	});	
 });
+
+
 
 
 
