@@ -262,4 +262,32 @@ app.post('/properties/:id/contact',function(req,res){
 
 });
 
+app.get('/properties/update',function(req,res){
+	var propertyId = req.user.property.data,
+	user = req.user;
+
+	var fs = require('fs');
+	var data = fs.readFileSync(appRoot + '/data/countries.json',{encoding:"utf8"});
+	var countries = JSON.parse(data);
+
+
+	if(!propertyId && !user.property.isOwner)
+		return res.status(400).json({error:'you are not owner of a property'});
+
+	Property.findById(propertyId)
+	.execQ()
+	.then(function(rproperty){
+		
+		if(!rproperty)
+			return res.status(400).json({error:'propertyId not found'});
+
+		res.render('property/update',{user:req.user,property:rproperty,countries:countries,_:require('underscore')});
+	})
+	.catch(function(err){
+		return res.status(400).json({error:err});
+	});	
+});
+
+
+
 
