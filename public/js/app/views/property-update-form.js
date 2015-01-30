@@ -73,7 +73,7 @@ define(['jquery','backbone','underscore','backbone.validation','jquery.serialize
 			});
 		},
 		onApiResponse: function(model,response){
-			this.trigger('property_created',{id:response.property._id})
+			this.trigger('property_updated',{id:model.id})
 		},
 		onErrorResponse: function(response){
 			this.$el.find(".alert ul").append("<li> Ha Sucedido un error en el servidor intenta mas tarde.</li>");

@@ -49,7 +49,7 @@ define(['jquery','underscore','backbone','app/views/property-update-form','app/v
 
 	var setupEvents = function(){
 		pubSub.listenTo(propertyForm,"creating_property",startLoading);
-		//pubSub.listenTo(propertyForm.model,"sync",startUpload);
+		pubSub.listenTo(propertyForm.model,"sync",startUpload);
 		//pubSub.listenTo(fileUploader,"upload_started",onUploadStarted);
 		pubSub.listenTo(fileUploader,"upload_finished",onUploadFinished);
 		pubSub.listenTo(googleAutocomplete,"place_changed",searchProperties);
