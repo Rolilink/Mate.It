@@ -35,7 +35,10 @@ Schema.pre('save',function(next,done){
 	var self = this;
     if (!self.isModified('password')){
       next();
-      return done();
+      if(done)
+        return done();
+      else
+        return;
     };
 
 	bcrypt.genSalt(SALT_WORK_FACTOR,function(err,salt){
@@ -113,6 +116,7 @@ Schema.methods.joinProperty = function(property){
 };
 
 Schema.methods.leaveProperty = function(){
+
   this.property.data = null;
   this.property.isOwner = false;
 };
@@ -184,5 +188,6 @@ Schema.methods.sendContactEmail = function(opts){
 
   return deferred.promise;
 }
+
 
 module.exports = Schema;

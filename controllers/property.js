@@ -146,3 +146,18 @@ seneca.add({controller:'property',action:'deletePicture'},function(args,cb){
 	findProperty(id).then(deletePicture).then(saveProperty).then(handleSuccess,handleError);
 });
 
+seneca.add({controller:'property',action:'removeUser'},function(args,cb){
+	var id = args.id,
+	userId = args.userId,
+	handleSuccess = function(data){ cb(null,{property: data}); },
+	handleError = function(err){	cb(err,null); },
+	removeHabitant = function(property){ 
+		var deferred = q.defer();
+		property.removeHabitant(userId,function(property){
+			deferred.resolve(property);
+		});
+		return deferred.promise; 
+	};
+
+	findProperty(id).then(removeHabitant).then(saveProperty).then(handleSuccess,handleError);
+});

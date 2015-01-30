@@ -186,3 +186,37 @@ div.loading i.fa.fa-refresh.fa-spin {
 #add-property-page form .map-canvas {
   height: 350px;
 }
+
+/* line 80 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+
+/* line 81 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+
+/* line 82 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+#add-property-page #habitants .roommate .photo {
+  vertical-align: middle;
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+/* line 89 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+#add-property-page #habitants .roommate .photo img {
+  width: 75px;
+  height: auto;
+}
+
+/* line 92 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+#add-property-page #habitants .roommate h4 {
+  display: inline-block;
+  margin-left: 20px;
+  vertical-align: middle;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+/* line 98 : /Users/rolilink/Sites/Mate It/Api Server/stylesheets/add-property-page.styl */
+#add-property-page #habitants .roommate a {
+  margin-top: 10px;
+}

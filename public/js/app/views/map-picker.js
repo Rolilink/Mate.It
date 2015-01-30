@@ -10,6 +10,8 @@ define(['jquery','underscore','backbone','jquery.map.picker'],function($,_,Backb
 				location:{latitude: this.loc[0], longitude: this.loc[1]},
 				onchanged: this.onchanged
 			});
+			$('#lat').val(this.loc[0]);
+			$('#lon').val(this.loc[1]);
 		},
 		onchanged: function(currentLocation, radius, isMarkerDropped){
 			if(!isMarkerDropped)

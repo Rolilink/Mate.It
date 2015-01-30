@@ -13,7 +13,7 @@ app.post('/api/properties/:id/invite',authorization.is('Owner'),function(req,res
 	});
 });
 
-app.get('/api/invitations/:key',authorization.is('User'),function(req,res,next){
+app.get('/invitation/:key',authorization.is('User'),function(req,res,next){
 	var key = req.param('key'),
 	currentUser = req.user;
 	seneca.act({controller:'invitation',action:'consume',currentUser:currentUser,key:key},function(err,result){
@@ -22,6 +22,6 @@ app.get('/api/invitations/:key',authorization.is('User'),function(req,res,next){
 		}
 		if(result.err)
 			return res.status(result.status).json({err:result.err});
-		res.status(result.status).json({response:result.response});
+		res.redirect('/');
 	});
 });
