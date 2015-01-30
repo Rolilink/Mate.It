@@ -116,6 +116,7 @@ Schema.methods.joinProperty = function(property){
 };
 
 Schema.methods.leaveProperty = function(){
+
   this.property.data = null;
   this.property.isOwner = false;
 };
@@ -187,5 +188,6 @@ Schema.methods.sendContactEmail = function(opts){
 
   return deferred.promise;
 }
+
 
 module.exports = Schema;

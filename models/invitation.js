@@ -77,7 +77,7 @@ Schema.methods.canSendEmail = function(exist){
 
 Schema.methods._sendEmail = function(opts){
 	var deferred = q.defer();
-
+	console.log(opts);
 	emailClient.messages.sendTemplate(
 		opts,
 		function(result){
@@ -108,7 +108,7 @@ Schema.methods.getEmailOpts = function(exist){
 	opts = {};
 	opts.template_name = self.getTemplateName(exist);
 	opts.template_content = [];
-	self.getMessage()
+	self.getMessage(exist)
 	.then(function(message){
 		opts.message = message;
 		deferred.resolve(opts);
@@ -135,17 +135,18 @@ Schema.methods.getMergeVars = function(exist){
 	content = [{name:"HOST_NAME",content:self.host.username}];
 	
 	if(exist){
-		User.findQ({email:self.email})
+		User.findOneQ({email:self.email})
 		.then(function(user){
+			console.log(user);
 			content.push({name:"invited",content: user.username});
-			content.push({name:"link",content:"http:localhost:3000/signup?invkey=" + key});
+			content.push({name:"link",content:"http:localhost:3000/invitation/"+ key});
 			deferred.resolve(content);
 		})
 		.catch(function(err){
 			deferred.resolve(err);
 		});
 	}else{	
-		content.push({name:"INVITE_LINK",content:"http:localhost:3000/invitation/"+ key});
+		content.push({name:"INVITE_LINK",content:"http:localhost:3000/user/new?invkey=" + key});
 		deferred.resolve(content);
 	}
 
@@ -233,6 +234,7 @@ Schema.methods.getMessage = function(exist){
 	self.getMergeVars(exist)
 	.then(function(merge_vars){
 		message.global_merge_vars = merge_vars;
+		console.log(message);
 		deferred.resolve(message);
 	})
 	.catch(deferred.reject);

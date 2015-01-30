@@ -12,209 +12,225 @@ block content
           li 
             a(href="/user/dashboard") Panel
           li.active Propiedades
-          li.active Agregar
-    form#property-form(action="/api/properties",method="post")
-      div.row.alert.alert-danger(style="display:none;")
-        h6(style="margin-top:0px; margin-bottom:5px;") Errores:
-        ul
-      div.row
-        div.col-md-12
-          h4 Datos del anuncio
-          hr.section-divider
-        div.col-md-6
-          div.form-group
-            label(for="ap-title") Titulo del clasificado
-            input.form-control#ap-title(type="text",name="title", placeholder = property.title)
-        div.col-md-6
-          div.form-group
-            label(for="ap-desc") Descripcion
-            textarea.form-control#ap-desc(type="text",name="description", placeholder = property.description)
-      div.row
-        div.col-md-12
-          h4 Datos de la propiedad
-          hr.section-divider
-        div.col-md-4
-          div.form-group
-            label(for="ap-prop") Tipo de Propiedad
-            select.form-control#ap-prop(name="propertyType")
-              if property.propertyType == 'apartment'
-                option(value="apartment") Apartamento
-              if property.propertyType == 'house'
-                option(value="house") Casa
-              if property.propertyType == 'other'
-                option(value="other") Otros
-        div.col-md-4
-          div.form-group
-            label(for="ap-room") Tipo de Cuarto
-            select.form-control#ap-room(name="roomType")
-              if property.roomType == 'shared'
-                option(value="shared") Compartido
-              if property.roomType == 'private'
-                option(value="private") Privado
-        div.col-md-4#price-row
-          div.form-group
-            label(for="ap-price") Precio
-            input.form-control#ap-price(type="text",name="price", placeholder = property.price)
-            i.fa.fa-dollar
-      div.row
-        div.col-md-4
-          div.form-group
-            label(for="ap-capacity") Capacidad
-            input.form-control#ap-capacity(type="text",name="capacity",placeholder = property.capacity)
-        div.col-md-4
-          div.form-group
-            label(for="ap-address") Direccion
-            input.form-control#ap-address(type="text",name="address", placeholder = property.address)
-        div.col-md-4
-          div.form-group
-            label(for="ap-gender") Se Permiten
-            select.form-control#ap-gender(name="genderAllowed")
-              if property.genderAllowed == 'both'
-                option(value="both") Hombres y Mujeres
-              if property.genderAllowed == 'male'
-                option(value="male") Solo Hombres
-              if property.genderAllowed == 'female'
-                option(value="female") Solo Mujeres
-      div.row
-        div.col-md-4
-          div.form-group
-            label(for="ap-country") Pais
-            select.form-control#ap-country(name="country")
-              each country in countries
-                if country.code == property.country
-                  option(selected="selected",value=country.code)= country.name
-                else
-                  option(value=country.code)= country.name
-      div.row
-        div.col-md-6#upload-photos
-          input#photo-input(type="file",style="display:none;",multiple="")
-          a.btn.btn-primary#photo-btn
-            i.fa.fa-camera
-            span Agregar Fotos
-          div.panel 
-            div.panel-body.photos-list
-            
-        div.col-md-6#map-picker
-          div.map-canvas
-          input(type="hidden" name="loc[0]", value = property.loc[0])#lat
-          input(type="hidden" name="loc[1]", value = property.loc[1])#lon
-      
-      div.row
-        div.col-md-12
-          h4 Amenidades
-          hr.section-divider
-        div.col-md-4
-          div.form-group
-            label
-              if _.contains(property.amenities,"kitchen")
-                input(type="checkbox" name="amenities[kitchen]", checked="checked")
-              else
-                input(type="checkbox" name="amenities[kitchen]")
-              span Cocina
-          div.form-group
-            label
-              if _.contains(property.amenities,"internet")
-                input(type="checkbox" name="amenities[internet]", checked="checked")
-              else
-                input(type="checkbox" name="amenities[internet]")
-              span Internet
-          div.form-group
-            label
-              if _.contains(property.amenities,"tv")
-                input(type="checkbox" name="amenities[tv]", checked="checked")
-              else
-                input(type="checkbox" name="amenities[tv]")
-              span Tv
-          div.form-group
-            label
-              if _.contains(property.amenities,"wifi")
-                input(type="checkbox" name="amenities[wifi]", checked="checked")
-              else
-                input(type="checkbox" name="amenities[wifi]")
-              span Wi-Fi
-        div.col-md-4
-          div.form-group
-            label
-              if _.contains(property.amenities,"air_conditioning")
-                input(type="checkbox" name="amenities[air_conditioning]", checked="checked")
-              else
-                input(type="checkbox" name="amenities[air_conditioning]")
-              span Aire Acondicionado
-          div.form-group
-            label
-              if _.contains(property.amenities,"washer")
-                input(type="checkbox" name="amenities[washer]", checked="checked")
-              else
-                input(type="checkbox" name="amenities[washer]")
-              span Lavadora
-          div.form-group
-            label
-              if _.contains(property.amenities,"dryer")
-                input(type="checkbox" name="amenities[dryer]", checked="checked")
-              else
-                input(type="checkbox" name="amenities[dryer]")
-              span Secadora
-          div.form-group
-            label
-              if _.contains(property.amenities,"cable_tv")
-                input(type="checkbox" name="amenities[cable_tv]", checked="checked")
-              else
-                input(type="checkbox" name="amenities[cable_tv]")
-              span Tv por cable
-        div.col-md-4
-          div.form-group
-            label
-              if _.contains(property.amenities,"pets_allowed")
-                input(type="checkbox" name="amenities[pets_allowed]", checked="checked")
-              else
-                input(type="checkbox" name="amenities[pets_allowed]")
-              span Mascotas Permitidas
-          div.form-group
-            label
-              if _.contains(property.amenities,"gym")
-                input(type="checkbox" name="amenities[gym]", checked="checked")
-              else
-                input(type="checkbox" name="amenities[gym]")
-              span Gimnasio
-          div.form-group
-            label
-              if _.contains(property.amenities,"pool")
-                input(type="checkbox" name="amenities[pool]", checked="checked")
-              else
-                input(type="checkbox" name="amenities[pool]")
-              span Piscina
-          div.form-group
-            label
-              if _.contains(property.amenities,"smooking_allowed")
-                input(type="checkbox" name="amenities[smooking_allowed]", checked="checked")
-              else
-                input(type="checkbox" name="amenities[smooking_allowed]")
-              span Permitido Fumar
-      div.row#habitants
-        if property.habitants.length > 0
+          li.active Actualizar
+    if user.property.isOwner
+      form#property-form(action="/api/properties",method="post")
+        div.row.alert.alert-danger(style="display:none;")
+          h6(style="margin-top:0px; margin-bottom:5px;") Errores:
+          ul
+        div.row
           div.col-md-12
-            h4 Habitantes
+            h4 Datos del anuncio
             hr.section-divider
-            each user in property.habitants
-              - console.log(user);
-              div.roommate.col-md-6.panel(data-id= '' + user._id)
-                div.panel-body
-                  div.col-md-8
-                    div.photo
-                      img(src=user.profilePicture)
-                    h4.name= user.name
-                  div.col-md-4.user-remove-btn
-                    a.btn.btn-danger(data-id = '' + user._id) Hechar de la propiedad
-      div.row
-        div.col-md-12.text-right.btns
-          a.btn.btn-success#btn-update
-            i.fa.fa-building-o
-            span Actualizar Propiedad
+          div.col-md-6
+            div.form-group
+              label(for="ap-title") Titulo del clasificado
+              input.form-control#ap-title(type="text",name="title", placeholder = property.title)
+          div.col-md-6
+            div.form-group
+              label(for="ap-desc") Descripcion
+              textarea.form-control#ap-desc(type="text",name="description", placeholder = property.description)
+        div.row
+          div.col-md-12
+            h4 Datos de la propiedad
+            hr.section-divider
+          div.col-md-4
+            div.form-group
+              label(for="ap-prop") Tipo de Propiedad
+              select.form-control#ap-prop(name="propertyType")
+                if property.propertyType == 'apartment'
+                  option(value="apartment") Apartamento
+                if property.propertyType == 'house'
+                  option(value="house") Casa
+                if property.propertyType == 'other'
+                  option(value="other") Otros
+          div.col-md-4
+            div.form-group
+              label(for="ap-room") Tipo de Cuarto
+              select.form-control#ap-room(name="roomType")
+                if property.roomType == 'shared'
+                  option(value="shared") Compartido
+                if property.roomType == 'private'
+                  option(value="private") Privado
+          div.col-md-4#price-row
+            div.form-group
+              label(for="ap-price") Precio
+              input.form-control#ap-price(type="text",name="price", placeholder = property.price)
+              i.fa.fa-dollar
+        div.row
+          div.col-md-4
+            div.form-group
+              label(for="ap-capacity") Capacidad
+              input.form-control#ap-capacity(type="text",name="capacity",placeholder = property.capacity)
+          div.col-md-4
+            div.form-group
+              label(for="ap-address") Direccion
+              input.form-control#ap-address(type="text",name="address", placeholder = property.address)
+          div.col-md-4
+            div.form-group
+              label(for="ap-gender") Se Permiten
+              select.form-control#ap-gender(name="genderAllowed")
+                if property.genderAllowed == 'both'
+                  option(value="both") Hombres y Mujeres
+                if property.genderAllowed == 'male'
+                  option(value="male") Solo Hombres
+                if property.genderAllowed == 'female'
+                  option(value="female") Solo Mujeres
+        div.row
+          div.col-md-4
+            div.form-group
+              label(for="ap-country") Pais
+              select.form-control#ap-country(name="country")
+                each country in countries
+                  if country.code == property.country
+                    option(selected="selected",value=country.code)= country.name
+                  else
+                    option(value=country.code)= country.name
+        div.row
+          div.col-md-6#upload-photos
+            input#photo-input(type="file",style="display:none;",multiple="")
+            a.btn.btn-primary#photo-btn
+              i.fa.fa-camera
+              span Agregar Fotos
+            div.panel 
+              div.panel-body.photos-list
+              
+          div.col-md-6#map-picker
+            div.map-canvas
+            input(type="hidden" name="loc[0]", value = property.loc[0])#lat
+            input(type="hidden" name="loc[1]", value = property.loc[1])#lon
+        
+        div.row
+          div.col-md-12
+            h4 Amenidades
+            hr.section-divider
+          div.col-md-4
+            div.form-group
+              label
+                if _.contains(property.amenities,"kitchen")
+                  input(type="checkbox" name="amenities[kitchen]", checked="checked")
+                else
+                  input(type="checkbox" name="amenities[kitchen]")
+                span Cocina
+            div.form-group
+              label
+                if _.contains(property.amenities,"internet")
+                  input(type="checkbox" name="amenities[internet]", checked="checked")
+                else
+                  input(type="checkbox" name="amenities[internet]")
+                span Internet
+            div.form-group
+              label
+                if _.contains(property.amenities,"tv")
+                  input(type="checkbox" name="amenities[tv]", checked="checked")
+                else
+                  input(type="checkbox" name="amenities[tv]")
+                span Tv
+            div.form-group
+              label
+                if _.contains(property.amenities,"wifi")
+                  input(type="checkbox" name="amenities[wifi]", checked="checked")
+                else
+                  input(type="checkbox" name="amenities[wifi]")
+                span Wi-Fi
+          div.col-md-4
+            div.form-group
+              label
+                if _.contains(property.amenities,"air_conditioning")
+                  input(type="checkbox" name="amenities[air_conditioning]", checked="checked")
+                else
+                  input(type="checkbox" name="amenities[air_conditioning]")
+                span Aire Acondicionado
+            div.form-group
+              label
+                if _.contains(property.amenities,"washer")
+                  input(type="checkbox" name="amenities[washer]", checked="checked")
+                else
+                  input(type="checkbox" name="amenities[washer]")
+                span Lavadora
+            div.form-group
+              label
+                if _.contains(property.amenities,"dryer")
+                  input(type="checkbox" name="amenities[dryer]", checked="checked")
+                else
+                  input(type="checkbox" name="amenities[dryer]")
+                span Secadora
+            div.form-group
+              label
+                if _.contains(property.amenities,"cable_tv")
+                  input(type="checkbox" name="amenities[cable_tv]", checked="checked")
+                else
+                  input(type="checkbox" name="amenities[cable_tv]")
+                span Tv por cable
+          div.col-md-4
+            div.form-group
+              label
+                if _.contains(property.amenities,"pets_allowed")
+                  input(type="checkbox" name="amenities[pets_allowed]", checked="checked")
+                else
+                  input(type="checkbox" name="amenities[pets_allowed]")
+                span Mascotas Permitidas
+            div.form-group
+              label
+                if _.contains(property.amenities,"gym")
+                  input(type="checkbox" name="amenities[gym]", checked="checked")
+                else
+                  input(type="checkbox" name="amenities[gym]")
+                span Gimnasio
+            div.form-group
+              label
+                if _.contains(property.amenities,"pool")
+                  input(type="checkbox" name="amenities[pool]", checked="checked")
+                else
+                  input(type="checkbox" name="amenities[pool]")
+                span Piscina
+            div.form-group
+              label
+                if _.contains(property.amenities,"smooking_allowed")
+                  input(type="checkbox" name="amenities[smooking_allowed]", checked="checked")
+                else
+                  input(type="checkbox" name="amenities[smooking_allowed]")
+                span Permitido Fumar
+        if property.habitants.length > 0   
+          div.row#habitants
+            div.col-md-12
+                h4 Inquilinos
+                hr.section-divider         
+                each user in property.habitants
+                  - console.log(user);
+                  div.roommate.col-md-6.panel(data-id= '' + user._id)
+                    div.panel-body
+                      div.col-md-8
+                        div.photo
+                          img(src=user.profilePicture)
+                        h4.name= user.name
+                      div.col-md-4.user-remove-btn
+                        a.btn.btn-danger(data-id = '' + user._id) Hechar de la propiedad
+        div.row
+          div.col-md-12.text-right.btns
+            a.btn.btn-success#btn-update
+              i.fa.fa-building-o
+              span Actualizar Propiedad
 
-          a.btn.btn-danger#btn-cancel
-            i.fa.fa-ban
-            span Cancelar
+            a.btn.btn-danger.btn-delete#btn-cancel
+              i.fa.fa-ban
+              span Borrar Propiedad
 
+      div.row#invitations
+        div.col-md-12
+          h4 Invitar Usuarios
+          hr.section-divider
+          div.error-invite
+          div.form-group
+            label(for="user-invite-email") Email
+            input(type="text", name="invite-email")#invite-email.form-control
+            a.btn.btn-primary.invite-btn(style="margin-top:20px") Invitar Usuario a Propiedad
+    else
+      div.quit
+        h5 No es el dueño de esta propiedad si desea de esta propiedad por favor presione (Salir de la propiedad indica que ya no vive en esta propiedad.): 
+        a.btn.btn-danger.btn-exit#btn-cancel
+          i.fa.fa-ban(style="margin-right:10px;")
+          span Salir de la propiedad
 // page-specific styles
 block head
   link(rel="stylesheet", href="/css/add-property-page.css")
@@ -223,6 +239,7 @@ block postlibraries
   script(src="//maps.google.com/maps/api/js?sensor=false&libraries=places")
   script.
     var property = !{JSON.stringify(property)};
+    var user = !{JSON.stringify(user)};
     require(['/js/app/apps/update-property-page.js'],function(updatePropertyPage){
       updatePropertyPage.start(property);
     });

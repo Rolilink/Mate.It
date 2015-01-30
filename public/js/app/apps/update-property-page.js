@@ -1,5 +1,5 @@
-define(['jquery','underscore','backbone','app/views/property-update-form','app/views/file-uploader','app/models/property','app/views/map-picker','app/views/google-autocomplete'],function($,_,Backbone,PropertyForm,FileUploader,Property,MapPicker,GoogleAutocomplete){
-	var property,pubSub,propertyForm,fileUploader,mapPicker,googleAutocomplete;
+define(['jquery','underscore','backbone','app/views/property-update-form','app/views/file-uploader','app/views/invitation-form','app/models/property','app/views/map-picker','app/views/google-autocomplete'],function($,_,Backbone,PropertyForm,FileUploader,InvitationForm,Property,MapPicker,GoogleAutocomplete){
+	var property,pubSub,propertyForm,fileUploader,mapPicker,googleAutocomplete,invitationForm;
 	var start = function(data){
 		$(function(){
 			data.id = data._id;
@@ -20,8 +20,30 @@ define(['jquery','underscore','backbone','app/views/property-update-form','app/v
 		
 		propertyForm = new PropertyForm({model:property,el:'form#property-form'});
 		fileUploader = new FileUploader({model:property,el:'div#upload-photos'});
+		invitationForm = new InvitationForm({el:'#invitations',model:property});
 		mapPicker = new MapPicker({el:'div#map-picker',loc: data.loc});
 		googleAutocomplete = new GoogleAutocomplete({el:"#search-form"});
+
+		$(".btn-exit").click(function(e){
+      $.ajax({
+        url:"/api/users/" + user._id + "/property",
+        type:"DELETE",
+        success: function(){
+        	document.location.href = '/'; 
+        }
+      })
+    });
+
+    $(".btn-delete").click(function(e){
+      $.ajax({
+        url:"/api/properties/" + data.id,
+        type:"DELETE",
+        success: function(){
+        	document.location.href = '/'; 
+        }
+      })
+    });
+
 		setupEvents();
 	}
 

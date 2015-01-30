@@ -137,6 +137,20 @@ Schema.path('capacity').validate(function(value,done){
 
 },'cannot update capacity below current quantity of habitants');
 
+
+Schema.pre('remove',function(next){
+  console.log('removing property')
+  var ownerId = this.owner;
+  User.findByIdQ(ownerId).then(function(user){
+    user.property.isOwner = false;
+    user.property.data = null;
+    user.save(function(){
+    	next();
+    });
+  });
+
+});
+
 Schema.plugin(troop.timestamp);
 var paginate = require('./plugins/paginate');
 Schema.plugin(paginate);
