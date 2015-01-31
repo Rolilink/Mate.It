@@ -14,8 +14,12 @@ define(['jquery','backbone','underscore'],function($,Backbone,_){
 
 			var propertyId = this.model.id;
 			var self = this;
-			$.post("/api/properties/" + propertyId + "/invite?email=" + email ,function(response){
-				self.onApiResponse();
+
+			$.ajax({
+			  type: "POST",
+			  url: "/api/properties/" + propertyId + "/invite?email=" + email,
+			  success: self.onApiResponse,
+			  error: self.onErrorResponse
 			});
 			
 		},
@@ -30,8 +34,12 @@ define(['jquery','backbone','underscore'],function($,Backbone,_){
 			$(input).parent().removeClass('has-success').addClass('has-error');
 			this.$el.find(".error-invite").text(error).addClass("alert alert-danger").show();
 		},
-		onApiResponse: function(model,response){
+		onApiResponse: function(response){
+			console.log(response);
 			alert('Correo Enviado');
+		},
+		onErrorResponse: function(response){
+			alert('usuario ya esta en una propiedad');
 		}
 	});
 });
