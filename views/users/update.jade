@@ -22,8 +22,8 @@ block content
                 img(src=user.profilePicture)
               input#photo-input(type="file",name="profilePicture")
             div.col-md-8
-            
-              if message
+              - console.log(message)
+              if message && message.length > 0
                 div.alert.alert-danger
                   ul
                     li= message
