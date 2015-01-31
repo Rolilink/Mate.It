@@ -98,7 +98,7 @@ Schema.methods.removeHabitant = function(userid,fn){
 		habitant.property.isOwner = false;
 		habitant.save();
 
-		if(self.habitants.length < self.capacity)
+		if(self.habitants.length + 1 < self.capacity)
 			self.available = true;
 		
 		fn(self);
@@ -107,7 +107,7 @@ Schema.methods.removeHabitant = function(userid,fn){
 };
 
 Schema.methods.isFull = function(){
-	return this.habitants.length >= this.capacity;
+	return this.habitants.length + 1 >= this.capacity;
 };
 
 // Validate capacity > habitants.length
@@ -129,7 +129,7 @@ Schema.pre('save',function(next){
 Schema.path('capacity').validate(function(value,done){
  	var self = this;
 
-  if(self.habitants.length > 0 && self.capacity < self.habitants.length){
+  if(self.habitants.length > 0 && self.capacity < self.habitants.length + 1){
   	return done(false);
   }
 
