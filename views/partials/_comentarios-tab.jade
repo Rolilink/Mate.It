@@ -1,5 +1,5 @@
 div.col-md-10.col-md-offset-1#error
-if !user.property.isOwner || user.property.data != property._id
+if !user.property.isOwner || user.property.data + '' != property._id + ''
 	div.col-md-12#control
 		div.panel
 			div.panel-body
