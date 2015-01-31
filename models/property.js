@@ -118,7 +118,7 @@ Schema.pre('save',function(next){
     return next();
   };
 
-  if(self.capacity === self.habitants.length){
+  if(self.capacity === self.habitants.length + 1){
   	this.available = false;
   	next();
   }
