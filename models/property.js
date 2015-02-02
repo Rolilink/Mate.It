@@ -84,7 +84,7 @@ Schema.methods.setOwner = function(ownerId){
 Schema.methods.addHabitant = function(userid){
 	this.habitants.push(userid);
 
-	if(this.habitants.length === this.capacity)
+	if(this.habitants.length + 1 === this.capacity)
 		this.available = false;
 };
 
@@ -98,7 +98,7 @@ Schema.methods.removeHabitant = function(userid,fn){
 		habitant.property.isOwner = false;
 		habitant.save();
 
-		if(self.habitants.length < self.capacity)
+		if(self.habitants.length + 1 < self.capacity)
 			self.available = true;
 		
 		fn(self);
@@ -107,20 +107,23 @@ Schema.methods.removeHabitant = function(userid,fn){
 };
 
 Schema.methods.isFull = function(){
-	return this.habitants.length >= this.capacity;
+	return this.habitants.length >= this.capacity + 1;
 };
 
 // Validate capacity > habitants.length
 Schema.pre('save',function(next){
   var self = this;
-  
+  console.log('pre save');
+  console.log('is modified:', self.isModified('capacity'));
   if (!self.isModified('capacity')){
+  	console.log('next()');
     return next();
   };
-
-  if(self.capacity === self.habitants.length){
+  console.log(self.capacity,':', self.habitants.length + 1)
+  if(self.capacity === self.habitants.length + 1){
   	this.available = false;
-  	next();
+  }else{
+  	this.available = true;
   }
 
   next();
@@ -128,8 +131,9 @@ Schema.pre('save',function(next){
 
 Schema.path('capacity').validate(function(value,done){
  	var self = this;
-
-  if(self.habitants.length > 0 && self.capacity < self.habitants.length){
+ 	console.log('is validating')
+  if(self.habitants.length > 0 && self.capacity > self.habitants.length ){
+  	console.log('validated?');
   	return done(false);
   }
 
@@ -139,14 +143,31 @@ Schema.path('capacity').validate(function(value,done){
 
 
 Schema.pre('remove',function(next){
+	var self = this;
   console.log('removing property')
   var ownerId = this.owner;
-  User.findByIdQ(ownerId).then(function(user){
-    user.property.isOwner = false;
-    user.property.data = null;
-    user.save(function(){
-    	next();
-    });
+  self
+  	.populateQ({path:'owner',model:'User'})
+  	.then(function(self){
+  		return self.populateQ({path:'habitants',model:'User'});
+  	})
+  	.then(function(){
+  		console.log(self);
+	    self.owner.property.isOwner = false;
+	    self.owner.property.data = null;
+	    self.owner.save(function(){
+	    	var promises = [];
+	    	var _ = require('underscore');
+	    	_.each(self.habitants,function(model){
+	    		model.property.isOwner = false;
+	    		model.property.data = null;
+	    		promises.push(model.saveQ());
+	    	});
+
+	    	q.all(promises).then(function(){
+	    		next();
+	    	});
+	    });
   });
 
 });

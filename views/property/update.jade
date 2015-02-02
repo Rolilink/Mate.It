@@ -39,18 +39,28 @@ block content
               label(for="ap-prop") Tipo de Propiedad
               select.form-control#ap-prop(name="propertyType")
                 if property.propertyType == 'apartment'
+                  option(value="apartment",selected) Apartamento
+                else
                   option(value="apartment") Apartamento
                 if property.propertyType == 'house'
+                  option(value="house",selected) Casa
+                else
                   option(value="house") Casa
                 if property.propertyType == 'other'
+                  option(value="other",selected) Otros
+                else
                   option(value="other") Otros
           div.col-md-4
             div.form-group
               label(for="ap-room") Tipo de Cuarto
               select.form-control#ap-room(name="roomType")
                 if property.roomType == 'shared'
+                  option(value="shared",selected) Compartido
+                else
                   option(value="shared") Compartido
                 if property.roomType == 'private'
+                  option(value="private",selected) Privado
+                else
                   option(value="private") Privado
           div.col-md-4#price-row
             div.form-group
@@ -71,10 +81,16 @@ block content
               label(for="ap-gender") Se Permiten
               select.form-control#ap-gender(name="genderAllowed")
                 if property.genderAllowed == 'both'
+                  option(value="both", selected) Hombres y Mujeres
+                else
                   option(value="both") Hombres y Mujeres
                 if property.genderAllowed == 'male'
+                  option(value="male", selected) Solo Hombres
+                else
                   option(value="male") Solo Hombres
                 if property.genderAllowed == 'female'
+                  option(value="female", selected) Solo Mujeres
+                else
                   option(value="female") Solo Mujeres
         div.row
           div.col-md-4
