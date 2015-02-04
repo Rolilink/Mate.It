@@ -161,6 +161,7 @@ Schema.methods.consume = function(currentUser){
 	},
 	handleResponse = function(data){ return deferred.resolve(data); };
 
+	console.log(this);
 	// populates the invitation model and return a combined promise
 	var populations = q.all([
 		this.populateHost(),
@@ -169,6 +170,7 @@ Schema.methods.consume = function(currentUser){
 
 	populations.then(function(){
 		// validate Invitation
+		console.log(self);
 		var result = self.canConsume(currentUser,self.property);
 		
 		if(!result.isValid) return handleResponse({status:result.status,err:result.reason});

@@ -132,7 +132,7 @@ Schema.pre('save',function(next){
 Schema.path('capacity').validate(function(value,done){
  	var self = this;
  	console.log('is validating')
-  if(self.habitants.length > 0 && self.capacity > self.habitants.length ){
+  if(self.habitants.length > 0 && self.capacity < self.habitants.length ){
   	console.log('validated?');
   	return done(false);
   }
