@@ -1,52 +1,22 @@
 {
-  "name": "MateIt_API",
-  "version": "0.0.1",
-  "private": true,
+  "name": "MateIt-Api",
+  "version": "0.0.0",
+  "main": "server/server.js",
   "scripts": {
-    "start": "node app.js"
+    "pretest": "jshint ."
   },
   "dependencies": {
-    "express": "3.4.8",
-    "jade": "^1.5.0",
-    "seneca": "^0.5.21",
-    "passport": "^0.2.0",
-    "passport-local": "^0.1.6",
-    "passport-facebook": "~1.0.2",
-    "mongoose": "~3.8.12",
-    "mongoose-validator": "~0.2.2",
-    "acl": "~0.2.6",
-    "mincer": "^0.5.13",
-    "connect-mincer": "^1.0.0",
-    "mincer-hbs": "^1.0.1",
-    "handlebars": "^2.0.0-alpha.1",
-    "winston": "^0.7.2",
-    "nconf": "^0.6.9",
-    "bcrypt": "^0.7.8",
-    "mongoose-troop": "0.0.8",
-    "mongoose-auto-increment": "^3.0.2",
-    "async": "^0.9.0",
-    "q": "^1.0.1",
-    "node-uuid": "^1.4.1",
-    "redis": "^0.11.0",
-    "connect-redis": "1.4.7",
-    "connect-roles": "^3.0.3",
-    "connect-flash": "^0.1.1"
+    "compression": "^1.0.3",
+    "errorhandler": "^1.1.1",
+    "loopback": "^2.8.0",
+    "loopback-boot": "^2.4.0",
+    "loopback-datasource-juggler": "^2.7.0",
+    "serve-favicon": "^2.0.1"
+  },
+  "optionalDependencies": {
+    "loopback-explorer": "^1.1.0"
   },
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-autoprefixer": "^1.0.0",
-    "grunt-contrib-clean": "0.5.x",
-    "grunt-contrib-copy": "0.4.x",
-    "grunt-contrib-stylus": "0.8.x",
-    "grunt-contrib-watch": "0.5.x",
-    "ms": "^0.6.2",
-    "grunt-mocha-test": "^0.12.2",
-    "grunt-mongoimport": "^0.1.5",
-    "grunt-execute": "^0.2.2",
-    "mocha": "^2.0.1",
-    "supertest-as-promised": "^1.0.0",
-    "chai": "^1.9.2",
-    "chai-things": "^0.2.0",
-    "grunt-contrib-jade": "^0.13.0"
+    "jshint": "^2.5.6"
   }
 }
