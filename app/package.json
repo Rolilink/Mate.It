@@ -33,5 +33,12 @@
     "url": "git://github.com/rolilink/app.git"
   },
   "author": "rolilink",
-  "license": ""
+  "license": "",
+  "devDependencies": {
+    "mocha": "^2.1.0",
+    "grunt-mocha-test": "^0.12.7",
+    "chai-things": "^0.2.0",
+    "chai": "^1.10.0",
+    "supertest": "^0.15.0"
+  }
 }
