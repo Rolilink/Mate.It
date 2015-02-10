@@ -3,9 +3,10 @@ var Sails = require('sails'),
   chai = require('chai'),
   expect = chai.expect;
 
+GLOBAL.expect = expect;
 
 before(function(done) {
-  this.timeout(5000);
+  this.timeout(10000);
   console.log('before');
   Sails.lift({
     port: 1200
