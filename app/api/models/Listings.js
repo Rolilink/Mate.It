@@ -10,7 +10,8 @@ module.exports = {
   attributes: {
     capacity: {
       type: 'integer',
-      required: true
+      required: true,
+      min: 0
     },
     listed: {
       type: 'boolean',
@@ -19,7 +20,9 @@ module.exports = {
     address: 'string',
     price: {
       type: 'float',
-      required: true
+      required: true,
+      min: 0
+
     },
     roomType: {
       type: 'string',
@@ -39,11 +42,15 @@ module.exports = {
     },
     description: {
       type: 'string',
-      required: true
+      required: true,
+      minLength: 0,
+      maxLength: 500
     },
     title: {
       type: 'string',
-      required: true
+      required: true,
+      minLength: 10,
+      maxLength: 140
     },
     genderAllowed: {
       type: 'string',
