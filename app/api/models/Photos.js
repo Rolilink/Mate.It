@@ -8,7 +8,19 @@
 module.exports = {
 
   attributes: {
-
+    listing:{
+      model: 'listings'
+    },
+    fileType:{
+      type: 'string'
+    },
+    width: 'integer',
+    height: 'integer',
+    url:{
+      type: 'string',
+      required: true,
+      url: true
+    }
   }
 };
 

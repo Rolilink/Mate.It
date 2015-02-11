@@ -77,6 +77,9 @@ module.exports = {
         'pool',
         'smoking_allowed'
       ]
+    },
+    loc:{
+      model:'locations'
     }
   }
 };

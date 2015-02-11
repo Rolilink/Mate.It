@@ -8,7 +8,30 @@
 module.exports = {
 
   attributes: {
-
+    name: {
+      type: 'string',
+      required: true
+    },
+    password: {
+      type: 'string',
+      required: true,
+      minLength: 8
+    },
+    email: {
+      type: 'string',
+      required: true,
+      unique: true,
+      email: true
+    },
+    about: 'string',
+    birthdate: 'date',
+    active: {
+      type: 'boolean',
+      defaultsTo: true
+    },
+    profilePicture: 'string',
+    role: 'string',
+    listing: 'string'
   }
 };
 

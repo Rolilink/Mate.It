@@ -7,8 +7,23 @@
 
 module.exports = {
 
+  types:{
+    isGeoJsonPoint: function(geoJson){
+      return geoJson.type === "point" &&
+      Array.isArray(geoJson.coordinates) &&
+      geoJson.coordinates.length === 2 &&
+      typeof(geoJson.coordinates[0]) === "number" && 
+      typeof(geoJson.coordinates[0])  === typeof(geoJson.coordinates[1]);
+    }
+  },
   attributes: {
-
+    coordinates:{
+      type:'json',
+      isGeoJsonPoint: true
+    },
+    listing:{
+      model:'listings'
+    }
   }
 };
 
