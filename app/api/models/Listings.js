@@ -43,7 +43,6 @@ module.exports = {
     description: {
       type: 'string',
       required: true,
-      minLength: 0,
       maxLength: 500
     },
     title: {
@@ -78,8 +77,16 @@ module.exports = {
         'smoking_allowed'
       ]
     },
-    loc:{
+    photos: {
+      collection:'photos',
+      via: 'listing'
+    },
+    loc: {
       model:'locations'
+    },
+    habitants: {
+      collection: 'users',
+      via: 'listing'
     }
   }
 };

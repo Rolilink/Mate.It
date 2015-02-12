@@ -29,9 +29,13 @@ module.exports = {
       type: 'boolean',
       defaultsTo: true
     },
-    profilePicture: 'string',
+    profilePicture: {
+      model: 'photos'
+    },
     role: 'string',
-    listing: 'string'
+    listing: {
+      model: 'listings'
+    }
   }
 };
 

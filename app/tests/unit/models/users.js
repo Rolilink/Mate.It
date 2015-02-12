@@ -1,6 +1,32 @@
+var destroyAllUsers = function destroyAllUsers() {
+  return Users.destroy({});
+};
+
 describe('Users Model:',function(){
   it('should exist',function(){
     expect(Users).to.exist();
+  });
+
+  before(function(done){
+    destroyAllUsers()
+    .then(function(){
+      done();
+    })
+    .catch(function(err){
+      done(err);
+    });
+
+  });
+
+  after(function(done){
+    destroyAllUsers()
+    .then(function(){
+      done();
+    })
+    .catch(function(err){
+      done(err);
+    });
+    
   });
 
   it('should have attributes like: name, password, email, about, birthdate, active, profilePicture, role and listing.', function(){
@@ -127,6 +153,7 @@ describe('Users Model:',function(){
       done();
     })
     .catch(function(err){
+      console.log(err);
       done(err);
     });
 

@@ -193,39 +193,4 @@ describe('Listings Model:',function(){
       done();
     });
   });
-
-  it('should have a one to one relationship with a location via location attribute',function(done){
-    var listingData = {
-      title: 'This is an example title for this testing property.',
-      price: 200,
-      capacity: 3,
-      description: 'This is a really long description just to test that this property is working well'
-    },
-    locationData = {
-      coordinates: {
-        type: "point",
-        coordinates: [9.006654, -79.504121]
-      }
-    };
-
-    Locations.create(locationData)
-    .then(function(location){
-      listingData.loc = location.id;
-      return Listings.create(listingData);
-    })
-    .then(function(listing){
-      return Listings.findOne(listing.id).populate('loc');
-    })
-    .then(function(listing){
-      expect(listing.loc).to.have.a.property('coordinates');
-      done();
-    })
-    .catch(function(err){
-      done(err);
-    });
-
-  });
-
-
-
 });

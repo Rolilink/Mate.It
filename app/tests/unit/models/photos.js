@@ -4,7 +4,7 @@ describe('Photos Model:',function(){
     expect(Photos).to.exist();
   });
 
-  it("should have attributes like: listing,url,file_type,width and height",function(){
+  it("should have attributes like: listing,url,fileType,width and height",function(){
     expect(Photos._attributes).to.have.a.property('listing');
     expect(Photos._attributes).to.have.a.property('url');
     expect(Photos._attributes).to.have.a.property('fileType');
