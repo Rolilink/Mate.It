@@ -1,9 +1,16 @@
 var Sails = require('sails'),
-  sails,
-  chai = require('chai'),
-  expect = chai.expect;
+    sails,
+    chai = require('chai'),
+    expect = chai.expect
+    sinon = require('sinon'),
+    sinonChai = require('sinon-chai');
+
+
+chai.use(sinonChai);
+
 
 GLOBAL.expect = expect;
+GLOBAL.sinon = sinon;
 
 before(function(done) {
   this.timeout(10000);

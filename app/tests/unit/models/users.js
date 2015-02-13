@@ -30,6 +30,7 @@ describe('Users Model:',function(){
   });
 
   it('should have attributes like: name, password, email, about, birthdate, active, profilePicture, role and listing.', function(){
+    
     expect(Users._attributes).to.have.a.property('name');
     expect(Users._attributes).to.have.a.property('password');
     expect(Users._attributes).to.have.a.property('email');
@@ -39,6 +40,7 @@ describe('Users Model:',function(){
     expect(Users._attributes).to.have.a.property('profilePicture');
     expect(Users._attributes).to.have.a.property('role');
     expect(Users._attributes).to.have.a.property('listing');
+
   });
 
   it('should have a email required attribute',function(done){
@@ -193,5 +195,42 @@ describe('Users Model:',function(){
 
 
   }); 
+
+  it('Users should have an serializeUser function that returns user id', function(done){
+
+    expect(Users).to.have.a.property('serializeUser');
+    expect(Users.serializeUser).to.be.a('function');
+    
+    Users.create({email:'me2@rolilink.com',password:'12345678',name:'Rolando Perez'})
+    .then(function(rUser){
+      var serializedUser = Users.serializeUser(rUser);
+      expect(serializedUser).to.be.equals(rUser.id);
+      done();
+    })
+    .catch(done);
+    
+  });
+
+  it('Users should have an deserializeUser function that returns user id', function(done){
+    Users.create({email:'me3@rolilink.com', password:'12345678',name:'Rolando Perez'})
+    .then(function(rUser){
+      Users.deserializeUser(rUser.id, function(dUser,err){
+        expect(dUser).to.exist();
+        expect(dUser).to.have.a.property('id',rUser.id);
+        done();
+      })
+    })
+    .catch(done);
+  });
+
+  it('should have a compare password function',function(done){
+    Users.create({email:'me4@rolilink.com', password:'12345678',name:'Rolando Perez'})
+    .then(function(user){
+      expect(user).to.have.a.property('comparePassword');
+      expect(user.comparePassword).to.be.a('function');
+      done();
+    })
+    .catch(done);
+  });
 
 });

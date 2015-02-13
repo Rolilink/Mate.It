@@ -39,6 +39,9 @@ module.exports = {
     toJSON: function toJSON(){
       var obj =  _.omit(this.toObject(),Users.protectedReadAttributes());
       return obj;
+    },
+    comparePassword: function comparePassword(password){
+      return true;
     }
   },
   protectedReadAttributes: function protectedReadAttributes(){
@@ -46,6 +49,18 @@ module.exports = {
   },
   protectedWriteAttributes: function protectedWriteAttributes(){
     return ['role'];
+  },
+  serializeUser: function serializeUser(user) {
+    return user.id;
+  },
+  deserializeUser: function deserializeUser (userId,done) {
+    Users.findOne(userId)
+    .then(function(user){
+      done(user,null);
+    })
+    .catch(function(err){
+      done(null,err);      
+    });
   }
 };
 
