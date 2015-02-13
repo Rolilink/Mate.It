@@ -35,7 +35,17 @@ module.exports = {
     role: 'string',
     listing: {
       model: 'listings'
+    },
+    toJSON: function toJSON(){
+      var obj =  _.omit(this.toObject(),Users.protectedReadAttributes());
+      return obj;
     }
+  },
+  protectedReadAttributes: function protectedReadAttributes(){
+    return ['password'];
+  },
+  protectedWriteAttributes: function protectedWriteAttributes(){
+    return ['role'];
   }
 };
 

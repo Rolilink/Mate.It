@@ -159,6 +159,39 @@ describe('Users Model:',function(){
 
   });
 
+  it('should have a function called protectedReadAttributes and must return protected read attributes',function(){
+   
+    expect(Users).to.have.a.property('protectedReadAttributes');
+    expect(Users.protectedReadAttributes).to.be.a('function');
 
+    var protectedAttributes = Users.protectedReadAttributes();
+    expect(protectedAttributes[0]).to.be.equals('password');
+  });
+
+  it('should have a function called protectedWriteAttributes and must return protected write attributes',function(){
+   
+    expect(Users).to.have.a.property('protectedWriteAttributes');
+    expect(Users.protectedWriteAttributes).to.be.a('function');
+    var protectedAttributes = Users.protectedWriteAttributes()
+    expect(protectedAttributes[0]).to.be.equals('role');
+  });
+
+  it('when calling model.toJSON it should not return the password attribute',function(done){
+    var userData = {
+      name: 'Elon Musk',
+      email: 'elon3@musk.com',
+      password: 'spacexmusk'
+    }
+
+    Users.create(userData)
+    .then(function(user){
+      var json = user.toJSON();
+      expect(json).not.to.have.a.property('password');
+      done();
+    })
+    .catch(done);
+
+
+  }); 
 
 });
