@@ -22,9 +22,7 @@ strategy = new LocalStrategy({usernameField:'email'},function(email,password,don
   .catch(done);
 });
 
-passport.use(strategy);
-
-module.exports = {
+var service = {
   serializeUser: function serializeUser(user,done){
     var userId = Users.serializeUser(user);
     done(null,userId);
@@ -59,3 +57,9 @@ module.exports = {
     return strategy;
   }
 };
+
+passport.serializeUser(service.serializeUser);
+passport.deserializeUser(service.deserializeUser);
+passport.use(strategy);
+
+module.exports = service;

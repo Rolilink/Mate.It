@@ -1,3 +1,5 @@
+var bcrypt = require('bcrypt');
+
 /**
 * Users.js
 *
@@ -41,8 +43,13 @@ module.exports = {
       return obj;
     },
     comparePassword: function comparePassword(password){
-      return true;
+      return bcrypt.compareSync(password,this.password);
     }
+  },
+  beforeCreate: function beforeCreate(values,cb){
+    var salt = bcrypt.genSaltSync();
+    values.password = bcrypt.hashSync(values.password,salt);
+    cb();
   },
   protectedReadAttributes: function protectedReadAttributes(){
     return ['password'];

@@ -1,3 +1,5 @@
+var bcrypt = require('bcrypt');
+
 var destroyAllUsers = function destroyAllUsers() {
   return Users.destroy({});
 };
@@ -228,6 +230,65 @@ describe('Users Model:',function(){
     .then(function(user){
       expect(user).to.have.a.property('comparePassword');
       expect(user.comparePassword).to.be.a('function');
+      done();
+    })
+    .catch(done);
+  });
+
+  it('comparePassword function should compare received password with internal hash', function(done){
+    var bcryptCompareSync = sinon.stub(bcrypt,'compareSync',function(password){ return password === '12345678'; });
+
+    Users.create({email:'me5@rolilink.com', password:'12345678',name:'Rolando Perez'})
+    .then(function(user){
+      expect(user.comparePassword('12345678')).to.be.equals(true);
+      bcryptCompareSync.restore();
+      done();
+    })
+    .catch(done);
+  });
+
+  it('comparePassword function should call bcrypt.compareSync for comparing the hash',function(done){
+    var bcryptCompareSync = sinon.stub(bcrypt,'compareSync',function(){ return true; });
+
+    Users.create({email:'me6@rolilink.com', password:'12345678',name:'Rolando Perez'})
+    .then(function(user){
+      user.comparePassword('12345678');
+      expect(bcryptCompareSync).to.have.been.calledOnce;
+      bcryptCompareSync.restore();
+      done();
+    })
+    .catch(done);
+  });
+
+  it('should hash the password before create',function(done){
+    Users.create({email:'me7@rolilink.com', password:'12345678',name:'Rolando Perez'})
+    .then(function(user){
+      expect(user.password).not.to.be.equals('12345678');
+      done();
+    })
+    .catch(done);
+  });
+
+  it('should call bcrypt#hashSync for generating the hash',function(done){
+    var bcryptHashSync = sinon.stub(bcrypt,'hashSync',function(){ return 'asdasdasdsasad'; });
+
+    Users.create({email:'me8@rolilink.com', password:'12345678',name:'Rolando Perez'})
+    .then(function(user){
+      expect(bcryptHashSync).to.have.been.calledOnce;
+      bcryptHashSync.restore();
+      done();
+    })
+    .catch(done);
+  });
+
+  it('should asign bcrypt#hashSync returned value as hash',function(done){
+    var returnedValue = 'asdasdasdsasad';
+    var bcryptHashSync = sinon.stub(bcrypt,'hashSync',function(){ return returnedValue; });
+
+    Users.create({email:'me9@rolilink.com', password:'12345678',name:'Rolando Perez'})
+    .then(function(user){
+      expect(user.password).to.be.equals(returnedValue);
+      bcryptHashSync.restore();
       done();
     })
     .catch(done);
