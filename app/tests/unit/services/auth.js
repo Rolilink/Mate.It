@@ -1,4 +1,4 @@
-describe('AuthService', function(){
+/*describe('AuthService', function(){
 
   it('should exist',function(){
     expect(AuthService).to.exist();
@@ -180,4 +180,4 @@ describe('AuthService', function(){
     findOne.restore();
   });
 
-});
+});*/

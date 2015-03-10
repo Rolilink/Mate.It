@@ -1,169 +1,23 @@
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt'),
+wolfpack = require('wolfpack'),
+Users = wolfpack('api/models/Users');
 
-var destroyAllUsers = function destroyAllUsers() {
-  return Users.destroy({});
-};
 
 describe('Users Model:',function(){
-  it('should exist',function(){
-    expect(Users).to.exist();
+
+  var user = {
+    name: 'Elon Musk',
+    email: 'elon3@musk.com',
+    password: 'spacexmusk'
+  }
+
+  before(function(){
+    var ruser = { id: 1 };
+    _.assign(ruser,user);
+    Users.setCreateResults(user,ruser);
   });
 
-  before(function(done){
-    destroyAllUsers()
-    .then(function(){
-      done();
-    })
-    .catch(function(err){
-      done(err);
-    });
-
-  });
-
-  after(function(done){
-    destroyAllUsers()
-    .then(function(){
-      done();
-    })
-    .catch(function(err){
-      done(err);
-    });
-    
-  });
-
-  it('should have attributes like: name, password, email, about, birthdate, active, profilePicture, role and listing.', function(){
-    
-    expect(Users._attributes).to.have.a.property('name');
-    expect(Users._attributes).to.have.a.property('password');
-    expect(Users._attributes).to.have.a.property('email');
-    expect(Users._attributes).to.have.a.property('about');
-    expect(Users._attributes).to.have.a.property('birthdate');
-    expect(Users._attributes).to.have.a.property('active');
-    expect(Users._attributes).to.have.a.property('profilePicture');
-    expect(Users._attributes).to.have.a.property('role');
-    expect(Users._attributes).to.have.a.property('listing');
-
-  });
-
-  it('should have a email required attribute',function(done){
-    var userData = {
-      name: 'Rolando Perez',
-      password: '12345678',
-    };
-
-    Users.create(userData)
-    .then(function(){
-      done(new Error('It should not save the user'));
-    })
-    .catch(function(err){
-      done();
-    });
-
-  });
-
-  it('should have a name required attribute',function(done){
-    var userData = {
-      password: '12345678',
-      email: 'me@rolilink.com'
-    };
-
-    Users.create(userData)
-    .then(function(){
-      done(new Error('It should not save the user'));
-    })
-    .catch(function(err){
-      done();
-    });
-
-  });
-
-  it('should have a password required attribute', function(done){
-    var userData = {
-      name: 'Rolando Perez',
-      email: 'me@rolilink.com',
-    };
-
-    Users.create(userData)
-    .then(function(){
-      done(new Error('It should not save the user'));
-    })
-    .catch(function(err){
-      done();
-    });
-  });
-
-  it('should have a email unique attribute', function(done){
-    var userData = {
-      name: 'Elon Musk',
-      email: 'elon@musk.com',
-      password: 'spacexmusk'
-    }
-
-    Users.create(userData)
-    .then(function(){
-      return Users.create(userData);
-    })
-    .then(function(){
-      done(new Error('Should not create second user')); 
-    })
-    .catch(function(err){
-      done();
-    });
-  });
-
-  it('email attribute should only accept valid emails', function(done){
-    var userData = {
-      name: 'Elon Musk',
-      email: 'elon2',
-      password: 'spacexmusk'
-    }
-
-    Users.create(userData)
-    .then(function(){
-      done(new Error('It should not save the user'));
-    })
-    .catch(function(err){
-      done();
-    });  
-  });
-
-  it('password attribute must be 8 characters or larger', function(done){
-    var userData = {
-      name: 'Elon Musk',
-      email: 'elon2@musk.com',
-      password: 'space'
-    }
-
-    Users.create(userData)
-    .then(function(){
-      done(new Error('It should not save the user'));
-    })
-    .catch(function(err){
-      done();
-    });  
-
-  });
-
-  it('active attribute should default to true', function(done){
-    var userData = {
-      name: 'Elon Musk',
-      email: 'elon23@musk.com',
-      password: 'spacexmusk'
-    }
-
-    Users.create(userData)
-    .then(function(user){
-      expect(user).to.have.a.property('active',true);
-      done();
-    })
-    .catch(function(err){
-      console.log(err);
-      done(err);
-    });
-
-  });
-
-  it('should have a function called protectedReadAttributes and must return protected read attributes',function(){
+  it('Users#protectedReadAttributes must return protected read attributes',function(){
    
     expect(Users).to.have.a.property('protectedReadAttributes');
     expect(Users.protectedReadAttributes).to.be.a('function');
@@ -172,7 +26,7 @@ describe('Users Model:',function(){
     expect(protectedAttributes[0]).to.be.equals('password');
   });
 
-  it('should have a function called protectedWriteAttributes and must return protected write attributes',function(){
+  it('Users#protectedWriteAttributes and must return protected write attributes',function(){
    
     expect(Users).to.have.a.property('protectedWriteAttributes');
     expect(Users.protectedWriteAttributes).to.be.a('function');
@@ -180,16 +34,11 @@ describe('Users Model:',function(){
     expect(protectedAttributes[0]).to.be.equals('role');
   });
 
-  it('when calling model.toJSON it should not return the password attribute',function(done){
-    var userData = {
-      name: 'Elon Musk',
-      email: 'elon3@musk.com',
-      password: 'spacexmusk'
-    }
+  it('user#toJSON must not return password',function(done){
 
-    Users.create(userData)
-    .then(function(user){
-      var json = user.toJSON();
+    Users.create(user)
+    .then(function(rUser){
+      var json = rUser.toJSON();
       expect(json).not.to.have.a.property('password');
       done();
     })
@@ -198,12 +47,12 @@ describe('Users Model:',function(){
 
   }); 
 
-  it('Users should have an serializeUser function that returns user id', function(done){
+  /*it('Users#serializeUser should return user id', function(done){
 
     expect(Users).to.have.a.property('serializeUser');
     expect(Users.serializeUser).to.be.a('function');
     
-    Users.create({email:'me2@rolilink.com',password:'12345678',name:'Rolando Perez'})
+    Users.create(user)
     .then(function(rUser){
       var serializedUser = Users.serializeUser(rUser);
       expect(serializedUser).to.be.equals(rUser.id);
@@ -212,9 +61,11 @@ describe('Users Model:',function(){
     .catch(done);
     
   });
+  */
 
-  it('Users should have an deserializeUser function that returns user id', function(done){
-    Users.create({email:'me3@rolilink.com', password:'12345678',name:'Rolando Perez'})
+  // deserialize user should be mocked 
+  /*it('Users#deserializeUser should return deserialized User', function(done){
+    Users.create(user)
     .then(function(rUser){
       Users.deserializeUser(rUser.id, function(dUser,err){
         expect(dUser).to.exist();
@@ -223,10 +74,10 @@ describe('Users Model:',function(){
       })
     })
     .catch(done);
-  });
+  });*/
 
-  it('should have a compare password function',function(done){
-    Users.create({email:'me4@rolilink.com', password:'12345678',name:'Rolando Perez'})
+  /*it('users#comparePassword should exist',function(done){
+    Users.create(user)
     .then(function(user){
       expect(user).to.have.a.property('comparePassword');
       expect(user.comparePassword).to.be.a('function');
@@ -235,7 +86,7 @@ describe('Users Model:',function(){
     .catch(done);
   });
 
-  it('comparePassword function should compare received password with internal hash', function(done){
+  it('user#comparePassword function should compare received password with internal hash', function(done){
     var bcryptCompareSync = sinon.stub(bcrypt,'compareSync',function(password){ return password === '12345678'; });
 
     Users.create({email:'me5@rolilink.com', password:'12345678',name:'Rolando Perez'})
@@ -247,7 +98,7 @@ describe('Users Model:',function(){
     .catch(done);
   });
 
-  it('comparePassword function should call bcrypt.compareSync for comparing the hash',function(done){
+  it('user#comparePassword should call bcrypt#compareSync for comparing the hash',function(done){
     var bcryptCompareSync = sinon.stub(bcrypt,'compareSync',function(){ return true; });
 
     Users.create({email:'me6@rolilink.com', password:'12345678',name:'Rolando Perez'})
@@ -259,11 +110,12 @@ describe('Users Model:',function(){
     })
     .catch(done);
   });
+*/
 
   it('should hash the password before create',function(done){
-    Users.create({email:'me7@rolilink.com', password:'12345678',name:'Rolando Perez'})
-    .then(function(user){
-      expect(user.password).not.to.be.equals('12345678');
+    Users.create(user)
+    .then(function(rUser){
+      expect(rUser.password).not.to.be.equals('12345678');
       done();
     })
     .catch(done);
@@ -272,8 +124,8 @@ describe('Users Model:',function(){
   it('should call bcrypt#hashSync for generating the hash',function(done){
     var bcryptHashSync = sinon.stub(bcrypt,'hashSync',function(){ return 'asdasdasdsasad'; });
 
-    Users.create({email:'me8@rolilink.com', password:'12345678',name:'Rolando Perez'})
-    .then(function(user){
+    Users.create(user)
+    .then(function(rUser){
       expect(bcryptHashSync).to.have.been.calledOnce;
       bcryptHashSync.restore();
       done();
@@ -285,9 +137,9 @@ describe('Users Model:',function(){
     var returnedValue = 'asdasdasdsasad';
     var bcryptHashSync = sinon.stub(bcrypt,'hashSync',function(){ return returnedValue; });
 
-    Users.create({email:'me9@rolilink.com', password:'12345678',name:'Rolando Perez'})
-    .then(function(user){
-      expect(user.password).to.be.equals(returnedValue);
+    Users.create(user)
+    .then(function(rUser){
+      expect(rUser.password).to.be.equals(returnedValue);
       bcryptHashSync.restore();
       done();
     })
