@@ -1,6 +1,6 @@
 web:
   build: .
-  command: sails lift
+  command: bash start.sh
   working_dir: /dev/app
   ports:
    - "3000:3000"

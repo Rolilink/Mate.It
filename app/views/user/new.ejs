@@ -1,0 +1,42 @@
+<div class="wrapper" ng-controller="signup" id="signup-page">
+  <link rel="stylesheet" href="/styles/signup.css">
+  <div class="container" id="panel-signup-form">
+    <div class="col-md-6 col-md-offset-3 panel">
+      <div class="panel-title">
+        <h2>Signup Form</h2>
+      </div>
+      <div class="panel-body">
+        <form name="signup_form" ng-submit="logForm($event);" novalidate>
+          <div class="form-group" ng-class="{'has-error': !isValid('email') && signup_form.$submitted}">
+            <label for="email">Email:</label>
+            <div class="alert alert-danger" ng-if="!isValid('email') && signup_form.$submitted" ng-messages="signup_form.email.$error">
+              <p ng-message="required"><strong>Error:</strong> Email is required.</p>
+              <p ng-message="pattern"><strong>Error:</strong> Please fill in with a valid email.</p>
+            </div>
+            <input type="text" ng-model="form.email" class="form-control" name="email" required ng-pattern="/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/">
+          </div>
+          <div class="form-group" ng-class="{'has-error': !isValid('name') && signup_form.$submitted}">
+            <label for="name">Name:</label>
+            <div class="alert alert-danger" ng-if="!isValid('name') && signup_form.$submitted" ng-messages="signup_form.name.$error">
+              <p ng-message="required"><strong>Error:</strong> Name is required.</p>
+            </div>
+            <input type="text" ng-model="form.name" class="form-control" name="name" required>
+          </div>
+          <div class="form-group" ng-class="{'has-error': !isValid('password') && signup_form.$submitted}">
+            <label for="password">Password:</label>
+            <div class="alert alert-danger" ng-if="!isValid('password') && signup_form.$submitted" ng-messages="signup_form.password.$error">
+              <p ng-message="required"><strong>Error:</strong> Password is required.</p>
+              <p ng-message="minlength"><strong>Error:</strong> Password must be at least 8 characters long.</p>
+            </div>
+            <input type="password" ng-model="form.password" class="form-control" name="password" required ng-minlength="8">
+          </div>
+          <div class="buttons">
+            <input type="submit" class="btn btn-primary" value="Submit">
+            <a href="" class="btn btn-danger">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="/js/app/signup.js"></script>
+</div>

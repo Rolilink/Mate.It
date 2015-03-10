@@ -34,7 +34,10 @@ module.exports = {
     profilePicture: {
       model: 'photos'
     },
-    role: 'string',
+    role: {
+      type: 'string',
+      defaultsTo: 'user'
+    },
     listing: {
       model: 'listings'
     },
