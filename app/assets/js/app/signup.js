@@ -1,5 +1,11 @@
-angular.module('mateit', []).
-controller('signup', function($scope){
+angular.module('mateit', [
+  'ngMessages',
+  'ngResource'
+]).
+controller('signup', function($scope,$http,$resource){
+
+  var User = $resource('/users/:id',{id:'@id'});
+
   //Private Methods
   var _objectIsEmpty = function(obj){
     return Object.getOwnPropertyNames(obj).length === 0;
@@ -7,9 +13,14 @@ controller('signup', function($scope){
   //Public Methods
   
 
-  $scope.logForm = function(e){
+  $scope.createUser = function(e){
     e.preventDefault();
-    var signupForm = $scope.signup_form;
+    var data = $scope.form;
+    console.log(data);
+    var user = new User(data);
+    user.$save(function(ruser){
+      console.log(ruser);
+    });
   };
 
   $scope.isValid = function(field){
