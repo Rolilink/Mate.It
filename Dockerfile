@@ -11,6 +11,7 @@ WORKDIR /data/app
 
 # Deploy API
 ADD ./app/ /data/app/
+RUN rm /data/app/node_modules -Rvf
 RUN npm install
 
 # Build Front End

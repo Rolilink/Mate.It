@@ -1,0 +1,12 @@
+#panel-signup-form{
+  margin-top: 60px;
+}
+
+#panel-signup-form h2{
+  margin-left: 15px
+}
+
+#panel-signup-form form .buttons > *{
+  margin-right: 10px;
+  width: 125px;
+}
