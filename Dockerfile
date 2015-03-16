@@ -1,6 +1,16 @@
-# Mate It API
-# Installs Forever
+# Mate It 
 FROM dockerfile/nodejs
+
+#Update apt-get
+RUN apt-get update
+
+#Installing Nginx
+RUN apt-get install -y nginx
+
+#Setting temps to save config files
+RUN mkdir /data/tmpconf
+ADD ./nginx /data/tmpconf
+RUN cp /data/tmpconf/default.production /etc/nginx/sites-available/default
 
 #Installing Sails and Forever
 RUN npm install -g sails && npm install -g forever
@@ -11,6 +21,7 @@ WORKDIR /data/app
 
 # Deploy API
 ADD ./app/ /data/app/
+WORKDIR /data/app/server
 RUN rm /data/app/node_modules -Rvf
 RUN npm install
 
@@ -22,5 +33,6 @@ RUN npm install
 
 # Run App
 WORKDIR /data/app
-EXPOSE 3000
-CMD sails lift
+EXPOSE 80
+
+CMD bash init.sh
