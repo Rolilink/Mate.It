@@ -3,8 +3,12 @@ server {
 
     server_name mate.it;
 
+    location /bower_components {
+        root /dev/app/client/$1;
+    }
+
     location / {
-        root /dev/app/client/app ;
+        root /dev/app/client/app;
     }
 }
 

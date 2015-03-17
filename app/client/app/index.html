@@ -1,1 +1,32 @@
-<h1>DEVELOPMENT OK!</h1>
+<!DOCTYPE html>
+
+<html ng-app="MateIt">
+  <head>
+    <meta charset="utf-8">
+    <title>MateIt</title>
+
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+
+  <body>
+    <div class="wrapper" ng-view>
+      
+    </div>
+    <!--SCRIPTS-->
+    <!-- DEPENDENCIES -->
+    <script src="/bower_components/angular/angular.js"></script>
+    <script src="/bower_components/angular-messages/angular-messages.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+    <script src="/bower_components/angular-resource/angular-resource.js"></script>
+    <!-- LOAD MAIN -->
+    <script src="/mateit-app.js"></script>
+    <!-- LOAD RESOURCES -->
+    <script src="/resources/api.js"></script>
+    <!-- LOAD CONTROLLERS -->
+    <script src="/controllers/user/newController.js"></script>
+    <!--SCRIPTS END-->
+  </body>
+</html>

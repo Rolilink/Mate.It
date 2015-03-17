@@ -13,6 +13,7 @@ done
 if [ "$dev" = "true" ]; then
   echo "Running Init with -d option:"
   cp /data/tmpconf/default.development /etc/nginx/sites-available/default #copy nginx development config and restart
+  cat /etc/nginx/sites-available/default
   service nginx start 
   cd server && npm install bcrypt && sails lift
 else

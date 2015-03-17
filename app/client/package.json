@@ -1,0 +1,8 @@
+{
+  "name": "mateit-web",
+  "version": "0.0.0",
+  "description": "Angular Client for Mate.it",
+  "main": "Gulpfile.js",
+  "author": "Rolando Perez <me@rolilink.com>",
+  "license": "MIT"
+}
